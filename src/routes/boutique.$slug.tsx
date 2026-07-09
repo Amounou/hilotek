@@ -36,7 +36,7 @@ function ProductPage() {
     queryKey: ["similar", p?.category_id],
     enabled: !!p?.category_id,
     queryFn: async () => (await supabase.from("products").select("*")
-      .eq("is_active", true).eq("category_id", p!.category_id).neq("id", p!.id).limit(4)).data ?? [],
+      .eq("is_active", true).eq("category_id", p!.category_id!).neq("id", p!.id).limit(4)).data ?? [],
   });
 
   if (isLoading) return <PublicShell><div className="p-20 text-center">{t("c.loading")}</div></PublicShell>;
