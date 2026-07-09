@@ -31,6 +31,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDashboardAdminProduitsRouteImport } from './routes/_authenticated/dashboard.admin.produits'
+import { Route as AuthenticatedDashboardAdminProduitsIdRouteImport } from './routes/_authenticated/dashboard.admin.produits.$id'
 
 const SuiviReparationRoute = SuiviReparationRouteImport.update({
   id: '/suivi-reparation',
@@ -141,6 +143,18 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedDashboardAdminProduitsRoute =
+  AuthenticatedDashboardAdminProduitsRouteImport.update({
+    id: '/admin/produits',
+    path: '/admin/produits',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAdminProduitsIdRoute =
+  AuthenticatedDashboardAdminProduitsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedDashboardAdminProduitsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -161,9 +175,11 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/dashboard/admin/produits': typeof AuthenticatedDashboardAdminProduitsRouteWithChildren
+  '/dashboard/admin/produits/$id': typeof AuthenticatedDashboardAdminProduitsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -184,9 +200,11 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/dashboard/admin/produits': typeof AuthenticatedDashboardAdminProduitsRouteWithChildren
+  '/dashboard/admin/produits/$id': typeof AuthenticatedDashboardAdminProduitsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -209,9 +227,11 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/_authenticated/dashboard/admin/produits': typeof AuthenticatedDashboardAdminProduitsRouteWithChildren
+  '/_authenticated/dashboard/admin/produits/$id': typeof AuthenticatedDashboardAdminProduitsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -237,6 +257,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/blog/$slug'
     | '/boutique/$slug'
+    | '/dashboard/admin/produits'
+    | '/dashboard/admin/produits/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -260,6 +282,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/blog/$slug'
     | '/boutique/$slug'
+    | '/dashboard/admin/produits'
+    | '/dashboard/admin/produits/$id'
   id:
     | '__root__'
     | '/'
@@ -284,6 +308,8 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/blog/$slug'
     | '/boutique/$slug'
+    | '/_authenticated/dashboard/admin/produits'
+    | '/_authenticated/dashboard/admin/produits/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -464,15 +490,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/dashboard/admin/produits': {
+      id: '/_authenticated/dashboard/admin/produits'
+      path: '/admin/produits'
+      fullPath: '/dashboard/admin/produits'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminProduitsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/admin/produits/$id': {
+      id: '/_authenticated/dashboard/admin/produits/$id'
+      path: '/$id'
+      fullPath: '/dashboard/admin/produits/$id'
+      preLoaderRoute: typeof AuthenticatedDashboardAdminProduitsIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAdminProduitsRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardAdminProduitsRouteChildren {
+  AuthenticatedDashboardAdminProduitsIdRoute: typeof AuthenticatedDashboardAdminProduitsIdRoute
+}
+
+const AuthenticatedDashboardAdminProduitsRouteChildren: AuthenticatedDashboardAdminProduitsRouteChildren =
+  {
+    AuthenticatedDashboardAdminProduitsIdRoute:
+      AuthenticatedDashboardAdminProduitsIdRoute,
+  }
+
+const AuthenticatedDashboardAdminProduitsRouteWithChildren =
+  AuthenticatedDashboardAdminProduitsRoute._addFileChildren(
+    AuthenticatedDashboardAdminProduitsRouteChildren,
+  )
+
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardAdminProduitsRoute: typeof AuthenticatedDashboardAdminProduitsRouteWithChildren
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardAdminProduitsRoute:
+      AuthenticatedDashboardAdminProduitsRouteWithChildren,
+  }
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
