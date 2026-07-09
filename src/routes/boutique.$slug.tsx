@@ -70,7 +70,7 @@ function ProductPage() {
             )}
           </div>
           <div>
-            {p.promo_price != null && <Badge className="bg-brand-orange text-white border-0 mb-2">-{Math.round((1 - Number(p.promo_price)/Number(p.price))*100)}%</Badge>}
+            {p.promo_price != null && <Badge className="bg-brand-orange text-white border-0 mb-2">-{Math.round((1 - Number(String(p.promo_price))/Number(p.price))*100)}%</Badge>}
             <h1 className="text-3xl font-display font-bold">{name}</h1>
             <div className="mt-2 text-xs text-muted-foreground">
               {t("product.sku")}: {p.sku}{p.brands ? ` • ${t("product.brand")}: ${p.brands.name}` : ""}
