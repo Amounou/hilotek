@@ -9,18 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SuiviReparationRouteImport } from './routes/suivi-reparation'
+import { Route as SuiviMemoireRouteImport } from './routes/suivi-memoire'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as RendezVousRouteImport } from './routes/rendez-vous'
 import { Route as PanierRouteImport } from './routes/panier'
 import { Route as MerciRouteImport } from './routes/merci'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as DevisRouteImport } from './routes/devis'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConfidentialiteRouteImport } from './routes/confidentialite'
+import { Route as ConditionsRouteImport } from './routes/conditions'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as BoutiqueRouteImport } from './routes/boutique'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
+const SuiviReparationRoute = SuiviReparationRouteImport.update({
+  id: '/suivi-reparation',
+  path: '/suivi-reparation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuiviMemoireRoute = SuiviMemoireRouteImport.update({
+  id: '/suivi-memoire',
+  path: '/suivi-memoire',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RendezVousRoute = RendezVousRouteImport.update({
+  id: '/rendez-vous',
+  path: '/rendez-vous',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PanierRoute = PanierRouteImport.update({
@@ -33,6 +65,31 @@ const MerciRoute = MerciRouteImport.update({
   path: '/merci',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevisRoute = DevisRouteImport.update({
+  id: '/devis',
+  path: '/devis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfidentialiteRoute = ConfidentialiteRouteImport.update({
+  id: '/confidentialite',
+  path: '/confidentialite',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConditionsRoute = ConditionsRouteImport.update({
+  id: '/conditions',
+  path: '/conditions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CheckoutRoute = CheckoutRouteImport.update({
   id: '/checkout',
   path: '/checkout',
@@ -41,6 +98,16 @@ const CheckoutRoute = CheckoutRouteImport.update({
 const BoutiqueRoute = BoutiqueRouteImport.update({
   id: '/boutique',
   path: '/boutique',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -58,36 +125,77 @@ const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BoutiqueRoute,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/boutique': typeof BoutiqueRouteWithChildren
   '/checkout': typeof CheckoutRoute
+  '/conditions': typeof ConditionsRoute
+  '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
+  '/devis': typeof DevisRoute
+  '/faq': typeof FaqRoute
   '/merci': typeof MerciRoute
   '/panier': typeof PanierRoute
+  '/rendez-vous': typeof RendezVousRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
+  '/suivi-memoire': typeof SuiviMemoireRoute
+  '/suivi-reparation': typeof SuiviReparationRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/boutique': typeof BoutiqueRouteWithChildren
   '/checkout': typeof CheckoutRoute
+  '/conditions': typeof ConditionsRoute
+  '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
+  '/devis': typeof DevisRoute
+  '/faq': typeof FaqRoute
   '/merci': typeof MerciRoute
   '/panier': typeof PanierRoute
+  '/rendez-vous': typeof RendezVousRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
+  '/suivi-memoire': typeof SuiviMemoireRoute
+  '/suivi-reparation': typeof SuiviReparationRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
+  '/blog': typeof BlogRouteWithChildren
   '/boutique': typeof BoutiqueRouteWithChildren
   '/checkout': typeof CheckoutRoute
+  '/conditions': typeof ConditionsRoute
+  '/confidentialite': typeof ConfidentialiteRoute
+  '/contact': typeof ContactRoute
+  '/devis': typeof DevisRoute
+  '/faq': typeof FaqRoute
   '/merci': typeof MerciRoute
   '/panier': typeof PanierRoute
+  '/rendez-vous': typeof RendezVousRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
+  '/suivi-memoire': typeof SuiviMemoireRoute
+  '/suivi-reparation': typeof SuiviReparationRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
 }
 export interface FileRouteTypes {
@@ -95,51 +203,126 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/auth'
+    | '/blog'
     | '/boutique'
     | '/checkout'
+    | '/conditions'
+    | '/confidentialite'
+    | '/contact'
+    | '/devis'
+    | '/faq'
     | '/merci'
     | '/panier'
+    | '/rendez-vous'
+    | '/reset-password'
     | '/services'
+    | '/suivi-memoire'
+    | '/suivi-reparation'
+    | '/blog/$slug'
     | '/boutique/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/auth'
+    | '/blog'
     | '/boutique'
     | '/checkout'
+    | '/conditions'
+    | '/confidentialite'
+    | '/contact'
+    | '/devis'
+    | '/faq'
     | '/merci'
     | '/panier'
+    | '/rendez-vous'
+    | '/reset-password'
     | '/services'
+    | '/suivi-memoire'
+    | '/suivi-reparation'
+    | '/blog/$slug'
     | '/boutique/$slug'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/auth'
+    | '/blog'
     | '/boutique'
     | '/checkout'
+    | '/conditions'
+    | '/confidentialite'
+    | '/contact'
+    | '/devis'
+    | '/faq'
     | '/merci'
     | '/panier'
+    | '/rendez-vous'
+    | '/reset-password'
     | '/services'
+    | '/suivi-memoire'
+    | '/suivi-reparation'
+    | '/blog/$slug'
     | '/boutique/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRouteWithChildren
   BoutiqueRoute: typeof BoutiqueRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
+  ConditionsRoute: typeof ConditionsRoute
+  ConfidentialiteRoute: typeof ConfidentialiteRoute
+  ContactRoute: typeof ContactRoute
+  DevisRoute: typeof DevisRoute
+  FaqRoute: typeof FaqRoute
   MerciRoute: typeof MerciRoute
   PanierRoute: typeof PanierRoute
+  RendezVousRoute: typeof RendezVousRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ServicesRoute: typeof ServicesRoute
+  SuiviMemoireRoute: typeof SuiviMemoireRoute
+  SuiviReparationRoute: typeof SuiviReparationRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/suivi-reparation': {
+      id: '/suivi-reparation'
+      path: '/suivi-reparation'
+      fullPath: '/suivi-reparation'
+      preLoaderRoute: typeof SuiviReparationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/suivi-memoire': {
+      id: '/suivi-memoire'
+      path: '/suivi-memoire'
+      fullPath: '/suivi-memoire'
+      preLoaderRoute: typeof SuiviMemoireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rendez-vous': {
+      id: '/rendez-vous'
+      path: '/rendez-vous'
+      fullPath: '/rendez-vous'
+      preLoaderRoute: typeof RendezVousRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/panier': {
@@ -156,6 +339,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MerciRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/devis': {
+      id: '/devis'
+      path: '/devis'
+      fullPath: '/devis'
+      preLoaderRoute: typeof DevisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confidentialite': {
+      id: '/confidentialite'
+      path: '/confidentialite'
+      fullPath: '/confidentialite'
+      preLoaderRoute: typeof ConfidentialiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conditions': {
+      id: '/conditions'
+      path: '/conditions'
+      fullPath: '/conditions'
+      preLoaderRoute: typeof ConditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/checkout': {
       id: '/checkout'
       path: '/checkout'
@@ -168,6 +386,20 @@ declare module '@tanstack/react-router' {
       path: '/boutique'
       fullPath: '/boutique'
       preLoaderRoute: typeof BoutiqueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -191,8 +423,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoutiqueSlugRouteImport
       parentRoute: typeof BoutiqueRoute
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
   }
 }
+
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface BoutiqueRouteChildren {
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
@@ -209,11 +458,22 @@ const BoutiqueRouteWithChildren = BoutiqueRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
+  BlogRoute: BlogRouteWithChildren,
   BoutiqueRoute: BoutiqueRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
+  ConditionsRoute: ConditionsRoute,
+  ConfidentialiteRoute: ConfidentialiteRoute,
+  ContactRoute: ContactRoute,
+  DevisRoute: DevisRoute,
+  FaqRoute: FaqRoute,
   MerciRoute: MerciRoute,
   PanierRoute: PanierRoute,
+  RendezVousRoute: RendezVousRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ServicesRoute: ServicesRoute,
+  SuiviMemoireRoute: SuiviMemoireRoute,
+  SuiviReparationRoute: SuiviReparationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
