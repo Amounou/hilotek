@@ -20,10 +20,11 @@ function Dash() {
     queryKey: ["dash-mine", user?.id],
     enabled: !!user,
     queryFn: async () => {
+      const email = user!.email;
       const [orders, reps, mems] = await Promise.all([
         supabase.from("orders").select("id,total,status,created_at,order_number").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(5),
-        supabase.from("repairs").select("id,repair_number,status,created_at").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(5),
-        supabase.from("memoires").select("id,memoire_number,status,progress").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(5),
+        email ? supabase.from("repairs").select("id,repair_number,status,created_at").eq("client_email", email).order("created_at", { ascending: false }).limit(5) : Promise.resolve({ data: [] as any[] }),
+        email ? supabase.from("memoires").select("id,memoire_number,status,progress").eq("client_email", email).order("created_at", { ascending: false }).limit(5) : Promise.resolve({ data: [] as any[] }),
       ]);
       return { orders: orders.data ?? [], reps: reps.data ?? [], mems: mems.data ?? [] };
     },
