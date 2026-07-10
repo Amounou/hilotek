@@ -93,7 +93,7 @@ export function Header() {
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuItem asChild>
-                  <Link to="/mes-commandes"><User className="h-4 w-4 mr-2" />Mes commandes</Link>
+                  <Link to="/my-orders"><User className="h-4 w-4 mr-2" />Mes commandes</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => signOut()}>
