@@ -28,13 +28,12 @@ export const Route = createFileRoute("/suivi-reparation")({
     const [searched, setSearched] = useState(false);
     const search = async (e: React.FormEvent) => {
       e.preventDefault(); setSearched(true);
-      const { data } = await supabase.from("repairs").select("*")
-        .or(`repair_number.eq.${q},tracking_token.eq.${q}`).maybeSingle();
-      setRep(data);
+      const { data } = await (supabase as any).rpc("track_repair", { _token: q });
       if (data) {
-        const { data: h } = await supabase.from("repair_status_history").select("*")
-          .eq("repair_id", data.id).order("created_at", { ascending: false });
-        setHistory(h ?? []);
+        setRep(data);
+        setHistory(Array.isArray(data.history) ? data.history : []);
+      } else {
+        setRep(null); setHistory([]);
       }
     };
     return (
