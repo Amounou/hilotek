@@ -77,18 +77,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "@lkof Services & Tech — Boutique, maintenance, dev, formation" },
+      { title: "@lkof Services & Tech — Boutique, maintenance, développement, formation" },
       {
         name: "description",
         content:
-          "@lkof Services & Tech : boutique high-tech, maintenance informatique et téléphone, développement web/mobile, cybersécurité, cloud, formation et rédaction de mémoire.",
+          "Découvrez @lkof : boutique high-tech, maintenance, développement web/mobile, cybersécurité, cloud et rédaction de mémoire.",
       },
       { name: "author", content: "@lkof Services & Tech" },
-      { property: "og:title", content: "@lkof Services & Tech" },
-      { property: "og:description", content: "Boutique, maintenance, développement, cybersécurité, cloud et rédaction de mémoire." },
+      { property: "og:title", content: "@lkof Services & Tech — Boutique, maintenance, développement, formation" },
+      { property: "og:description", content: "Découvrez @lkof : boutique high-tech, maintenance, développement web/mobile, cybersécurité, cloud et rédaction de mémoire." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#1a2340" },
+      { name: "twitter:title", content: "@lkof Services & Tech — Boutique, maintenance, développement, formation" },
+      { name: "twitter:description", content: "Découvrez @lkof : boutique high-tech, maintenance, développement web/mobile, cybersécurité, cloud et rédaction de mémoire." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/25164363-90ff-4590-9463-8db603382c8d/id-preview-7db52455--9340752a-62a8-4bca-a589-0aa82317be50.lovable.app-1783687117320.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/25164363-90ff-4590-9463-8db603382c8d/id-preview-7db52455--9340752a-62a8-4bca-a589-0aa82317be50.lovable.app-1783687117320.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
