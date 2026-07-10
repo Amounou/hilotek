@@ -25,13 +25,12 @@ export const Route = createFileRoute("/suivi-memoire")({
     const [searched, setSearched] = useState(false);
     const search = async (e: React.FormEvent) => {
       e.preventDefault(); setSearched(true);
-      const { data } = await supabase.from("memoires").select("*")
-        .or(`memoire_number.eq.${q},tracking_token.eq.${q}`).maybeSingle();
-      setM(data);
+      const { data } = await (supabase as any).rpc("track_memoire", { _token: q });
       if (data) {
-        const { data: h } = await supabase.from("memoire_status_history").select("*")
-          .eq("memoire_id", data.id).order("created_at", { ascending: false });
-        setHist(h ?? []);
+        setM(data);
+        setHist(Array.isArray(data.history) ? data.history : []);
+      } else {
+        setM(null); setHist([]);
       }
     };
     return (
