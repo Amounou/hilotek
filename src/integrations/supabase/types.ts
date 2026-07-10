@@ -1050,6 +1050,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_public_settings: { Args: never; Returns: Json }
       has_any_role: {
         Args: {
           _roles: Database["public"]["Enums"]["app_role"][]
@@ -1064,6 +1065,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      track_memoire: { Args: { _token: string }; Returns: Json }
+      track_repair: { Args: { _token: string }; Returns: Json }
     }
     Enums: {
       app_role:
