@@ -22,6 +22,9 @@ const fr: Dict = {
   "nav.logout": "Déconnexion",
   "nav.cart": "Panier",
   "nav.faq": "FAQ",
+  "nav.my_orders": "Mes commandes",
+  "nav.my_repairs": "Mes réparations",
+  "nav.my_memoires": "Mes mémoires",
   // Home
   "home.hero.eyebrow": "Solutions Tech Premium",
   "home.hero.title": "Votre partenaire technologique de confiance",
