@@ -30,22 +30,22 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedRepairsRouteImport } from './routes/_authenticated/repairs'
+import { Route as AuthenticatedQuotesRouteImport } from './routes/_authenticated/quotes'
+import { Route as AuthenticatedProductsRouteImport } from './routes/_authenticated/products'
+import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated/orders'
+import { Route as AuthenticatedMyRepairsRouteImport } from './routes/_authenticated/my-repairs'
+import { Route as AuthenticatedMyOrdersRouteImport } from './routes/_authenticated/my-orders'
+import { Route as AuthenticatedMyMemoiresRouteImport } from './routes/_authenticated/my-memoires'
+import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
+import { Route as AuthenticatedMemoiresRouteImport } from './routes/_authenticated/memoires'
+import { Route as AuthenticatedInvoicesRouteImport } from './routes/_authenticated/invoices'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedDashboardMesReparationsRouteImport } from './routes/_authenticated/dashboard.mes-reparations'
-import { Route as AuthenticatedDashboardMesMemoiresRouteImport } from './routes/_authenticated/dashboard.mes-memoires'
-import { Route as AuthenticatedDashboardMesCommandesRouteImport } from './routes/_authenticated/dashboard.mes-commandes'
-import { Route as AuthenticatedDashboardAdminUtilisateursRouteImport } from './routes/_authenticated/dashboard.admin.utilisateurs'
-import { Route as AuthenticatedDashboardAdminReparationsRouteImport } from './routes/_authenticated/dashboard.admin.reparations'
-import { Route as AuthenticatedDashboardAdminRendezVousRouteImport } from './routes/_authenticated/dashboard.admin.rendez-vous'
-import { Route as AuthenticatedDashboardAdminProduitsRouteImport } from './routes/_authenticated/dashboard.admin.produits'
-import { Route as AuthenticatedDashboardAdminParametresRouteImport } from './routes/_authenticated/dashboard.admin.parametres'
-import { Route as AuthenticatedDashboardAdminMessagesRouteImport } from './routes/_authenticated/dashboard.admin.messages'
-import { Route as AuthenticatedDashboardAdminMemoiresRouteImport } from './routes/_authenticated/dashboard.admin.memoires'
-import { Route as AuthenticatedDashboardAdminFacturesRouteImport } from './routes/_authenticated/dashboard.admin.factures'
-import { Route as AuthenticatedDashboardAdminDevisRouteImport } from './routes/_authenticated/dashboard.admin.devis'
-import { Route as AuthenticatedDashboardAdminCommandesRouteImport } from './routes/_authenticated/dashboard.admin.commandes'
-import { Route as AuthenticatedDashboardAdminBlogRouteImport } from './routes/_authenticated/dashboard.admin.blog'
-import { Route as AuthenticatedDashboardAdminProduitsIdRouteImport } from './routes/_authenticated/dashboard.admin.produits.$id'
+import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
+import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated/products.$id'
+import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 
 const SuiviReparationRoute = SuiviReparationRouteImport.update({
   id: '/suivi-reparation',
@@ -151,101 +151,87 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
+const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedRepairsRoute = AuthenticatedRepairsRouteImport.update({
+  id: '/repairs',
+  path: '/repairs',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedQuotesRoute = AuthenticatedQuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedProductsRoute = AuthenticatedProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMyRepairsRoute = AuthenticatedMyRepairsRouteImport.update({
+  id: '/my-repairs',
+  path: '/my-repairs',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMyOrdersRoute = AuthenticatedMyOrdersRouteImport.update({
+  id: '/my-orders',
+  path: '/my-orders',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMyMemoiresRoute = AuthenticatedMyMemoiresRouteImport.update({
+  id: '/my-memoires',
+  path: '/my-memoires',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMemoiresRoute = AuthenticatedMemoiresRouteImport.update({
+  id: '/memoires',
+  path: '/memoires',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedInvoicesRoute = AuthenticatedInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedDashboardMesReparationsRoute =
-  AuthenticatedDashboardMesReparationsRouteImport.update({
-    id: '/mes-reparations',
-    path: '/mes-reparations',
-    getParentRoute: () => AuthenticatedDashboardRoute,
+const AuthenticatedAppointmentsRoute =
+  AuthenticatedAppointmentsRouteImport.update({
+    id: '/appointments',
+    path: '/appointments',
+    getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedDashboardMesMemoiresRoute =
-  AuthenticatedDashboardMesMemoiresRouteImport.update({
-    id: '/mes-memoires',
-    path: '/mes-memoires',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardMesCommandesRoute =
-  AuthenticatedDashboardMesCommandesRouteImport.update({
-    id: '/mes-commandes',
-    path: '/mes-commandes',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminUtilisateursRoute =
-  AuthenticatedDashboardAdminUtilisateursRouteImport.update({
-    id: '/admin/utilisateurs',
-    path: '/admin/utilisateurs',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminReparationsRoute =
-  AuthenticatedDashboardAdminReparationsRouteImport.update({
-    id: '/admin/reparations',
-    path: '/admin/reparations',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminRendezVousRoute =
-  AuthenticatedDashboardAdminRendezVousRouteImport.update({
-    id: '/admin/rendez-vous',
-    path: '/admin/rendez-vous',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminProduitsRoute =
-  AuthenticatedDashboardAdminProduitsRouteImport.update({
-    id: '/admin/produits',
-    path: '/admin/produits',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminParametresRoute =
-  AuthenticatedDashboardAdminParametresRouteImport.update({
-    id: '/admin/parametres',
-    path: '/admin/parametres',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminMessagesRoute =
-  AuthenticatedDashboardAdminMessagesRouteImport.update({
-    id: '/admin/messages',
-    path: '/admin/messages',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminMemoiresRoute =
-  AuthenticatedDashboardAdminMemoiresRouteImport.update({
-    id: '/admin/memoires',
-    path: '/admin/memoires',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminFacturesRoute =
-  AuthenticatedDashboardAdminFacturesRouteImport.update({
-    id: '/admin/factures',
-    path: '/admin/factures',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminDevisRoute =
-  AuthenticatedDashboardAdminDevisRouteImport.update({
-    id: '/admin/devis',
-    path: '/admin/devis',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminCommandesRoute =
-  AuthenticatedDashboardAdminCommandesRouteImport.update({
-    id: '/admin/commandes',
-    path: '/admin/commandes',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminBlogRoute =
-  AuthenticatedDashboardAdminBlogRouteImport.update({
-    id: '/admin/blog',
-    path: '/admin/blog',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-const AuthenticatedDashboardAdminProduitsIdRoute =
-  AuthenticatedDashboardAdminProduitsIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedDashboardAdminProduitsRoute,
-  } as any)
+const AuthenticatedProductsIdRoute = AuthenticatedProductsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedProductsRoute,
+} as any)
+const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
+  id: '/admin/blog',
+  path: '/admin/blog',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -266,24 +252,24 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
-  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/appointments': typeof AuthenticatedAppointmentsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/invoices': typeof AuthenticatedInvoicesRoute
+  '/memoires': typeof AuthenticatedMemoiresRoute
+  '/messages': typeof AuthenticatedMessagesRoute
+  '/my-memoires': typeof AuthenticatedMyMemoiresRoute
+  '/my-orders': typeof AuthenticatedMyOrdersRoute
+  '/my-repairs': typeof AuthenticatedMyRepairsRoute
+  '/orders': typeof AuthenticatedOrdersRoute
+  '/products': typeof AuthenticatedProductsRouteWithChildren
+  '/quotes': typeof AuthenticatedQuotesRoute
+  '/repairs': typeof AuthenticatedRepairsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
-  '/dashboard/mes-commandes': typeof AuthenticatedDashboardMesCommandesRoute
-  '/dashboard/mes-memoires': typeof AuthenticatedDashboardMesMemoiresRoute
-  '/dashboard/mes-reparations': typeof AuthenticatedDashboardMesReparationsRoute
-  '/dashboard/admin/blog': typeof AuthenticatedDashboardAdminBlogRoute
-  '/dashboard/admin/commandes': typeof AuthenticatedDashboardAdminCommandesRoute
-  '/dashboard/admin/devis': typeof AuthenticatedDashboardAdminDevisRoute
-  '/dashboard/admin/factures': typeof AuthenticatedDashboardAdminFacturesRoute
-  '/dashboard/admin/memoires': typeof AuthenticatedDashboardAdminMemoiresRoute
-  '/dashboard/admin/messages': typeof AuthenticatedDashboardAdminMessagesRoute
-  '/dashboard/admin/parametres': typeof AuthenticatedDashboardAdminParametresRoute
-  '/dashboard/admin/produits': typeof AuthenticatedDashboardAdminProduitsRouteWithChildren
-  '/dashboard/admin/rendez-vous': typeof AuthenticatedDashboardAdminRendezVousRoute
-  '/dashboard/admin/reparations': typeof AuthenticatedDashboardAdminReparationsRoute
-  '/dashboard/admin/utilisateurs': typeof AuthenticatedDashboardAdminUtilisateursRoute
-  '/dashboard/admin/produits/$id': typeof AuthenticatedDashboardAdminProduitsIdRoute
+  '/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/products/$id': typeof AuthenticatedProductsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -304,24 +290,24 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
-  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/appointments': typeof AuthenticatedAppointmentsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/invoices': typeof AuthenticatedInvoicesRoute
+  '/memoires': typeof AuthenticatedMemoiresRoute
+  '/messages': typeof AuthenticatedMessagesRoute
+  '/my-memoires': typeof AuthenticatedMyMemoiresRoute
+  '/my-orders': typeof AuthenticatedMyOrdersRoute
+  '/my-repairs': typeof AuthenticatedMyRepairsRoute
+  '/orders': typeof AuthenticatedOrdersRoute
+  '/products': typeof AuthenticatedProductsRouteWithChildren
+  '/quotes': typeof AuthenticatedQuotesRoute
+  '/repairs': typeof AuthenticatedRepairsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
-  '/dashboard/mes-commandes': typeof AuthenticatedDashboardMesCommandesRoute
-  '/dashboard/mes-memoires': typeof AuthenticatedDashboardMesMemoiresRoute
-  '/dashboard/mes-reparations': typeof AuthenticatedDashboardMesReparationsRoute
-  '/dashboard/admin/blog': typeof AuthenticatedDashboardAdminBlogRoute
-  '/dashboard/admin/commandes': typeof AuthenticatedDashboardAdminCommandesRoute
-  '/dashboard/admin/devis': typeof AuthenticatedDashboardAdminDevisRoute
-  '/dashboard/admin/factures': typeof AuthenticatedDashboardAdminFacturesRoute
-  '/dashboard/admin/memoires': typeof AuthenticatedDashboardAdminMemoiresRoute
-  '/dashboard/admin/messages': typeof AuthenticatedDashboardAdminMessagesRoute
-  '/dashboard/admin/parametres': typeof AuthenticatedDashboardAdminParametresRoute
-  '/dashboard/admin/produits': typeof AuthenticatedDashboardAdminProduitsRouteWithChildren
-  '/dashboard/admin/rendez-vous': typeof AuthenticatedDashboardAdminRendezVousRoute
-  '/dashboard/admin/reparations': typeof AuthenticatedDashboardAdminReparationsRoute
-  '/dashboard/admin/utilisateurs': typeof AuthenticatedDashboardAdminUtilisateursRoute
-  '/dashboard/admin/produits/$id': typeof AuthenticatedDashboardAdminProduitsIdRoute
+  '/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/products/$id': typeof AuthenticatedProductsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -344,24 +330,24 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/appointments': typeof AuthenticatedAppointmentsRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/invoices': typeof AuthenticatedInvoicesRoute
+  '/_authenticated/memoires': typeof AuthenticatedMemoiresRoute
+  '/_authenticated/messages': typeof AuthenticatedMessagesRoute
+  '/_authenticated/my-memoires': typeof AuthenticatedMyMemoiresRoute
+  '/_authenticated/my-orders': typeof AuthenticatedMyOrdersRoute
+  '/_authenticated/my-repairs': typeof AuthenticatedMyRepairsRoute
+  '/_authenticated/orders': typeof AuthenticatedOrdersRoute
+  '/_authenticated/products': typeof AuthenticatedProductsRouteWithChildren
+  '/_authenticated/quotes': typeof AuthenticatedQuotesRoute
+  '/_authenticated/repairs': typeof AuthenticatedRepairsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
-  '/_authenticated/dashboard/mes-commandes': typeof AuthenticatedDashboardMesCommandesRoute
-  '/_authenticated/dashboard/mes-memoires': typeof AuthenticatedDashboardMesMemoiresRoute
-  '/_authenticated/dashboard/mes-reparations': typeof AuthenticatedDashboardMesReparationsRoute
-  '/_authenticated/dashboard/admin/blog': typeof AuthenticatedDashboardAdminBlogRoute
-  '/_authenticated/dashboard/admin/commandes': typeof AuthenticatedDashboardAdminCommandesRoute
-  '/_authenticated/dashboard/admin/devis': typeof AuthenticatedDashboardAdminDevisRoute
-  '/_authenticated/dashboard/admin/factures': typeof AuthenticatedDashboardAdminFacturesRoute
-  '/_authenticated/dashboard/admin/memoires': typeof AuthenticatedDashboardAdminMemoiresRoute
-  '/_authenticated/dashboard/admin/messages': typeof AuthenticatedDashboardAdminMessagesRoute
-  '/_authenticated/dashboard/admin/parametres': typeof AuthenticatedDashboardAdminParametresRoute
-  '/_authenticated/dashboard/admin/produits': typeof AuthenticatedDashboardAdminProduitsRouteWithChildren
-  '/_authenticated/dashboard/admin/rendez-vous': typeof AuthenticatedDashboardAdminRendezVousRoute
-  '/_authenticated/dashboard/admin/reparations': typeof AuthenticatedDashboardAdminReparationsRoute
-  '/_authenticated/dashboard/admin/utilisateurs': typeof AuthenticatedDashboardAdminUtilisateursRoute
-  '/_authenticated/dashboard/admin/produits/$id': typeof AuthenticatedDashboardAdminProduitsIdRoute
+  '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -384,24 +370,24 @@ export interface FileRouteTypes {
     | '/services'
     | '/suivi-memoire'
     | '/suivi-reparation'
+    | '/appointments'
     | '/dashboard'
+    | '/invoices'
+    | '/memoires'
+    | '/messages'
+    | '/my-memoires'
+    | '/my-orders'
+    | '/my-repairs'
+    | '/orders'
+    | '/products'
+    | '/quotes'
+    | '/repairs'
+    | '/settings'
+    | '/users'
     | '/blog/$slug'
     | '/boutique/$slug'
-    | '/dashboard/mes-commandes'
-    | '/dashboard/mes-memoires'
-    | '/dashboard/mes-reparations'
-    | '/dashboard/admin/blog'
-    | '/dashboard/admin/commandes'
-    | '/dashboard/admin/devis'
-    | '/dashboard/admin/factures'
-    | '/dashboard/admin/memoires'
-    | '/dashboard/admin/messages'
-    | '/dashboard/admin/parametres'
-    | '/dashboard/admin/produits'
-    | '/dashboard/admin/rendez-vous'
-    | '/dashboard/admin/reparations'
-    | '/dashboard/admin/utilisateurs'
-    | '/dashboard/admin/produits/$id'
+    | '/admin/blog'
+    | '/products/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -422,24 +408,24 @@ export interface FileRouteTypes {
     | '/services'
     | '/suivi-memoire'
     | '/suivi-reparation'
+    | '/appointments'
     | '/dashboard'
+    | '/invoices'
+    | '/memoires'
+    | '/messages'
+    | '/my-memoires'
+    | '/my-orders'
+    | '/my-repairs'
+    | '/orders'
+    | '/products'
+    | '/quotes'
+    | '/repairs'
+    | '/settings'
+    | '/users'
     | '/blog/$slug'
     | '/boutique/$slug'
-    | '/dashboard/mes-commandes'
-    | '/dashboard/mes-memoires'
-    | '/dashboard/mes-reparations'
-    | '/dashboard/admin/blog'
-    | '/dashboard/admin/commandes'
-    | '/dashboard/admin/devis'
-    | '/dashboard/admin/factures'
-    | '/dashboard/admin/memoires'
-    | '/dashboard/admin/messages'
-    | '/dashboard/admin/parametres'
-    | '/dashboard/admin/produits'
-    | '/dashboard/admin/rendez-vous'
-    | '/dashboard/admin/reparations'
-    | '/dashboard/admin/utilisateurs'
-    | '/dashboard/admin/produits/$id'
+    | '/admin/blog'
+    | '/products/$id'
   id:
     | '__root__'
     | '/'
@@ -461,24 +447,24 @@ export interface FileRouteTypes {
     | '/services'
     | '/suivi-memoire'
     | '/suivi-reparation'
+    | '/_authenticated/appointments'
     | '/_authenticated/dashboard'
+    | '/_authenticated/invoices'
+    | '/_authenticated/memoires'
+    | '/_authenticated/messages'
+    | '/_authenticated/my-memoires'
+    | '/_authenticated/my-orders'
+    | '/_authenticated/my-repairs'
+    | '/_authenticated/orders'
+    | '/_authenticated/products'
+    | '/_authenticated/quotes'
+    | '/_authenticated/repairs'
+    | '/_authenticated/settings'
+    | '/_authenticated/users'
     | '/blog/$slug'
     | '/boutique/$slug'
-    | '/_authenticated/dashboard/mes-commandes'
-    | '/_authenticated/dashboard/mes-memoires'
-    | '/_authenticated/dashboard/mes-reparations'
-    | '/_authenticated/dashboard/admin/blog'
-    | '/_authenticated/dashboard/admin/commandes'
-    | '/_authenticated/dashboard/admin/devis'
-    | '/_authenticated/dashboard/admin/factures'
-    | '/_authenticated/dashboard/admin/memoires'
-    | '/_authenticated/dashboard/admin/messages'
-    | '/_authenticated/dashboard/admin/parametres'
-    | '/_authenticated/dashboard/admin/produits'
-    | '/_authenticated/dashboard/admin/rendez-vous'
-    | '/_authenticated/dashboard/admin/reparations'
-    | '/_authenticated/dashboard/admin/utilisateurs'
-    | '/_authenticated/dashboard/admin/produits/$id'
+    | '/_authenticated/admin/blog'
+    | '/_authenticated/products/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -652,6 +638,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
+    '/_authenticated/users': {
+      id: '/_authenticated/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthenticatedUsersRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/repairs': {
+      id: '/_authenticated/repairs'
+      path: '/repairs'
+      fullPath: '/repairs'
+      preLoaderRoute: typeof AuthenticatedRepairsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/quotes': {
+      id: '/_authenticated/quotes'
+      path: '/quotes'
+      fullPath: '/quotes'
+      preLoaderRoute: typeof AuthenticatedQuotesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/products': {
+      id: '/_authenticated/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof AuthenticatedProductsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/orders': {
+      id: '/_authenticated/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof AuthenticatedOrdersRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/my-repairs': {
+      id: '/_authenticated/my-repairs'
+      path: '/my-repairs'
+      fullPath: '/my-repairs'
+      preLoaderRoute: typeof AuthenticatedMyRepairsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/my-orders': {
+      id: '/_authenticated/my-orders'
+      path: '/my-orders'
+      fullPath: '/my-orders'
+      preLoaderRoute: typeof AuthenticatedMyOrdersRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/my-memoires': {
+      id: '/_authenticated/my-memoires'
+      path: '/my-memoires'
+      fullPath: '/my-memoires'
+      preLoaderRoute: typeof AuthenticatedMyMemoiresRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/messages': {
+      id: '/_authenticated/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof AuthenticatedMessagesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/memoires': {
+      id: '/_authenticated/memoires'
+      path: '/memoires'
+      fullPath: '/memoires'
+      preLoaderRoute: typeof AuthenticatedMemoiresRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/invoices': {
+      id: '/_authenticated/invoices'
+      path: '/invoices'
+      fullPath: '/invoices'
+      preLoaderRoute: typeof AuthenticatedInvoicesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -659,188 +729,77 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/dashboard/mes-reparations': {
-      id: '/_authenticated/dashboard/mes-reparations'
-      path: '/mes-reparations'
-      fullPath: '/dashboard/mes-reparations'
-      preLoaderRoute: typeof AuthenticatedDashboardMesReparationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
+    '/_authenticated/appointments': {
+      id: '/_authenticated/appointments'
+      path: '/appointments'
+      fullPath: '/appointments'
+      preLoaderRoute: typeof AuthenticatedAppointmentsRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/dashboard/mes-memoires': {
-      id: '/_authenticated/dashboard/mes-memoires'
-      path: '/mes-memoires'
-      fullPath: '/dashboard/mes-memoires'
-      preLoaderRoute: typeof AuthenticatedDashboardMesMemoiresRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/mes-commandes': {
-      id: '/_authenticated/dashboard/mes-commandes'
-      path: '/mes-commandes'
-      fullPath: '/dashboard/mes-commandes'
-      preLoaderRoute: typeof AuthenticatedDashboardMesCommandesRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/utilisateurs': {
-      id: '/_authenticated/dashboard/admin/utilisateurs'
-      path: '/admin/utilisateurs'
-      fullPath: '/dashboard/admin/utilisateurs'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminUtilisateursRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/reparations': {
-      id: '/_authenticated/dashboard/admin/reparations'
-      path: '/admin/reparations'
-      fullPath: '/dashboard/admin/reparations'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminReparationsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/rendez-vous': {
-      id: '/_authenticated/dashboard/admin/rendez-vous'
-      path: '/admin/rendez-vous'
-      fullPath: '/dashboard/admin/rendez-vous'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminRendezVousRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/produits': {
-      id: '/_authenticated/dashboard/admin/produits'
-      path: '/admin/produits'
-      fullPath: '/dashboard/admin/produits'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminProduitsRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/parametres': {
-      id: '/_authenticated/dashboard/admin/parametres'
-      path: '/admin/parametres'
-      fullPath: '/dashboard/admin/parametres'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminParametresRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/messages': {
-      id: '/_authenticated/dashboard/admin/messages'
-      path: '/admin/messages'
-      fullPath: '/dashboard/admin/messages'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminMessagesRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/memoires': {
-      id: '/_authenticated/dashboard/admin/memoires'
-      path: '/admin/memoires'
-      fullPath: '/dashboard/admin/memoires'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminMemoiresRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/factures': {
-      id: '/_authenticated/dashboard/admin/factures'
-      path: '/admin/factures'
-      fullPath: '/dashboard/admin/factures'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminFacturesRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/devis': {
-      id: '/_authenticated/dashboard/admin/devis'
-      path: '/admin/devis'
-      fullPath: '/dashboard/admin/devis'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminDevisRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/commandes': {
-      id: '/_authenticated/dashboard/admin/commandes'
-      path: '/admin/commandes'
-      fullPath: '/dashboard/admin/commandes'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminCommandesRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/blog': {
-      id: '/_authenticated/dashboard/admin/blog'
-      path: '/admin/blog'
-      fullPath: '/dashboard/admin/blog'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminBlogRouteImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/admin/produits/$id': {
-      id: '/_authenticated/dashboard/admin/produits/$id'
+    '/_authenticated/products/$id': {
+      id: '/_authenticated/products/$id'
       path: '/$id'
-      fullPath: '/dashboard/admin/produits/$id'
-      preLoaderRoute: typeof AuthenticatedDashboardAdminProduitsIdRouteImport
-      parentRoute: typeof AuthenticatedDashboardAdminProduitsRoute
+      fullPath: '/products/$id'
+      preLoaderRoute: typeof AuthenticatedProductsIdRouteImport
+      parentRoute: typeof AuthenticatedProductsRoute
+    }
+    '/_authenticated/admin/blog': {
+      id: '/_authenticated/admin/blog'
+      path: '/admin/blog'
+      fullPath: '/admin/blog'
+      preLoaderRoute: typeof AuthenticatedAdminBlogRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
-interface AuthenticatedDashboardAdminProduitsRouteChildren {
-  AuthenticatedDashboardAdminProduitsIdRoute: typeof AuthenticatedDashboardAdminProduitsIdRoute
+interface AuthenticatedProductsRouteChildren {
+  AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
 }
 
-const AuthenticatedDashboardAdminProduitsRouteChildren: AuthenticatedDashboardAdminProduitsRouteChildren =
-  {
-    AuthenticatedDashboardAdminProduitsIdRoute:
-      AuthenticatedDashboardAdminProduitsIdRoute,
-  }
-
-const AuthenticatedDashboardAdminProduitsRouteWithChildren =
-  AuthenticatedDashboardAdminProduitsRoute._addFileChildren(
-    AuthenticatedDashboardAdminProduitsRouteChildren,
-  )
-
-interface AuthenticatedDashboardRouteChildren {
-  AuthenticatedDashboardMesCommandesRoute: typeof AuthenticatedDashboardMesCommandesRoute
-  AuthenticatedDashboardMesMemoiresRoute: typeof AuthenticatedDashboardMesMemoiresRoute
-  AuthenticatedDashboardMesReparationsRoute: typeof AuthenticatedDashboardMesReparationsRoute
-  AuthenticatedDashboardAdminBlogRoute: typeof AuthenticatedDashboardAdminBlogRoute
-  AuthenticatedDashboardAdminCommandesRoute: typeof AuthenticatedDashboardAdminCommandesRoute
-  AuthenticatedDashboardAdminDevisRoute: typeof AuthenticatedDashboardAdminDevisRoute
-  AuthenticatedDashboardAdminFacturesRoute: typeof AuthenticatedDashboardAdminFacturesRoute
-  AuthenticatedDashboardAdminMemoiresRoute: typeof AuthenticatedDashboardAdminMemoiresRoute
-  AuthenticatedDashboardAdminMessagesRoute: typeof AuthenticatedDashboardAdminMessagesRoute
-  AuthenticatedDashboardAdminParametresRoute: typeof AuthenticatedDashboardAdminParametresRoute
-  AuthenticatedDashboardAdminProduitsRoute: typeof AuthenticatedDashboardAdminProduitsRouteWithChildren
-  AuthenticatedDashboardAdminRendezVousRoute: typeof AuthenticatedDashboardAdminRendezVousRoute
-  AuthenticatedDashboardAdminReparationsRoute: typeof AuthenticatedDashboardAdminReparationsRoute
-  AuthenticatedDashboardAdminUtilisateursRoute: typeof AuthenticatedDashboardAdminUtilisateursRoute
+const AuthenticatedProductsRouteChildren: AuthenticatedProductsRouteChildren = {
+  AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
 }
 
-const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
-  {
-    AuthenticatedDashboardMesCommandesRoute:
-      AuthenticatedDashboardMesCommandesRoute,
-    AuthenticatedDashboardMesMemoiresRoute:
-      AuthenticatedDashboardMesMemoiresRoute,
-    AuthenticatedDashboardMesReparationsRoute:
-      AuthenticatedDashboardMesReparationsRoute,
-    AuthenticatedDashboardAdminBlogRoute: AuthenticatedDashboardAdminBlogRoute,
-    AuthenticatedDashboardAdminCommandesRoute:
-      AuthenticatedDashboardAdminCommandesRoute,
-    AuthenticatedDashboardAdminDevisRoute:
-      AuthenticatedDashboardAdminDevisRoute,
-    AuthenticatedDashboardAdminFacturesRoute:
-      AuthenticatedDashboardAdminFacturesRoute,
-    AuthenticatedDashboardAdminMemoiresRoute:
-      AuthenticatedDashboardAdminMemoiresRoute,
-    AuthenticatedDashboardAdminMessagesRoute:
-      AuthenticatedDashboardAdminMessagesRoute,
-    AuthenticatedDashboardAdminParametresRoute:
-      AuthenticatedDashboardAdminParametresRoute,
-    AuthenticatedDashboardAdminProduitsRoute:
-      AuthenticatedDashboardAdminProduitsRouteWithChildren,
-    AuthenticatedDashboardAdminRendezVousRoute:
-      AuthenticatedDashboardAdminRendezVousRoute,
-    AuthenticatedDashboardAdminReparationsRoute:
-      AuthenticatedDashboardAdminReparationsRoute,
-    AuthenticatedDashboardAdminUtilisateursRoute:
-      AuthenticatedDashboardAdminUtilisateursRoute,
-  }
-
-const AuthenticatedDashboardRouteWithChildren =
-  AuthenticatedDashboardRoute._addFileChildren(
-    AuthenticatedDashboardRouteChildren,
+const AuthenticatedProductsRouteWithChildren =
+  AuthenticatedProductsRoute._addFileChildren(
+    AuthenticatedProductsRouteChildren,
   )
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+  AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedInvoicesRoute: typeof AuthenticatedInvoicesRoute
+  AuthenticatedMemoiresRoute: typeof AuthenticatedMemoiresRoute
+  AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
+  AuthenticatedMyMemoiresRoute: typeof AuthenticatedMyMemoiresRoute
+  AuthenticatedMyOrdersRoute: typeof AuthenticatedMyOrdersRoute
+  AuthenticatedMyRepairsRoute: typeof AuthenticatedMyRepairsRoute
+  AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
+  AuthenticatedProductsRoute: typeof AuthenticatedProductsRouteWithChildren
+  AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRoute
+  AuthenticatedRepairsRoute: typeof AuthenticatedRepairsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
+  AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+  AuthenticatedAppointmentsRoute: AuthenticatedAppointmentsRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedInvoicesRoute: AuthenticatedInvoicesRoute,
+  AuthenticatedMemoiresRoute: AuthenticatedMemoiresRoute,
+  AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
+  AuthenticatedMyMemoiresRoute: AuthenticatedMyMemoiresRoute,
+  AuthenticatedMyOrdersRoute: AuthenticatedMyOrdersRoute,
+  AuthenticatedMyRepairsRoute: AuthenticatedMyRepairsRoute,
+  AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
+  AuthenticatedProductsRoute: AuthenticatedProductsRouteWithChildren,
+  AuthenticatedQuotesRoute: AuthenticatedQuotesRoute,
+  AuthenticatedRepairsRoute: AuthenticatedRepairsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedUsersRoute: AuthenticatedUsersRoute,
+  AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

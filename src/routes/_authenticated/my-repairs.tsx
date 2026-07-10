@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/_authenticated/dashboard/mes-reparations")({
+export const Route = createFileRoute("/_authenticated/my-repairs")({
   component: () => {
     const { user } = useAuth();
     const { data } = useQuery({

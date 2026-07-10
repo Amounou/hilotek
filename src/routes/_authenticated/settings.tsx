@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/parametres")({
+export const Route = createFileRoute("/_authenticated/settings")({
   component: () => {
     const qc = useQueryClient();
     const [f, setF] = useState<any>({});

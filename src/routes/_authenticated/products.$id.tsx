@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/produits/$id")({
+export const Route = createFileRoute("/_authenticated/products/$id")({
   component: EditProd,
 });
 
@@ -49,7 +49,7 @@ function EditProd() {
       ? await supabase.from("products").insert(payload as never)
       : await supabase.from("products").update(payload as never).eq("id", id);
     if (error) toast.error(error.message);
-    else { toast.success("Enregistré"); nav({ to: "/dashboard/admin/produits" }); }
+    else { toast.success("Enregistré"); nav({ to: "/products" }); }
   };
 
   return (
@@ -86,7 +86,7 @@ function EditProd() {
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.is_active} onChange={(e) => setF({ ...f, is_active: e.target.checked })} />Actif</label>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={f.is_featured} onChange={(e) => setF({ ...f, is_featured: e.target.checked })} />Vedette</label>
         </div>
-        <div className="flex gap-2"><Button type="submit" className="gradient-brand text-brand-foreground border-0">Enregistrer</Button><Button type="button" variant="outline" onClick={() => nav({ to: "/dashboard/admin/produits" })}>Annuler</Button></div>
+        <div className="flex gap-2"><Button type="submit" className="gradient-brand text-brand-foreground border-0">Enregistrer</Button><Button type="button" variant="outline" onClick={() => nav({ to: "/products" })}>Annuler</Button></div>
       </Card>
     </form>
   );

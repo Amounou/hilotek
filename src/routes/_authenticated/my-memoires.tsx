@@ -8,7 +8,7 @@ import { useAuth } from "@/lib/auth";
 import { Progress } from "@/components/ui/progress";
 import { formatXOF } from "@/lib/i18n";
 
-export const Route = createFileRoute("/_authenticated/dashboard/mes-memoires")({
+export const Route = createFileRoute("/_authenticated/my-memoires")({
   component: () => {
     const { user } = useAuth();
     const { data } = useQuery({

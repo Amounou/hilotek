@@ -15,7 +15,7 @@ import { Plus, Trash2 } from "lucide-react";
 
 const EMPTY = { slug:"", title_fr:"", title_en:"", excerpt_fr:"", excerpt_en:"", content_fr:"", content_en:"", category:"News", cover_url:"", is_published:true };
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/blog")({
+export const Route = createFileRoute("/_authenticated/admin/blog")({
   component: () => {
     const qc = useQueryClient();
     const [open, setOpen] = useState(false);

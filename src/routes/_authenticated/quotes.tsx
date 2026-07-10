@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 const ST = ["new","in_review","quoted","accepted","rejected","expired"];
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/devis")({
+export const Route = createFileRoute("/_authenticated/quotes")({
   component: () => {
     const qc = useQueryClient();
     const { data } = useQuery({ queryKey: ["admin-quotes"], queryFn: async () => (await supabase.from("quote_requests").select("*").order("created_at",{ascending:false})).data ?? [] });

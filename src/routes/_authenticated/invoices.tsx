@@ -10,7 +10,7 @@ import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
 import { Download } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/factures")({
+export const Route = createFileRoute("/_authenticated/invoices")({
   component: () => {
     const { data } = useQuery({ queryKey: ["admin-inv"], queryFn: async () => (await supabase.from("invoices").select("*").order("created_at",{ascending:false})).data ?? [] });
     const download = async (inv: any) => {

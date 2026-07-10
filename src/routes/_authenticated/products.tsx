@@ -11,7 +11,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { formatXOF } from "@/lib/i18n";
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/produits")({
+export const Route = createFileRoute("/_authenticated/products")({
   component: ProdAdmin,
 });
 
@@ -39,7 +39,7 @@ function ProdAdmin() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-2xl font-display font-bold">Produits</h1>
-        <Link to="/dashboard/admin/produits/nouveau"><Button className="gradient-brand text-brand-foreground border-0"><Plus className="h-4 w-4 mr-1" />Nouveau</Button></Link>
+        <Link to="/products/nouveau"><Button className="gradient-brand text-brand-foreground border-0"><Plus className="h-4 w-4 mr-1" />Nouveau</Button></Link>
       </div>
       <Card className="p-3"><Input placeholder="Rechercher…" value={q} onChange={(e) => setQ(e.target.value)} /></Card>
       <Card>
@@ -54,7 +54,7 @@ function ProdAdmin() {
                 <TableCell><Badge variant={p.stock > 5 ? "secondary" : "destructive"}>{p.stock}</Badge></TableCell>
                 <TableCell><button onClick={() => toggle(p.id, p.is_active)}><Badge variant={p.is_active ? "default" : "secondary"}>{p.is_active ? "Actif" : "Inactif"}</Badge></button></TableCell>
                 <TableCell className="flex gap-1">
-                  <Link to="/dashboard/admin/produits/$id" params={{ id: p.id }}><Button size="icon" variant="ghost"><Pencil className="h-4 w-4" /></Button></Link>
+                  <Link to="/products/$id" params={{ id: p.id }}><Button size="icon" variant="ghost"><Pencil className="h-4 w-4" /></Button></Link>
                   <Button size="icon" variant="ghost" onClick={() => del(p.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                 </TableCell>
               </TableRow>
