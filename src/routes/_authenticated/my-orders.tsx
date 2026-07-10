@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/lib/auth";
 import { formatXOF } from "@/lib/i18n";
 
-export const Route = createFileRoute("/_authenticated/dashboard/mes-commandes")({
+export const Route = createFileRoute("/_authenticated/my-orders")({
   component: () => {
     const { user } = useAuth();
     const { data } = useQuery({

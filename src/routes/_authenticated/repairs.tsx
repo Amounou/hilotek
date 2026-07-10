@@ -15,7 +15,7 @@ import { Plus } from "lucide-react";
 
 const STATUSES = ["received","diagnosis","waiting_parts","in_repair","completed","delivered","cancelled"];
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/reparations")({
+export const Route = createFileRoute("/_authenticated/repairs")({
   component: () => {
     const qc = useQueryClient();
     const { data } = useQuery({

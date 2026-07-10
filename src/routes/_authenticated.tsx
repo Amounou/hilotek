@@ -43,25 +43,26 @@ function AuthedLayout() {
 
   const items: Item[] = [
     { to: "/dashboard", icon: LayoutDashboard, label: t("nav.dashboard") },
-    { to: "/dashboard/mes-commandes", icon: ShoppingCart, label: t("nav.my_orders") },
-    { to: "/dashboard/mes-reparations", icon: Wrench, label: t("nav.my_repairs") },
-    { to: "/dashboard/mes-memoires", icon: GraduationCap, label: t("nav.my_memoires") },
+    { to: "/my-orders", icon: ShoppingCart, label: t("nav.my_orders") },
+    { to: "/my-repairs", icon: Wrench, label: t("nav.my_repairs") },
+    { to: "/my-memoires", icon: GraduationCap, label: t("nav.my_memoires") },
     ...(isStaff
       ? [
-          { to: "/dashboard/admin/produits", icon: Package, label: "Produits", roles: ["super_admin","admin","warehouse","commercial"] as AppRole[] },
-          { to: "/dashboard/admin/commandes", icon: ShoppingCart, label: "Commandes", roles: ["super_admin","admin","cashier","commercial","warehouse"] as AppRole[] },
-          { to: "/dashboard/admin/reparations", icon: Wrench, label: "Réparations", roles: ["super_admin","admin","technician","support"] as AppRole[] },
-          { to: "/dashboard/admin/memoires", icon: GraduationCap, label: "Mémoires", roles: ["super_admin","admin","writer","support"] as AppRole[] },
-          { to: "/dashboard/admin/devis", icon: FileText, label: "Devis", roles: ["super_admin","admin","commercial","support"] as AppRole[] },
-          { to: "/dashboard/admin/rendez-vous", icon: Calendar, label: "RDV", roles: ["super_admin","admin","commercial","support"] as AppRole[] },
-          { to: "/dashboard/admin/factures", icon: Receipt, label: "Factures", roles: ["super_admin","admin","cashier"] as AppRole[] },
-          { to: "/dashboard/admin/messages", icon: FileText, label: "Messages", roles: ["super_admin","admin","support"] as AppRole[] },
-          { to: "/dashboard/admin/blog", icon: Newspaper, label: "Blog", roles: ["super_admin","admin","support"] as AppRole[] },
-          { to: "/dashboard/admin/utilisateurs", icon: Users, label: "Utilisateurs", roles: ["super_admin","admin"] as AppRole[] },
-          { to: "/dashboard/admin/parametres", icon: Settings, label: "Paramètres", roles: ["super_admin","admin"] as AppRole[] },
+          { to: "/products", icon: Package, label: "Produits", roles: ["super_admin","admin","warehouse","commercial"] as AppRole[] },
+          { to: "/orders", icon: ShoppingCart, label: "Commandes", roles: ["super_admin","admin","cashier","commercial","warehouse"] as AppRole[] },
+          { to: "/repairs", icon: Wrench, label: "Réparations", roles: ["super_admin","admin","technician","support"] as AppRole[] },
+          { to: "/memoires", icon: GraduationCap, label: "Mémoires", roles: ["super_admin","admin","writer","support"] as AppRole[] },
+          { to: "/quotes", icon: FileText, label: "Devis", roles: ["super_admin","admin","commercial","support"] as AppRole[] },
+          { to: "/appointments", icon: Calendar, label: "RDV", roles: ["super_admin","admin","commercial","support"] as AppRole[] },
+          { to: "/invoices", icon: Receipt, label: "Factures", roles: ["super_admin","admin","cashier"] as AppRole[] },
+          { to: "/messages", icon: FileText, label: "Messages", roles: ["super_admin","admin","support"] as AppRole[] },
+          { to: "/admin/blog", icon: Newspaper, label: "Blog", roles: ["super_admin","admin","support"] as AppRole[] },
+          { to: "/users", icon: Users, label: "Utilisateurs", roles: ["super_admin","admin"] as AppRole[] },
+          { to: "/settings", icon: Settings, label: "Paramètres", roles: ["super_admin","admin"] as AppRole[] },
         ]
       : []),
   ].filter((i) => !i.roles || hasAny(i.roles));
+
 
   return (
     <div className="min-h-screen flex bg-muted/30">

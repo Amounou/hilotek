@@ -13,7 +13,7 @@ import { Plus } from "lucide-react";
 
 const ROLES: AppRole[] = ["super_admin","admin","technician","cashier","commercial","warehouse","writer","support","customer"];
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/utilisateurs")({
+export const Route = createFileRoute("/_authenticated/users")({
   component: () => {
     const { hasRole } = useAuth();
     const qc = useQueryClient();

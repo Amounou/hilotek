@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 const ST = ["pending","confirmed","completed","cancelled"];
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/rendez-vous")({
+export const Route = createFileRoute("/_authenticated/appointments")({
   component: () => {
     const qc = useQueryClient();
     const { data } = useQuery({ queryKey: ["admin-book"], queryFn: async () => (await supabase.from("service_bookings").select("*").order("created_at",{ascending:false})).data ?? [] });

@@ -11,7 +11,7 @@ import { toast } from "sonner";
 const STATUSES = ["pending","confirmed","processing","shipped","delivered","completed","cancelled","refunded"];
 const PAY = ["pending","paid","failed","refunded"];
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/commandes")({
+export const Route = createFileRoute("/_authenticated/orders")({
   component: () => {
     const qc = useQueryClient();
     const { data } = useQuery({

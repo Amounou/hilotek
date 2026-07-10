@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Check } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/dashboard/admin/messages")({
+export const Route = createFileRoute("/_authenticated/messages")({
   component: () => {
     const qc = useQueryClient();
     const { data } = useQuery({ queryKey: ["msgs"], queryFn: async () => (await supabase.from("contact_messages").select("*").order("created_at", { ascending: false })).data ?? [] });
