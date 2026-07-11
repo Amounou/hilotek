@@ -49,6 +49,7 @@ function AuthedLayout() {
     ...(isStaff
       ? [
           { to: "/products", icon: Package, label: "Produits", roles: ["super_admin","admin","warehouse","commercial"] as AppRole[] },
+          { to: "/sales", icon: Banknote, label: "Ventes", roles: ["super_admin","admin","cashier","commercial","warehouse"] as AppRole[] },
           { to: "/orders", icon: ShoppingCart, label: "Commandes", roles: ["super_admin","admin","cashier","commercial","warehouse"] as AppRole[] },
           { to: "/repairs", icon: Wrench, label: "Réparations", roles: ["super_admin","admin","technician","support"] as AppRole[] },
           { to: "/memoires", icon: GraduationCap, label: "Mémoires", roles: ["super_admin","admin","writer","support"] as AppRole[] },
