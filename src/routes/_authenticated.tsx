@@ -6,7 +6,7 @@ import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, ShoppingCart, Package, Wrench, GraduationCap,
-  FileText, Calendar, Receipt, Users, Newspaper, Settings, LogOut, Home,
+  FileText, Calendar, Receipt, Users, Newspaper, Settings, LogOut, Home, Banknote,
 } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
