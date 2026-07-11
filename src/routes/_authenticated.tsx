@@ -6,7 +6,7 @@ import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, ShoppingCart, Package, Wrench, GraduationCap,
-  FileText, Calendar, Receipt, Users, Newspaper, Settings, LogOut, Home,
+  FileText, Calendar, Receipt, Users, Newspaper, Settings, LogOut, Home, Banknote,
 } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 
@@ -49,6 +49,7 @@ function AuthedLayout() {
     ...(isStaff
       ? [
           { to: "/products", icon: Package, label: "Produits", roles: ["super_admin","admin","warehouse","commercial"] as AppRole[] },
+          { to: "/sales", icon: Banknote, label: "Ventes", roles: ["super_admin","admin","cashier","commercial","warehouse"] as AppRole[] },
           { to: "/orders", icon: ShoppingCart, label: "Commandes", roles: ["super_admin","admin","cashier","commercial","warehouse"] as AppRole[] },
           { to: "/repairs", icon: Wrench, label: "Réparations", roles: ["super_admin","admin","technician","support"] as AppRole[] },
           { to: "/memoires", icon: GraduationCap, label: "Mémoires", roles: ["super_admin","admin","writer","support"] as AppRole[] },
