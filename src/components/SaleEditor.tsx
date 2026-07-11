@@ -89,7 +89,7 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
       })));
       if (saleId) {
         setSaleDate(String(data.sale_date).slice(0, 10));
-        setInvoiceNumber(data.invoice_number);
+        setInvoiceNumber(data.invoice_number ?? "(auto)");
       }
     })();
   }, [saleId, fromSaleId]);
