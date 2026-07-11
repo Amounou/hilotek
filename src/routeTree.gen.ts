@@ -32,7 +32,6 @@ import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
-import { Route as AuthenticatedSalesRouteImport } from './routes/_authenticated/sales'
 import { Route as AuthenticatedRepairsRouteImport } from './routes/_authenticated/repairs'
 import { Route as AuthenticatedQuotesRouteImport } from './routes/_authenticated/quotes'
 import { Route as AuthenticatedProductsRouteImport } from './routes/_authenticated/products'
@@ -45,6 +44,7 @@ import { Route as AuthenticatedMemoiresRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedInvoicesRouteImport } from './routes/_authenticated/invoices'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
+import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales.index'
 import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated/products.$id'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 
@@ -162,11 +162,6 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedSalesRoute = AuthenticatedSalesRouteImport.update({
-  id: '/sales',
-  path: '/sales',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedRepairsRoute = AuthenticatedRepairsRouteImport.update({
   id: '/repairs',
   path: '/repairs',
@@ -228,6 +223,11 @@ const AuthenticatedAppointmentsRoute =
     path: '/appointments',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedSalesIndexRoute = AuthenticatedSalesIndexRouteImport.update({
+  id: '/sales/',
+  path: '/sales/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedProductsIdRoute = AuthenticatedProductsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -270,13 +270,13 @@ export interface FileRoutesByFullPath {
   '/products': typeof AuthenticatedProductsRouteWithChildren
   '/quotes': typeof AuthenticatedQuotesRoute
   '/repairs': typeof AuthenticatedRepairsRoute
-  '/sales': typeof AuthenticatedSalesRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
+  '/sales/': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -309,13 +309,13 @@ export interface FileRoutesByTo {
   '/products': typeof AuthenticatedProductsRouteWithChildren
   '/quotes': typeof AuthenticatedQuotesRoute
   '/repairs': typeof AuthenticatedRepairsRoute
-  '/sales': typeof AuthenticatedSalesRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/products/$id': typeof AuthenticatedProductsIdRoute
+  '/sales': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -350,13 +350,13 @@ export interface FileRoutesById {
   '/_authenticated/products': typeof AuthenticatedProductsRouteWithChildren
   '/_authenticated/quotes': typeof AuthenticatedQuotesRoute
   '/_authenticated/repairs': typeof AuthenticatedRepairsRoute
-  '/_authenticated/sales': typeof AuthenticatedSalesRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
+  '/_authenticated/sales/': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -391,13 +391,13 @@ export interface FileRouteTypes {
     | '/products'
     | '/quotes'
     | '/repairs'
-    | '/sales'
     | '/settings'
     | '/users'
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
     | '/products/$id'
+    | '/sales/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -430,13 +430,13 @@ export interface FileRouteTypes {
     | '/products'
     | '/quotes'
     | '/repairs'
-    | '/sales'
     | '/settings'
     | '/users'
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
     | '/products/$id'
+    | '/sales'
   id:
     | '__root__'
     | '/'
@@ -470,13 +470,13 @@ export interface FileRouteTypes {
     | '/_authenticated/products'
     | '/_authenticated/quotes'
     | '/_authenticated/repairs'
-    | '/_authenticated/sales'
     | '/_authenticated/settings'
     | '/_authenticated/users'
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/_authenticated/admin/blog'
     | '/_authenticated/products/$id'
+    | '/_authenticated/sales/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -664,13 +664,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/sales': {
-      id: '/_authenticated/sales'
-      path: '/sales'
-      fullPath: '/sales'
-      preLoaderRoute: typeof AuthenticatedSalesRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/repairs': {
       id: '/_authenticated/repairs'
       path: '/repairs'
@@ -755,6 +748,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppointmentsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/sales/': {
+      id: '/_authenticated/sales/'
+      path: '/sales'
+      fullPath: '/sales/'
+      preLoaderRoute: typeof AuthenticatedSalesIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/products/$id': {
       id: '/_authenticated/products/$id'
       path: '/$id'
@@ -798,10 +798,10 @@ interface AuthenticatedRouteChildren {
   AuthenticatedProductsRoute: typeof AuthenticatedProductsRouteWithChildren
   AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRoute
   AuthenticatedRepairsRoute: typeof AuthenticatedRepairsRoute
-  AuthenticatedSalesRoute: typeof AuthenticatedSalesRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRoute
+  AuthenticatedSalesIndexRoute: typeof AuthenticatedSalesIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -817,10 +817,10 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedProductsRoute: AuthenticatedProductsRouteWithChildren,
   AuthenticatedQuotesRoute: AuthenticatedQuotesRoute,
   AuthenticatedRepairsRoute: AuthenticatedRepairsRoute,
-  AuthenticatedSalesRoute: AuthenticatedSalesRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRoute,
+  AuthenticatedSalesIndexRoute: AuthenticatedSalesIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

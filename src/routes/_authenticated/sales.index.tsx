@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { formatXOF } from "@/lib/i18n";
 import { generateSalePdf } from "@/lib/sales-pdf";
 
-export const Route = createFileRoute("/_authenticated/sales")({
+export const Route = createFileRoute("/_authenticated/sales/")({
   component: SalesList,
 });
 
