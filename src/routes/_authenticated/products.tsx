@@ -39,7 +39,7 @@ function ProdAdmin() {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-2xl font-display font-bold">Produits</h1>
-        <Link to="/products/nouveau"><Button className="gradient-brand text-brand-foreground border-0"><Plus className="h-4 w-4 mr-1" />Nouveau</Button></Link>
+        <Link to="/products/new"><Button className="gradient-brand text-brand-foreground border-0"><Plus className="h-4 w-4 mr-1" />Nouveau</Button></Link>
       </div>
       <Card className="p-3"><Input placeholder="Rechercher…" value={q} onChange={(e) => setQ(e.target.value)} /></Card>
       <Card>
