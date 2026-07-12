@@ -68,7 +68,7 @@ export const Route = createFileRoute("/_authenticated/repairs")({
                 <div><Label>Marque</Label><Input value={f.brand} onChange={(e) => setF({ ...f, brand: e.target.value })} /></div>
                 <div className="sm:col-span-2"><Label>Modèle</Label><Input value={f.model} onChange={(e) => setF({ ...f, model: e.target.value })} /></div>
                 <div className="sm:col-span-2"><Label>Panne</Label><Textarea required value={f.issue_description} onChange={(e) => setF({ ...f, issue_description: e.target.value })} /></div>
-                <div><Label>Devis (FCFA)</Label><Input type="number" value={f.estimated_cost} onChange={(e) => setF({ ...f, estimated_cost: e.target.value })} /></div>
+                <div><Label>Devis (FCFA)</Label><Input type="number" value={f.price_quote} onChange={(e) => setF({ ...f, price_quote: e.target.value })} /></div>
                 <div><Label>Acompte</Label><Input type="number" value={f.deposit} onChange={(e) => setF({ ...f, deposit: e.target.value })} /></div>
                 <Button className="sm:col-span-2 gradient-brand text-brand-foreground border-0" type="submit">Créer</Button>
               </form>
