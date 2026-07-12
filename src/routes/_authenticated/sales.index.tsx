@@ -177,6 +177,7 @@ function SalesList() {
                   <Link to="/sales/$id" params={{ id: s.id }}>
                     <Button size="icon" variant="ghost" title="Modifier"><Pencil className="h-4 w-4" /></Button>
                   </Link>
+                  <Button size="icon" variant="ghost" title="Télécharger" onClick={() => download(s)}><Download className="h-4 w-4" /></Button>
                   <Button size="icon" variant="ghost" title="Imprimer" onClick={() => print(s)}><Printer className="h-4 w-4" /></Button>
                   <Button size="icon" variant="ghost" title="Dupliquer" onClick={() => duplicate(s)}><Copy className="h-4 w-4" /></Button>
                   <Button size="icon" variant="ghost" title="Supprimer" onClick={() => del(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
