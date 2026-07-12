@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useMemo, useState } from "react";
-import { Plus, Pencil, Trash2, Printer, Copy, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Printer, Copy, Search, Download } from "lucide-react";
 import { toast } from "sonner";
 import { formatXOF } from "@/lib/i18n";
 import { generateSalePdf } from "@/lib/sales-pdf";
