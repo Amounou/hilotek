@@ -13,7 +13,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { toast } from "sonner";
 import { formatXOF } from "@/lib/i18n";
-import { Plus } from "lucide-react";
+import { Plus, Download } from "lucide-react";
 
 const STATUSES = ["received","assigned","in_progress","review","completed","delivered","cancelled"];
 
