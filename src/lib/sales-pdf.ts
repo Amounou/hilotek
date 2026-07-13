@@ -181,9 +181,9 @@ export async function generateSalePdf(
   // Right: totals
   doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(...DARK);
   doc.text("Sous-total", totalsX, y);
-  doc.text(formatXOF(Number(sale.subtotal)), pageW - 16, y, { align: "right" });
+  doc.text(money(Number(sale.subtotal)), pageW - 16, y, { align: "right" });
   doc.text(`TVA (${Number(sale.tax_rate)}%)`, totalsX, y + 6);
-  doc.text(formatXOF(Number(sale.tax_amount)), pageW - 16, y + 6, { align: "right" });
+  doc.text(money(Number(sale.tax_amount)), pageW - 16, y + 6, { align: "right" });
 
   // Total banner: orange label + navy amount
   const tY = y + 12;
@@ -193,7 +193,7 @@ export async function generateSalePdf(
   doc.rect(totalsX + 20, tY, pageW - 16 - (totalsX + 20), 10, "F");
   doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(12);
   doc.text("Total", totalsX + 8, tY + 6.8);
-  doc.text(formatXOF(Number(sale.total)), pageW - 18, tY + 6.8, { align: "right" });
+  doc.text(money(Number(sale.total)), pageW - 18, tY + 6.8, { align: "right" });
 
   // ===== Conditions & signature =====
   const cgY = Math.max(py + 10, tY + 24);
