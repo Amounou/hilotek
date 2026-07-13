@@ -394,6 +394,7 @@ export type Database = {
           created_at: string
           deadline: string | null
           deposit: number
+          document_url: string | null
           filiere: string | null
           id: string
           level: string | null
@@ -416,6 +417,7 @@ export type Database = {
           created_at?: string
           deadline?: string | null
           deposit?: number
+          document_url?: string | null
           filiere?: string | null
           id?: string
           level?: string | null
@@ -438,6 +440,7 @@ export type Database = {
           created_at?: string
           deadline?: string | null
           deposit?: number
+          document_url?: string | null
           filiere?: string | null
           id?: string
           level?: string | null
