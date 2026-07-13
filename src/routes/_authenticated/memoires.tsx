@@ -102,7 +102,7 @@ export const Route = createFileRoute("/_authenticated/memoires")({
         </div>
         <Card>
           <Table>
-            <TableHeader><TableRow><TableHead>N°</TableHead><TableHead>Client</TableHead><TableHead>Thème</TableHead><TableHead>Total / Solde</TableHead><TableHead>Progression</TableHead><TableHead>Statut</TableHead></TableRow></TableHeader>
+            <TableHeader><TableRow><TableHead>N°</TableHead><TableHead>Client</TableHead><TableHead>Thème</TableHead><TableHead>Total / Solde</TableHead><TableHead>Progression</TableHead><TableHead>Statut</TableHead><TableHead>Doc</TableHead></TableRow></TableHeader>
             <TableBody>
               {(data ?? []).map((m: any) => (
                 <TableRow key={m.id}>
@@ -116,6 +116,11 @@ export const Route = createFileRoute("/_authenticated/memoires")({
                       <SelectTrigger className="h-8 w-32"><SelectValue /></SelectTrigger>
                       <SelectContent>{STATUSES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
                     </Select>
+                  </TableCell>
+                  <TableCell>
+                    {m.document_url ? (
+                      <Button size="icon" variant="ghost" title="Télécharger" onClick={() => downloadDoc(m)}><Download className="h-4 w-4" /></Button>
+                    ) : <span className="text-xs text-muted-foreground">—</span>}
                   </TableCell>
                 </TableRow>
               ))}
