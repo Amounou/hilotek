@@ -140,20 +140,24 @@ export async function generateSalePdf(
 
   doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...DARK);
   sale.items.forEach((it, i) => {
+    // Word-wrap designation within its column, then size row height to fit
+    const lines: string[] = doc.splitTextToSize(String(it.product_name), cols.desig.w - 6);
+    const dynH = Math.max(rowH, lines.length * 5 + 4);
     if (i % 2 === 0) {
       doc.setFillColor(...LIGHT);
-      doc.rect(cols.n.x, y, cols.total.x + cols.total.w - cols.n.x, rowH, "F");
+      doc.rect(cols.n.x, y, cols.total.x + cols.total.w - cols.n.x, dynH, "F");
     }
+    const centerY = y + dynH / 2 + 1.5;
     doc.setFont("helvetica", "bold");
-    doc.text(String(i + 1).padStart(2, "0"), cols.n.x + cols.n.w / 2, y + 6, { align: "center" });
+    doc.text(String(i + 1).padStart(2, "0"), cols.n.x + cols.n.w / 2, centerY, { align: "center" });
     doc.setFont("helvetica", "normal");
-    doc.text(String(it.product_name).slice(0, 55), cols.desig.x + 3, y + 6);
-    doc.text(formatXOF(Number(it.unit_price)), cols.pu.x + cols.pu.w - 2, y + 6, { align: "right" });
-    doc.text(String(it.quantity).padStart(2, "0"), cols.qte.x + cols.qte.w / 2, y + 6, { align: "center" });
+    doc.text(lines, cols.desig.x + 3, y + 5);
+    doc.text(money(Number(it.unit_price)), cols.pu.x + cols.pu.w - 2, centerY, { align: "right" });
+    doc.text(String(it.quantity).padStart(2, "0"), cols.qte.x + cols.qte.w / 2, centerY, { align: "center" });
     doc.setFont("helvetica", "bold");
-    doc.text(formatXOF(Number(it.line_total)), cols.total.x + cols.total.w - 2, y + 6, { align: "right" });
+    doc.text(money(Number(it.line_total)), cols.total.x + cols.total.w - 2, centerY, { align: "right" });
     doc.setFont("helvetica", "normal");
-    y += rowH;
+    y += dynH;
     if (y > 220) { doc.addPage(); y = 20; }
   });
 
