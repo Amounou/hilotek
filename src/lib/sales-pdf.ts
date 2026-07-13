@@ -2,6 +2,11 @@ import { jsPDF } from "jspdf";
 import { formatXOF } from "@/lib/i18n";
 import logoAsset from "@/assets/alkof-logo.png.asset.json";
 
+// jsPDF's built-in Helvetica renders NBSP (\u00A0) and NNBSP (\u202F) as "/".
+// Intl.NumberFormat for XOF uses those spaces as thousand/currency separators,
+// so we swap them for regular spaces before drawing.
+const money = (n: number) => formatXOF(Number(n)).replace(/[\u00A0\u202F]/g, " ");
+
 // Brand colors (matching the site tokens)
 const NAVY: [number, number, number] = [30, 58, 110];
 const ORANGE: [number, number, number] = [244, 143, 30];
@@ -135,20 +140,24 @@ export async function generateSalePdf(
 
   doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...DARK);
   sale.items.forEach((it, i) => {
+    // Word-wrap designation within its column, then size row height to fit
+    const lines: string[] = doc.splitTextToSize(String(it.product_name), cols.desig.w - 6);
+    const dynH = Math.max(rowH, lines.length * 5 + 4);
     if (i % 2 === 0) {
       doc.setFillColor(...LIGHT);
-      doc.rect(cols.n.x, y, cols.total.x + cols.total.w - cols.n.x, rowH, "F");
+      doc.rect(cols.n.x, y, cols.total.x + cols.total.w - cols.n.x, dynH, "F");
     }
+    const centerY = y + dynH / 2 + 1.5;
     doc.setFont("helvetica", "bold");
-    doc.text(String(i + 1).padStart(2, "0"), cols.n.x + cols.n.w / 2, y + 6, { align: "center" });
+    doc.text(String(i + 1).padStart(2, "0"), cols.n.x + cols.n.w / 2, centerY, { align: "center" });
     doc.setFont("helvetica", "normal");
-    doc.text(String(it.product_name).slice(0, 55), cols.desig.x + 3, y + 6);
-    doc.text(formatXOF(Number(it.unit_price)), cols.pu.x + cols.pu.w - 2, y + 6, { align: "right" });
-    doc.text(String(it.quantity).padStart(2, "0"), cols.qte.x + cols.qte.w / 2, y + 6, { align: "center" });
+    doc.text(lines, cols.desig.x + 3, y + 5);
+    doc.text(money(Number(it.unit_price)), cols.pu.x + cols.pu.w - 2, centerY, { align: "right" });
+    doc.text(String(it.quantity).padStart(2, "0"), cols.qte.x + cols.qte.w / 2, centerY, { align: "center" });
     doc.setFont("helvetica", "bold");
-    doc.text(formatXOF(Number(it.line_total)), cols.total.x + cols.total.w - 2, y + 6, { align: "right" });
+    doc.text(money(Number(it.line_total)), cols.total.x + cols.total.w - 2, centerY, { align: "right" });
     doc.setFont("helvetica", "normal");
-    y += rowH;
+    y += dynH;
     if (y > 220) { doc.addPage(); y = 20; }
   });
 
@@ -172,9 +181,9 @@ export async function generateSalePdf(
   // Right: totals
   doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(...DARK);
   doc.text("Sous-total", totalsX, y);
-  doc.text(formatXOF(Number(sale.subtotal)), pageW - 16, y, { align: "right" });
+  doc.text(money(Number(sale.subtotal)), pageW - 16, y, { align: "right" });
   doc.text(`TVA (${Number(sale.tax_rate)}%)`, totalsX, y + 6);
-  doc.text(formatXOF(Number(sale.tax_amount)), pageW - 16, y + 6, { align: "right" });
+  doc.text(money(Number(sale.tax_amount)), pageW - 16, y + 6, { align: "right" });
 
   // Total banner: orange label + navy amount
   const tY = y + 12;
@@ -184,7 +193,7 @@ export async function generateSalePdf(
   doc.rect(totalsX + 20, tY, pageW - 16 - (totalsX + 20), 10, "F");
   doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(12);
   doc.text("Total", totalsX + 8, tY + 6.8);
-  doc.text(formatXOF(Number(sale.total)), pageW - 18, tY + 6.8, { align: "right" });
+  doc.text(money(Number(sale.total)), pageW - 18, tY + 6.8, { align: "right" });
 
   // ===== Conditions & signature =====
   const cgY = Math.max(py + 10, tY + 24);
