@@ -2,6 +2,11 @@ import { jsPDF } from "jspdf";
 import { formatXOF } from "@/lib/i18n";
 import logoAsset from "@/assets/alkof-logo.png.asset.json";
 
+// jsPDF's built-in Helvetica renders NBSP (\u00A0) and NNBSP (\u202F) as "/".
+// Intl.NumberFormat for XOF uses those spaces as thousand/currency separators,
+// so we swap them for regular spaces before drawing.
+const money = (n: number) => formatXOF(Number(n)).replace(/[\u00A0\u202F]/g, " ");
+
 // Brand colors (matching the site tokens)
 const NAVY: [number, number, number] = [30, 58, 110];
 const ORANGE: [number, number, number] = [244, 143, 30];
