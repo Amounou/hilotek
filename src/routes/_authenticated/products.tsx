@@ -247,8 +247,6 @@ function ProdAdmin() {
         </DialogContent>
       </Dialog>
 
-      {/* legacy link kept for compatibility */}
-      <Link to="/products" className="hidden" />
     </div>
   );
 }

@@ -47,8 +47,6 @@ import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authent
 import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales.index'
 import { Route as AuthenticatedSalesNewRouteImport } from './routes/_authenticated/sales.new'
 import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticated/sales.$id'
-import { Route as AuthenticatedProductsNewRouteImport } from './routes/_authenticated/products.new'
-import { Route as AuthenticatedProductsIdRouteImport } from './routes/_authenticated/products.$id'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 
 const SuiviReparationRoute = SuiviReparationRouteImport.update({
@@ -241,17 +239,6 @@ const AuthenticatedSalesIdRoute = AuthenticatedSalesIdRouteImport.update({
   path: '/sales/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedProductsNewRoute =
-  AuthenticatedProductsNewRouteImport.update({
-    id: '/new',
-    path: '/new',
-    getParentRoute: () => AuthenticatedProductsRoute,
-  } as any)
-const AuthenticatedProductsIdRoute = AuthenticatedProductsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AuthenticatedProductsRoute,
-} as any)
 const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   id: '/admin/blog',
   path: '/admin/blog',
@@ -286,7 +273,7 @@ export interface FileRoutesByFullPath {
   '/my-orders': typeof AuthenticatedMyOrdersRoute
   '/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/orders': typeof AuthenticatedOrdersRoute
-  '/products': typeof AuthenticatedProductsRouteWithChildren
+  '/products': typeof AuthenticatedProductsRoute
   '/quotes': typeof AuthenticatedQuotesRoute
   '/repairs': typeof AuthenticatedRepairsRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -294,8 +281,6 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
-  '/products/$id': typeof AuthenticatedProductsIdRoute
-  '/products/new': typeof AuthenticatedProductsNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
   '/sales/': typeof AuthenticatedSalesIndexRoute
@@ -328,7 +313,7 @@ export interface FileRoutesByTo {
   '/my-orders': typeof AuthenticatedMyOrdersRoute
   '/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/orders': typeof AuthenticatedOrdersRoute
-  '/products': typeof AuthenticatedProductsRouteWithChildren
+  '/products': typeof AuthenticatedProductsRoute
   '/quotes': typeof AuthenticatedQuotesRoute
   '/repairs': typeof AuthenticatedRepairsRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -336,8 +321,6 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
-  '/products/$id': typeof AuthenticatedProductsIdRoute
-  '/products/new': typeof AuthenticatedProductsNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
   '/sales': typeof AuthenticatedSalesIndexRoute
@@ -372,7 +355,7 @@ export interface FileRoutesById {
   '/_authenticated/my-orders': typeof AuthenticatedMyOrdersRoute
   '/_authenticated/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
-  '/_authenticated/products': typeof AuthenticatedProductsRouteWithChildren
+  '/_authenticated/products': typeof AuthenticatedProductsRoute
   '/_authenticated/quotes': typeof AuthenticatedQuotesRoute
   '/_authenticated/repairs': typeof AuthenticatedRepairsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
@@ -380,8 +363,6 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
-  '/_authenticated/products/$id': typeof AuthenticatedProductsIdRoute
-  '/_authenticated/products/new': typeof AuthenticatedProductsNewRoute
   '/_authenticated/sales/$id': typeof AuthenticatedSalesIdRoute
   '/_authenticated/sales/new': typeof AuthenticatedSalesNewRoute
   '/_authenticated/sales/': typeof AuthenticatedSalesIndexRoute
@@ -424,8 +405,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
-    | '/products/$id'
-    | '/products/new'
     | '/sales/$id'
     | '/sales/new'
     | '/sales/'
@@ -466,8 +445,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
-    | '/products/$id'
-    | '/products/new'
     | '/sales/$id'
     | '/sales/new'
     | '/sales'
@@ -509,8 +486,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/_authenticated/admin/blog'
-    | '/_authenticated/products/$id'
-    | '/_authenticated/products/new'
     | '/_authenticated/sales/$id'
     | '/_authenticated/sales/new'
     | '/_authenticated/sales/'
@@ -806,20 +781,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/products/new': {
-      id: '/_authenticated/products/new'
-      path: '/new'
-      fullPath: '/products/new'
-      preLoaderRoute: typeof AuthenticatedProductsNewRouteImport
-      parentRoute: typeof AuthenticatedProductsRoute
-    }
-    '/_authenticated/products/$id': {
-      id: '/_authenticated/products/$id'
-      path: '/$id'
-      fullPath: '/products/$id'
-      preLoaderRoute: typeof AuthenticatedProductsIdRouteImport
-      parentRoute: typeof AuthenticatedProductsRoute
-    }
     '/_authenticated/admin/blog': {
       id: '/_authenticated/admin/blog'
       path: '/admin/blog'
@@ -829,21 +790,6 @@ declare module '@tanstack/react-router' {
     }
   }
 }
-
-interface AuthenticatedProductsRouteChildren {
-  AuthenticatedProductsIdRoute: typeof AuthenticatedProductsIdRoute
-  AuthenticatedProductsNewRoute: typeof AuthenticatedProductsNewRoute
-}
-
-const AuthenticatedProductsRouteChildren: AuthenticatedProductsRouteChildren = {
-  AuthenticatedProductsIdRoute: AuthenticatedProductsIdRoute,
-  AuthenticatedProductsNewRoute: AuthenticatedProductsNewRoute,
-}
-
-const AuthenticatedProductsRouteWithChildren =
-  AuthenticatedProductsRoute._addFileChildren(
-    AuthenticatedProductsRouteChildren,
-  )
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
@@ -855,7 +801,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedMyOrdersRoute: typeof AuthenticatedMyOrdersRoute
   AuthenticatedMyRepairsRoute: typeof AuthenticatedMyRepairsRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
-  AuthenticatedProductsRoute: typeof AuthenticatedProductsRouteWithChildren
+  AuthenticatedProductsRoute: typeof AuthenticatedProductsRoute
   AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRoute
   AuthenticatedRepairsRoute: typeof AuthenticatedRepairsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
@@ -876,7 +822,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedMyOrdersRoute: AuthenticatedMyOrdersRoute,
   AuthenticatedMyRepairsRoute: AuthenticatedMyRepairsRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
-  AuthenticatedProductsRoute: AuthenticatedProductsRouteWithChildren,
+  AuthenticatedProductsRoute: AuthenticatedProductsRoute,
   AuthenticatedQuotesRoute: AuthenticatedQuotesRoute,
   AuthenticatedRepairsRoute: AuthenticatedRepairsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
