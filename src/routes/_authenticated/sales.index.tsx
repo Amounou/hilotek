@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useMemo, useState } from "react";
 import { Plus, Pencil, Trash2, Printer, Copy, Search, Download } from "lucide-react";
 import { toast } from "sonner";
 import { formatXOF } from "@/lib/i18n";
-import { generateSalePdf } from "@/lib/sales-pdf";
+import { generateSalePdf, type PdfFormat } from "@/lib/sales-pdf";
 
 export const Route = createFileRoute("/_authenticated/sales/")({
   component: SalesList,
