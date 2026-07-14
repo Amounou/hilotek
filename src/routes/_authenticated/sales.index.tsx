@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useMemo, useState } from "react";
 import { Plus, Pencil, Trash2, Printer, Copy, Search, Download } from "lucide-react";
 import { toast } from "sonner";
 import { formatXOF } from "@/lib/i18n";
-import { generateSalePdf } from "@/lib/sales-pdf";
+import { generateSalePdf, type PdfFormat } from "@/lib/sales-pdf";
 
 export const Route = createFileRoute("/_authenticated/sales/")({
   component: SalesList,
@@ -72,7 +73,7 @@ function SalesList() {
     else { toast.success("Vente supprimée"); qc.invalidateQueries({ queryKey: ["sales-list"] }); }
   };
 
-  const buildPdf = async (s: any, mode: "save" | "print") => {
+  const buildPdf = async (s: any, mode: "save" | "print", format: PdfFormat = "a4") => {
     const { data: settings } = await supabase.rpc("get_public_settings");
     const c: any = settings ?? {};
     await generateSalePdf(
@@ -100,10 +101,9 @@ function SalesList() {
         address: c.address, phone: c.phone, email: c.email,
       },
       mode,
+      format,
     );
   };
-  const print = (s: any) => buildPdf(s, "print");
-  const download = (s: any) => buildPdf(s, "save");
 
   const duplicate = async (s: any) => {
     nav({ to: "/sales/new", search: { from: s.id } as any });
@@ -177,8 +177,24 @@ function SalesList() {
                   <Link to="/sales/$id" params={{ id: s.id }}>
                     <Button size="icon" variant="ghost" title="Modifier"><Pencil className="h-4 w-4" /></Button>
                   </Link>
-                  <Button size="icon" variant="ghost" title="Télécharger" onClick={() => download(s)}><Download className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="ghost" title="Imprimer" onClick={() => print(s)}><Printer className="h-4 w-4" /></Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="ghost" title="Télécharger"><Download className="h-4 w-4" /></Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => buildPdf(s, "save", "a4")}>Télécharger A4</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => buildPdf(s, "save", "a5")}>Télécharger A5</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="ghost" title="Imprimer"><Printer className="h-4 w-4" /></Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => buildPdf(s, "print", "a4")}>Imprimer A4</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => buildPdf(s, "print", "a5")}>Imprimer A5</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                   <Button size="icon" variant="ghost" title="Dupliquer" onClick={() => duplicate(s)}><Copy className="h-4 w-4" /></Button>
                   <Button size="icon" variant="ghost" title="Supprimer" onClick={() => del(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                 </TableCell>

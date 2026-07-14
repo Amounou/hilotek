@@ -53,74 +53,78 @@ export type CompanyForPdf = {
 };
 
 export type PdfMode = "save" | "print" | "open";
+export type PdfFormat = "a4" | "a5";
 
 export async function generateSalePdf(
   sale: SaleForPdf,
   company: CompanyForPdf,
   mode: PdfMode | boolean = "save",
+  format: PdfFormat = "a4",
 ) {
   const resolved: PdfMode = typeof mode === "boolean" ? (mode ? "print" : "save") : mode;
-  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const doc = new jsPDF({ unit: "mm", format });
   const logo = await fetchLogoDataUrl();
-  const pageW = 210;
-  const pageH = 297;
+
+  // Real page dimensions in mm (A4: 210x297, A5: 148x210).
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+
+  // Everything is designed on the A4 reference (210mm wide) then scaled to fit.
+  const s = pageW / 210;
+  const S = (n: number) => n * s;           // scale distances
+  const F = (n: number) => Math.max(6, n * s); // scale font sizes with a min
 
   // ===== Decorative corners =====
-  // Top-right layered orange + navy bands
   doc.setFillColor(...NAVY);
-  doc.triangle(pageW - 60, 0, pageW, 0, pageW, 40, "F");
+  doc.triangle(pageW - S(60), 0, pageW, 0, pageW, S(40), "F");
   doc.setFillColor(...ORANGE);
-  doc.triangle(pageW - 40, 0, pageW, 0, pageW, 28, "F");
-  // Bottom-left corner
+  doc.triangle(pageW - S(40), 0, pageW, 0, pageW, S(28), "F");
   doc.setFillColor(...NAVY);
-  doc.triangle(0, pageH, 60, pageH, 0, pageH - 40, "F");
+  doc.triangle(0, pageH, S(60), pageH, 0, pageH - S(40), "F");
   doc.setFillColor(...ORANGE);
-  doc.triangle(0, pageH, 40, pageH, 0, pageH - 28, "F");
+  doc.triangle(0, pageH, S(40), pageH, 0, pageH - S(28), "F");
 
   // ===== Header =====
   if (logo) {
-    try { doc.addImage(logo, "PNG", 14, 12, 24, 24); } catch { /* ignore */ }
+    try { doc.addImage(logo, "PNG", S(14), S(12), S(24), S(24)); } catch { /* ignore */ }
   }
-  doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(...NAVY);
-  doc.text(company.company_name || "@lkof Services & Tech", 42, 22);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(F(14)); doc.setTextColor(...NAVY);
+  doc.text(company.company_name || "@lkof Services & Tech", S(42), S(22));
 
-  // FACTURE title (right side)
-  doc.setFont("helvetica", "bold"); doc.setFontSize(34); doc.setTextColor(...ORANGE);
-  doc.text("FACTURE", pageW - 16, 30, { align: "right" });
+  doc.setFont("helvetica", "bold"); doc.setFontSize(F(34)); doc.setTextColor(...ORANGE);
+  doc.text("FACTURE", pageW - S(16), S(30), { align: "right" });
 
   // ===== Billed to / invoice meta =====
-  const infoY = 56;
-  doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(...DARK);
-  doc.text("Facturé à", 16, infoY);
-  doc.setFontSize(14); doc.setTextColor(...ORANGE);
-  doc.text(sale.client_name, 16, infoY + 7);
-  doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...MUTED);
-  let cy = infoY + 13;
-  if (sale.client_email) { doc.text(sale.client_email, 16, cy); cy += 4; }
-  if (sale.client_phone) { doc.text(sale.client_phone, 16, cy); cy += 4; }
-  if (sale.client_address) { doc.text(String(sale.client_address).slice(0, 60), 16, cy); cy += 4; }
+  const infoY = S(56);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(F(11)); doc.setTextColor(...DARK);
+  doc.text("Facturé à", S(16), infoY);
+  doc.setFontSize(F(14)); doc.setTextColor(...ORANGE);
+  doc.text(sale.client_name, S(16), infoY + S(7));
+  doc.setFont("helvetica", "normal"); doc.setFontSize(F(9)); doc.setTextColor(...MUTED);
+  let cy = infoY + S(13);
+  if (sale.client_email) { doc.text(sale.client_email, S(16), cy); cy += S(4); }
+  if (sale.client_phone) { doc.text(sale.client_phone, S(16), cy); cy += S(4); }
+  if (sale.client_address) { doc.text(String(sale.client_address).slice(0, 60), S(16), cy); cy += S(4); }
 
   // Invoice number + date block (right)
-  doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(...DARK);
-  doc.text("N° de facture :", pageW - 78, infoY);
-  doc.text("Date :", pageW - 78, infoY + 8);
-  // Boxed invoice number
-  doc.setDrawColor(...NAVY); doc.setLineWidth(0.6);
-  doc.rect(pageW - 46, infoY - 4, 32, 6);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(F(10)); doc.setTextColor(...DARK);
+  doc.text("N° de facture :", pageW - S(78), infoY);
+  doc.text("Date :", pageW - S(78), infoY + S(8));
+  doc.setDrawColor(...NAVY); doc.setLineWidth(0.6 * s);
+  doc.rect(pageW - S(46), infoY - S(4), S(32), S(6));
   doc.setFont("helvetica", "normal"); doc.setTextColor(...DARK);
-  doc.text(sale.invoice_number, pageW - 30, infoY, { align: "center" });
-  doc.text(new Date(sale.sale_date).toLocaleDateString("fr-FR"), pageW - 30, infoY + 8, { align: "center" });
+  doc.text(sale.invoice_number, pageW - S(30), infoY, { align: "center" });
+  doc.text(new Date(sale.sale_date).toLocaleDateString("fr-FR"), pageW - S(30), infoY + S(8), { align: "center" });
 
   // ===== Items table =====
-  let y = Math.max(cy + 6, 92);
-  const rowH = 9;
-  // Header row: N° (orange) | Désignation (navy) | PU (navy) | Qté (navy) | Total (orange)
+  let y = Math.max(cy + S(6), S(92));
+  const rowH = S(9);
   const cols = {
-    n: { x: 14, w: 14 },
-    desig: { x: 28, w: 92 },
-    pu: { x: 120, w: 28 },
-    qte: { x: 148, w: 20 },
-    total: { x: 168, w: 28 },
+    n:     { x: S(14),  w: S(14) },
+    desig: { x: S(28),  w: S(92) },
+    pu:    { x: S(120), w: S(28) },
+    qte:   { x: S(148), w: S(20) },
+    total: { x: S(168), w: S(28) },
   };
   doc.setFillColor(...ORANGE);
   doc.rect(cols.n.x, y, cols.n.w, rowH, "F");
@@ -130,96 +134,95 @@ export async function generateSalePdf(
   doc.rect(cols.qte.x, y, cols.qte.w, rowH, "F");
   doc.setFillColor(...ORANGE);
   doc.rect(cols.total.x, y, cols.total.w, rowH, "F");
-  doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(9);
-  doc.text("N°", cols.n.x + cols.n.w / 2, y + 6, { align: "center" });
-  doc.text("Désignation", cols.desig.x + 3, y + 6);
-  doc.text("Prix Unitaire", cols.pu.x + cols.pu.w / 2, y + 6, { align: "center" });
-  doc.text("Qté", cols.qte.x + cols.qte.w / 2, y + 6, { align: "center" });
-  doc.text("Total", cols.total.x + cols.total.w / 2, y + 6, { align: "center" });
+  doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(F(9));
+  const hY = y + rowH / 2 + S(1.5);
+  doc.text("N°", cols.n.x + cols.n.w / 2, hY, { align: "center" });
+  doc.text("Désignation", cols.desig.x + S(3), hY);
+  doc.text("Prix Unitaire", cols.pu.x + cols.pu.w / 2, hY, { align: "center" });
+  doc.text("Qté", cols.qte.x + cols.qte.w / 2, hY, { align: "center" });
+  doc.text("Total", cols.total.x + cols.total.w / 2, hY, { align: "center" });
   y += rowH;
 
-  doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...DARK);
+  const bottomLimit = pageH - S(70);
+
+  doc.setFont("helvetica", "normal"); doc.setFontSize(F(9)); doc.setTextColor(...DARK);
   sale.items.forEach((it, i) => {
-    // Word-wrap designation within its column, then size row height to fit
-    const lines: string[] = doc.splitTextToSize(String(it.product_name), cols.desig.w - 6);
-    const dynH = Math.max(rowH, lines.length * 5 + 4);
+    const lines: string[] = doc.splitTextToSize(String(it.product_name), cols.desig.w - S(6));
+    const dynH = Math.max(rowH, lines.length * S(5) + S(4));
+    if (y + dynH > bottomLimit) { doc.addPage(); y = S(20); }
     if (i % 2 === 0) {
       doc.setFillColor(...LIGHT);
       doc.rect(cols.n.x, y, cols.total.x + cols.total.w - cols.n.x, dynH, "F");
     }
-    const centerY = y + dynH / 2 + 1.5;
+    const centerY = y + dynH / 2 + S(1.5);
     doc.setFont("helvetica", "bold");
     doc.text(String(i + 1).padStart(2, "0"), cols.n.x + cols.n.w / 2, centerY, { align: "center" });
     doc.setFont("helvetica", "normal");
-    doc.text(lines, cols.desig.x + 3, y + 5);
-    doc.text(money(Number(it.unit_price)), cols.pu.x + cols.pu.w - 2, centerY, { align: "right" });
+    doc.text(lines, cols.desig.x + S(3), y + S(5));
+    doc.text(money(Number(it.unit_price)), cols.pu.x + cols.pu.w - S(2), centerY, { align: "right" });
     doc.text(String(it.quantity).padStart(2, "0"), cols.qte.x + cols.qte.w / 2, centerY, { align: "center" });
     doc.setFont("helvetica", "bold");
-    doc.text(money(Number(it.line_total)), cols.total.x + cols.total.w - 2, centerY, { align: "right" });
+    doc.text(money(Number(it.line_total)), cols.total.x + cols.total.w - S(2), centerY, { align: "right" });
     doc.setFont("helvetica", "normal");
     y += dynH;
-    if (y > 220) { doc.addPage(); y = 20; }
   });
 
   // Empty spacer row
   doc.setFillColor(...LIGHT);
   doc.rect(cols.n.x, y, cols.total.x + cols.total.w - cols.n.x, rowH, "F");
-  y += rowH + 8;
+  y += rowH + S(8);
 
   // ===== Totals + payment info side-by-side =====
-  const totalsX = 120;
-  // Left: payment info
-  doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(...DARK);
-  doc.text("Informations de paiement", 16, y);
-  doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...MUTED);
-  let py = y + 6;
-  if (company.phone) { doc.text(`Tél : ${company.phone}`, 16, py); py += 5; }
-  if (company.email) { doc.text(company.email, 16, py); py += 5; }
-  if (company.address) { doc.text(String(company.address).slice(0, 50), 16, py); py += 5; }
-  doc.text("Paiement à réception de facture.", 16, py); py += 5;
+  const totalsX = S(120);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(F(11)); doc.setTextColor(...DARK);
+  doc.text("Informations de paiement", S(16), y);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(F(9)); doc.setTextColor(...MUTED);
+  let py = y + S(6);
+  if (company.phone)   { doc.text(`Tél : ${company.phone}`, S(16), py); py += S(5); }
+  if (company.email)   { doc.text(company.email, S(16), py); py += S(5); }
+  if (company.address) { doc.text(String(company.address).slice(0, 50), S(16), py); py += S(5); }
+  doc.text("Paiement à réception de facture.", S(16), py); py += S(5);
 
-  // Right: totals
-  doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(...DARK);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(F(10)); doc.setTextColor(...DARK);
   doc.text("Sous-total", totalsX, y);
-  doc.text(money(Number(sale.subtotal)), pageW - 16, y, { align: "right" });
-  doc.text(`TVA (${Number(sale.tax_rate)}%)`, totalsX, y + 6);
-  doc.text(money(Number(sale.tax_amount)), pageW - 16, y + 6, { align: "right" });
+  doc.text(money(Number(sale.subtotal)), pageW - S(16), y, { align: "right" });
+  doc.text(`TVA (${Number(sale.tax_rate)}%)`, totalsX, y + S(6));
+  doc.text(money(Number(sale.tax_amount)), pageW - S(16), y + S(6), { align: "right" });
 
-  // Total banner: orange label + navy amount
-  const tY = y + 12;
+  const tY = y + S(12);
   doc.setFillColor(...ORANGE);
-  doc.rect(totalsX - 4, tY, 24, 10, "F");
+  doc.rect(totalsX - S(4), tY, S(24), S(10), "F");
   doc.setFillColor(...NAVY);
-  doc.rect(totalsX + 20, tY, pageW - 16 - (totalsX + 20), 10, "F");
-  doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(12);
-  doc.text("Total", totalsX + 8, tY + 6.8);
-  doc.text(money(Number(sale.total)), pageW - 18, tY + 6.8, { align: "right" });
+  doc.rect(totalsX + S(20), tY, pageW - S(16) - (totalsX + S(20)), S(10), "F");
+  doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(F(12));
+  doc.text("Total", totalsX + S(8), tY + S(6.8));
+  doc.text(money(Number(sale.total)), pageW - S(18), tY + S(6.8), { align: "right" });
 
   // ===== Conditions & signature =====
-  const cgY = Math.max(py + 10, tY + 24);
-  doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(...DARK);
-  doc.text("Conditions générales", 16, cgY);
-  doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...MUTED);
+  const cgY = Math.max(py + S(10), tY + S(24));
+  doc.setFont("helvetica", "bold"); doc.setFontSize(F(11)); doc.setTextColor(...DARK);
+  doc.text("Conditions générales", S(16), cgY);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(F(9)); doc.setTextColor(...MUTED);
   const conditions = sale.notes && sale.notes.trim()
     ? sale.notes
     : "Merci de votre confiance. Marchandises vendues non reprises ni échangées sauf accord préalable.";
-  const wrapped = doc.splitTextToSize(conditions, 95);
-  doc.text(wrapped, 16, cgY + 6);
+  const wrapped = doc.splitTextToSize(conditions, S(95));
+  doc.text(wrapped, S(16), cgY + S(6));
 
-  // Signature
-  doc.setDrawColor(...ORANGE); doc.setLineWidth(0.8);
-  doc.line(totalsX, cgY + 10, pageW - 16, cgY + 10);
-  doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(...DARK);
-  doc.text("Signature autorisée", (totalsX + pageW - 16) / 2, cgY + 16, { align: "center" });
+  doc.setDrawColor(...ORANGE); doc.setLineWidth(0.8 * s);
+  doc.line(totalsX, cgY + S(10), pageW - S(16), cgY + S(10));
+  doc.setFont("helvetica", "bold"); doc.setFontSize(F(10)); doc.setTextColor(...DARK);
+  doc.text("Signature autorisée", (totalsX + pageW - S(16)) / 2, cgY + S(16), { align: "center" });
   if (sale.seller_name) {
-    doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...MUTED);
-    doc.text(sale.seller_name, (totalsX + pageW - 16) / 2, cgY + 21, { align: "center" });
+    doc.setFont("helvetica", "normal"); doc.setFontSize(F(9)); doc.setTextColor(...MUTED);
+    doc.text(sale.seller_name, (totalsX + pageW - S(16)) / 2, cgY + S(21), { align: "center" });
   }
 
   // Footer
-  doc.setFontSize(8); doc.setTextColor(...MUTED);
-  doc.text(`${company.company_name || "@lkof Services & Tech"} — Facture ${sale.invoice_number}`, pageW / 2, pageH - 8, { align: "center" });
+  doc.setFontSize(F(8)); doc.setTextColor(...MUTED);
+  doc.text(`${company.company_name || "@lkof Services & Tech"} — Facture ${sale.invoice_number}`, pageW / 2, pageH - S(8), { align: "center" });
 
+  const suffix = format === "a5" ? "-A5" : "";
   if (resolved === "print") {
     doc.autoPrint();
     const url = doc.output("bloburl");
@@ -228,6 +231,6 @@ export async function generateSalePdf(
     const url = doc.output("bloburl");
     window.open(url, "_blank");
   } else {
-    doc.save(`${sale.invoice_number}.pdf`);
+    doc.save(`${sale.invoice_number}${suffix}.pdf`);
   }
 }
