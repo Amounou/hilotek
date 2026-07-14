@@ -177,8 +177,24 @@ function SalesList() {
                   <Link to="/sales/$id" params={{ id: s.id }}>
                     <Button size="icon" variant="ghost" title="Modifier"><Pencil className="h-4 w-4" /></Button>
                   </Link>
-                  <Button size="icon" variant="ghost" title="Télécharger" onClick={() => download(s)}><Download className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="ghost" title="Imprimer" onClick={() => print(s)}><Printer className="h-4 w-4" /></Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="ghost" title="Télécharger"><Download className="h-4 w-4" /></Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => buildPdf(s, "save", "a4")}>Télécharger A4</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => buildPdf(s, "save", "a5")}>Télécharger A5</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="ghost" title="Imprimer"><Printer className="h-4 w-4" /></Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => buildPdf(s, "print", "a4")}>Imprimer A4</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => buildPdf(s, "print", "a5")}>Imprimer A5</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                   <Button size="icon" variant="ghost" title="Dupliquer" onClick={() => duplicate(s)}><Copy className="h-4 w-4" /></Button>
                   <Button size="icon" variant="ghost" title="Supprimer" onClick={() => del(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                 </TableCell>
