@@ -73,7 +73,7 @@ function SalesList() {
     else { toast.success("Vente supprimée"); qc.invalidateQueries({ queryKey: ["sales-list"] }); }
   };
 
-  const buildPdf = async (s: any, mode: "save" | "print") => {
+  const buildPdf = async (s: any, mode: "save" | "print", format: PdfFormat = "a4") => {
     const { data: settings } = await supabase.rpc("get_public_settings");
     const c: any = settings ?? {};
     await generateSalePdf(
@@ -101,10 +101,9 @@ function SalesList() {
         address: c.address, phone: c.phone, email: c.email,
       },
       mode,
+      format,
     );
   };
-  const print = (s: any) => buildPdf(s, "print");
-  const download = (s: any) => buildPdf(s, "save");
 
   const duplicate = async (s: any) => {
     nav({ to: "/sales/new", search: { from: s.id } as any });
