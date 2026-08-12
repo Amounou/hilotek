@@ -59,7 +59,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/contact" className="hover:text-foreground">{t("nav.contact")}</Link></li>
               <li><Link to="/devis" className="hover:text-foreground">{t("nav.quote")}</Link></li>
-              <li><Link to="/rendez-vous" className="hover:text-foreground">{t("nav.booking")}</Link></li>
+              <li><Link to="/rendez-vous" search={{ service: "" }} className="hover:text-foreground">{t("nav.booking")}</Link></li>
               <li><Link to="/suivi-reparation" className="hover:text-foreground">{t("nav.track_repair")}</Link></li>
               <li><Link to="/suivi-memoire" className="hover:text-foreground">{t("nav.track_memoire")}</Link></li>
               <li><Link to="/faq" className="hover:text-foreground">{t("nav.faq")}</Link></li>
