@@ -1,6 +1,5 @@
 import { jsPDF } from "jspdf";
 import { formatXOF } from "@/lib/i18n";
-import logoAsset from "@/assets/alkof-logo.png.asset.json";
 
 // jsPDF's built-in Helvetica renders NBSP (\u00A0) and NNBSP (\u202F) as "/".
 // Intl.NumberFormat for XOF uses those spaces as thousand/currency separators,
@@ -8,15 +7,15 @@ import logoAsset from "@/assets/alkof-logo.png.asset.json";
 const money = (n: number) => formatXOF(Number(n)).replace(/[\u00A0\u202F]/g, " ");
 
 // Brand colors (matching the site tokens)
-const NAVY: [number, number, number] = [30, 58, 110];
-const ORANGE: [number, number, number] = [244, 143, 30];
+const NAVY: [number, number, number] = [26, 122, 46]; // vert du logo
+const ORANGE: [number, number, number] = [245, 160, 26]; // orange du logo
 const LIGHT: [number, number, number] = [243, 244, 246];
 const DARK: [number, number, number] = [30, 41, 59];
 const MUTED: [number, number, number] = [107, 114, 128];
 
 async function fetchLogoDataUrl(): Promise<string | null> {
   try {
-    const res = await fetch(logoAsset.url);
+    const res = await fetch("/alkof-logo.png");
     const blob = await res.blob();
     return await new Promise((resolve) => {
       const r = new FileReader();
