@@ -9,13 +9,16 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { useSiteSettings } from "@/lib/settings";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({ meta: [{ title: "Contact — @lkof" }, { name: "description", content: "Contactez notre équipe." }] }),
   component: () => {
     const { t } = useI18n();
+    const s = useSiteSettings();
     const [f, setF] = useState({ name: "", email: "", phone: "", subject: "", message: "" });
+
     const [loading, setLoading] = useState(false);
     const submit = async (e: React.FormEvent) => {
       e.preventDefault(); setLoading(true);
@@ -33,9 +36,11 @@ export const Route = createFileRoute("/contact")({
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             <div className="space-y-3">
-              <Card className="p-4 flex items-center gap-3"><Phone className="h-5 w-5 text-brand" /><div><div className="text-xs text-muted-foreground">Téléphone</div><div className="font-medium">+226 00 00 00 00</div></div></Card>
-              <Card className="p-4 flex items-center gap-3"><Mail className="h-5 w-5 text-brand" /><div><div className="text-xs text-muted-foreground">Email</div><div className="font-medium">contact@alkof.tech</div></div></Card>
-              <Card className="p-4 flex items-center gap-3"><MapPin className="h-5 w-5 text-brand" /><div><div className="text-xs text-muted-foreground">Adresse</div><div className="font-medium">Ouagadougou</div></div></Card>
+              <Card className="p-4 flex items-center gap-3"><Phone className="h-5 w-5 text-brand" /><div><div className="text-xs text-muted-foreground">Téléphone</div><div className="font-medium">{s?.phone ?? "—"}</div></div></Card>
+              <Card className="p-4 flex items-center gap-3"><Mail className="h-5 w-5 text-brand" /><div><div className="text-xs text-muted-foreground">Email</div><div className="font-medium">{s?.email ?? "—"}</div></div></Card>
+              <Card className="p-4 flex items-center gap-3"><MapPin className="h-5 w-5 text-brand" /><div><div className="text-xs text-muted-foreground">Adresse</div><div className="font-medium">{s?.address ?? "—"}</div></div></Card>
+              {s?.hours && <Card className="p-4 flex items-center gap-3"><Clock className="h-5 w-5 text-brand" /><div><div className="text-xs text-muted-foreground">Horaires</div><div className="font-medium">{s.hours}</div></div></Card>}
+
             </div>
             <Card className="p-6 md:col-span-2">
               <form onSubmit={submit} className="grid gap-4 sm:grid-cols-2">

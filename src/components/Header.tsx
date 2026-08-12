@@ -102,7 +102,7 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link to="/auth" className="hidden md:block">
+            <Link to="/auth" search={{ mode: "login" as const, redirect: "/" }} className="hidden md:block">
               <Button size="sm" variant="default" className="gradient-brand text-brand-foreground border-0 hover:opacity-90">
                 {t("nav.login")}
               </Button>
@@ -128,11 +128,11 @@ export function Header() {
                 ))}
                 <div className="my-2 border-t" />
                 <Link to="/devis" onClick={() => setOpen(false)} className="px-3 py-2.5 rounded-md text-sm hover:bg-accent">{t("nav.quote")}</Link>
-                <Link to="/rendez-vous" onClick={() => setOpen(false)} className="px-3 py-2.5 rounded-md text-sm hover:bg-accent">{t("nav.booking")}</Link>
+                <Link to="/rendez-vous" search={{ service: "" }} onClick={() => setOpen(false)} className="px-3 py-2.5 rounded-md text-sm hover:bg-accent">{t("nav.booking")}</Link>
                 <Link to="/suivi-reparation" onClick={() => setOpen(false)} className="px-3 py-2.5 rounded-md text-sm hover:bg-accent">{t("nav.track_repair")}</Link>
                 <Link to="/suivi-memoire" onClick={() => setOpen(false)} className="px-3 py-2.5 rounded-md text-sm hover:bg-accent">{t("nav.track_memoire")}</Link>
                 {!isAuthenticated && (
-                  <Link to="/auth" onClick={() => setOpen(false)} className="px-3 py-2.5 rounded-md text-sm hover:bg-accent">{t("nav.login")}</Link>
+                  <Link to="/auth" search={{ mode: "login" as const, redirect: "/" }} onClick={() => setOpen(false)} className="px-3 py-2.5 rounded-md text-sm hover:bg-accent">{t("nav.login")}</Link>
                 )}
               </div>
             </SheetContent>

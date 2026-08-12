@@ -7,11 +7,14 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useSiteSettings } from "@/lib/settings";
 
 export function Footer() {
   const { t } = useI18n();
+  const s = useSiteSettings();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+
 
   const subscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,9 +40,10 @@ export function Footer() {
               {t("home.hero.subtitle")}
             </p>
             <div className="mt-4 flex gap-2">
-              <a href="#" className="p-2 rounded-md hover:bg-accent"><Facebook className="h-4 w-4" /></a>
-              <a href="#" className="p-2 rounded-md hover:bg-accent"><Instagram className="h-4 w-4" /></a>
-              <a href="#" className="p-2 rounded-md hover:bg-accent"><Linkedin className="h-4 w-4" /></a>
+              {s?.socials?.facebook && <a href={s.socials.facebook} target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-accent"><Facebook className="h-4 w-4" /></a>}
+              {s?.socials?.instagram && <a href={s.socials.instagram} target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-accent"><Instagram className="h-4 w-4" /></a>}
+              {s?.socials?.linkedin && <a href={s.socials.linkedin} target="_blank" rel="noreferrer" className="p-2 rounded-md hover:bg-accent"><Linkedin className="h-4 w-4" /></a>}
+
             </div>
           </div>
           <div>
@@ -56,7 +60,7 @@ export function Footer() {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/contact" className="hover:text-foreground">{t("nav.contact")}</Link></li>
               <li><Link to="/devis" className="hover:text-foreground">{t("nav.quote")}</Link></li>
-              <li><Link to="/rendez-vous" className="hover:text-foreground">{t("nav.booking")}</Link></li>
+              <li><Link to="/rendez-vous" search={{ service: "" }} className="hover:text-foreground">{t("nav.booking")}</Link></li>
               <li><Link to="/suivi-reparation" className="hover:text-foreground">{t("nav.track_repair")}</Link></li>
               <li><Link to="/suivi-memoire" className="hover:text-foreground">{t("nav.track_memoire")}</Link></li>
               <li><Link to="/faq" className="hover:text-foreground">{t("nav.faq")}</Link></li>
@@ -78,10 +82,11 @@ export function Footer() {
               </Button>
             </form>
             <div className="mt-5 space-y-1 text-xs text-muted-foreground">
-              <div className="flex items-center gap-2"><Phone className="h-3 w-3" /> +226 00 00 00 00</div>
-              <div className="flex items-center gap-2"><Mail className="h-3 w-3" /> contact@alkof.tech</div>
-              <div className="flex items-center gap-2"><MapPin className="h-3 w-3" /> Ouagadougou, Burkina Faso</div>
+              {s?.phone && <a href={`tel:${s.phone.replace(/\s/g, "")}`} className="flex items-center gap-2 hover:text-foreground"><Phone className="h-3 w-3" /> {s.phone}</a>}
+              {s?.email && <a href={`mailto:${s.email}`} className="flex items-center gap-2 hover:text-foreground"><Mail className="h-3 w-3" /> {s.email}</a>}
+              {s?.address && <div className="flex items-center gap-2"><MapPin className="h-3 w-3" /> {s.address}</div>}
             </div>
+
           </div>
         </div>
         <div className="mt-10 border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
