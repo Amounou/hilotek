@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -50,10 +51,10 @@ export const Route = createFileRoute("/_authenticated/invoices")({
               {(data ?? []).map((i: any) => (
                 <TableRow key={i.id}>
                   <TableCell className="font-mono text-xs">{i.invoice_number}</TableCell>
-                  <TableCell><Badge variant="outline">{i.type}</Badge></TableCell>
+                  <TableCell><Badge variant="outline">{fr(i.type)}</Badge></TableCell>
                   <TableCell>{i.client_name}</TableCell>
                   <TableCell className="font-semibold">{formatXOF(Number(i.total))}</TableCell>
-                  <TableCell><Badge>{i.status ?? "issued"}</Badge></TableCell>
+                  <TableCell><Badge>{fr(i.status ?? "issued")}</Badge></TableCell>
                   <TableCell><Button size="sm" variant="ghost" onClick={() => download(i)}><Download className="h-4 w-4" /></Button></TableCell>
                 </TableRow>
               ))}

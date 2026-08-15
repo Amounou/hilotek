@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -50,7 +51,7 @@ export const Route = createFileRoute("/_authenticated/users")({
                   <TableCell>{u.full_name ?? "-"}</TableCell>
                   <TableCell className="text-xs">{u.email}</TableCell>
                   <TableCell><div className="flex flex-wrap gap-1">{u.roles.map((r: AppRole) => (
-                    <button key={r} onClick={() => hasRole("super_admin") && removeRole(u.id, r)} title="Retirer"><Badge variant={STAFF_ROLES.includes(r) ? "default" : "secondary"}>{r} ×</Badge></button>
+                    <button key={r} onClick={() => hasRole("super_admin") && removeRole(u.id, r)} title="Retirer"><Badge variant={STAFF_ROLES.includes(r) ? "default" : "secondary"}>{fr(r)} ×</Badge></button>
                   ))}</div></TableCell>
                   <TableCell>
                     <Select onValueChange={(v) => addRole(u.id, v as AppRole)}>

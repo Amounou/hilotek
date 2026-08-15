@@ -41,8 +41,10 @@ export type SaleForPdf = {
   tax_amount: number;
   total: number;
   notes?: string | null;
+  doc_label?: string | null;
   items: Array<{ product_name: string; quantity: number; unit_price: number; line_total: number }>;
 };
+
 
 export type CompanyForPdf = {
   company_name: string;
@@ -91,7 +93,12 @@ export async function generateSalePdf(
   doc.text(company.company_name || "@lkof Services & Tech", S(42), S(22));
 
   doc.setFont("helvetica", "bold"); doc.setFontSize(F(34)); doc.setTextColor(...ORANGE);
-  doc.text("FACTURE", pageW - S(16), S(30), { align: "right" });
+  const docLabel = sale.doc_label || "FACTURE";
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(F(docLabel.length > 10 ? 20 : 34));
+  doc.setTextColor(...ORANGE);
+  doc.text(docLabel, pageW - S(16), S(30), { align: "right" });
+
 
   // ===== Billed to / invoice meta =====
   const infoY = S(56);
@@ -219,7 +226,7 @@ export async function generateSalePdf(
 
   // Footer
   doc.setFontSize(F(8)); doc.setTextColor(...MUTED);
-  doc.text(`${company.company_name || "@lkof Services & Tech"} — Facture ${sale.invoice_number}`, pageW / 2, pageH - S(8), { align: "center" });
+  doc.text(`${company.company_name || "@lkof Services & Tech"} — ${docLabel.charAt(0) + docLabel.slice(1).toLowerCase()} ${sale.invoice_number}`, pageW / 2, pageH - S(8), { align: "center" });
 
   const suffix = format === "a5" ? "-A5" : "";
   if (resolved === "print") {

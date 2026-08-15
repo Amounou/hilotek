@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/_authenticated/appointments")({
                   <TableCell>
                     <Select value={b.status} onValueChange={(v)=>upd(b.id,v)}>
                       <SelectTrigger className="h-8 w-32"><SelectValue/></SelectTrigger>
-                      <SelectContent>{ST.map(s=><SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+                      <SelectContent>{ST.map(s=><SelectItem key={s} value={s}>{fr(s)}</SelectItem>)}</SelectContent>
                     </Select>
                   </TableCell>
                 </TableRow>

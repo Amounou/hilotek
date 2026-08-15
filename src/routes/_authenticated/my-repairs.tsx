@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/_authenticated/my-repairs")({
                 <TableRow key={r.id}>
                   <TableCell className="font-mono text-xs">{r.repair_number}</TableCell>
                   <TableCell className="text-xs">{r.device_type} {r.brand} {r.model}</TableCell>
-                  <TableCell><Badge>{r.status}</Badge></TableCell>
+                  <TableCell><Badge>{fr(r.status)}</Badge></TableCell>
                   <TableCell className="font-mono text-xs">{r.tracking_token}</TableCell>
                 </TableRow>
               ))}

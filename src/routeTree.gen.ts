@@ -45,8 +45,12 @@ import { Route as AuthenticatedInvoicesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales.index'
+import { Route as AuthenticatedQuotesIndexRouteImport } from './routes/_authenticated/quotes.index'
 import { Route as AuthenticatedSalesNewRouteImport } from './routes/_authenticated/sales.new'
 import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticated/sales.$id'
+import { Route as AuthenticatedQuotesNewRouteImport } from './routes/_authenticated/quotes.new'
+import { Route as AuthenticatedQuotesListRouteImport } from './routes/_authenticated/quotes.list'
+import { Route as AuthenticatedQuotesIdRouteImport } from './routes/_authenticated/quotes.$id'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 
 const SuiviReparationRoute = SuiviReparationRouteImport.update({
@@ -229,6 +233,12 @@ const AuthenticatedSalesIndexRoute = AuthenticatedSalesIndexRouteImport.update({
   path: '/sales/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedQuotesIndexRoute =
+  AuthenticatedQuotesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedQuotesRoute,
+  } as any)
 const AuthenticatedSalesNewRoute = AuthenticatedSalesNewRouteImport.update({
   id: '/sales/new',
   path: '/sales/new',
@@ -238,6 +248,21 @@ const AuthenticatedSalesIdRoute = AuthenticatedSalesIdRouteImport.update({
   id: '/sales/$id',
   path: '/sales/$id',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedQuotesNewRoute = AuthenticatedQuotesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AuthenticatedQuotesRoute,
+} as any)
+const AuthenticatedQuotesListRoute = AuthenticatedQuotesListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => AuthenticatedQuotesRoute,
+} as any)
+const AuthenticatedQuotesIdRoute = AuthenticatedQuotesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedQuotesRoute,
 } as any)
 const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   id: '/admin/blog',
@@ -274,15 +299,19 @@ export interface FileRoutesByFullPath {
   '/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/products': typeof AuthenticatedProductsRoute
-  '/quotes': typeof AuthenticatedQuotesRoute
+  '/quotes': typeof AuthenticatedQuotesRouteWithChildren
   '/repairs': typeof AuthenticatedRepairsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/quotes/$id': typeof AuthenticatedQuotesIdRoute
+  '/quotes/list': typeof AuthenticatedQuotesListRoute
+  '/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
+  '/quotes/': typeof AuthenticatedQuotesIndexRoute
   '/sales/': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -314,15 +343,18 @@ export interface FileRoutesByTo {
   '/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/products': typeof AuthenticatedProductsRoute
-  '/quotes': typeof AuthenticatedQuotesRoute
   '/repairs': typeof AuthenticatedRepairsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/quotes/$id': typeof AuthenticatedQuotesIdRoute
+  '/quotes/list': typeof AuthenticatedQuotesListRoute
+  '/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
+  '/quotes': typeof AuthenticatedQuotesIndexRoute
   '/sales': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRoutesById {
@@ -356,15 +388,19 @@ export interface FileRoutesById {
   '/_authenticated/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/products': typeof AuthenticatedProductsRoute
-  '/_authenticated/quotes': typeof AuthenticatedQuotesRoute
+  '/_authenticated/quotes': typeof AuthenticatedQuotesRouteWithChildren
   '/_authenticated/repairs': typeof AuthenticatedRepairsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/_authenticated/quotes/$id': typeof AuthenticatedQuotesIdRoute
+  '/_authenticated/quotes/list': typeof AuthenticatedQuotesListRoute
+  '/_authenticated/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/_authenticated/sales/$id': typeof AuthenticatedSalesIdRoute
   '/_authenticated/sales/new': typeof AuthenticatedSalesNewRoute
+  '/_authenticated/quotes/': typeof AuthenticatedQuotesIndexRoute
   '/_authenticated/sales/': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRouteTypes {
@@ -405,8 +441,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
+    | '/quotes/$id'
+    | '/quotes/list'
+    | '/quotes/new'
     | '/sales/$id'
     | '/sales/new'
+    | '/quotes/'
     | '/sales/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -438,15 +478,18 @@ export interface FileRouteTypes {
     | '/my-repairs'
     | '/orders'
     | '/products'
-    | '/quotes'
     | '/repairs'
     | '/settings'
     | '/users'
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
+    | '/quotes/$id'
+    | '/quotes/list'
+    | '/quotes/new'
     | '/sales/$id'
     | '/sales/new'
+    | '/quotes'
     | '/sales'
   id:
     | '__root__'
@@ -486,8 +529,12 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/_authenticated/admin/blog'
+    | '/_authenticated/quotes/$id'
+    | '/_authenticated/quotes/list'
+    | '/_authenticated/quotes/new'
     | '/_authenticated/sales/$id'
     | '/_authenticated/sales/new'
+    | '/_authenticated/quotes/'
     | '/_authenticated/sales/'
   fileRoutesById: FileRoutesById
 }
@@ -767,6 +814,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/quotes/': {
+      id: '/_authenticated/quotes/'
+      path: '/'
+      fullPath: '/quotes/'
+      preLoaderRoute: typeof AuthenticatedQuotesIndexRouteImport
+      parentRoute: typeof AuthenticatedQuotesRoute
+    }
     '/_authenticated/sales/new': {
       id: '/_authenticated/sales/new'
       path: '/sales/new'
@@ -781,6 +835,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/quotes/new': {
+      id: '/_authenticated/quotes/new'
+      path: '/new'
+      fullPath: '/quotes/new'
+      preLoaderRoute: typeof AuthenticatedQuotesNewRouteImport
+      parentRoute: typeof AuthenticatedQuotesRoute
+    }
+    '/_authenticated/quotes/list': {
+      id: '/_authenticated/quotes/list'
+      path: '/list'
+      fullPath: '/quotes/list'
+      preLoaderRoute: typeof AuthenticatedQuotesListRouteImport
+      parentRoute: typeof AuthenticatedQuotesRoute
+    }
+    '/_authenticated/quotes/$id': {
+      id: '/_authenticated/quotes/$id'
+      path: '/$id'
+      fullPath: '/quotes/$id'
+      preLoaderRoute: typeof AuthenticatedQuotesIdRouteImport
+      parentRoute: typeof AuthenticatedQuotesRoute
+    }
     '/_authenticated/admin/blog': {
       id: '/_authenticated/admin/blog'
       path: '/admin/blog'
@@ -790,6 +865,23 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedQuotesRouteChildren {
+  AuthenticatedQuotesIdRoute: typeof AuthenticatedQuotesIdRoute
+  AuthenticatedQuotesListRoute: typeof AuthenticatedQuotesListRoute
+  AuthenticatedQuotesNewRoute: typeof AuthenticatedQuotesNewRoute
+  AuthenticatedQuotesIndexRoute: typeof AuthenticatedQuotesIndexRoute
+}
+
+const AuthenticatedQuotesRouteChildren: AuthenticatedQuotesRouteChildren = {
+  AuthenticatedQuotesIdRoute: AuthenticatedQuotesIdRoute,
+  AuthenticatedQuotesListRoute: AuthenticatedQuotesListRoute,
+  AuthenticatedQuotesNewRoute: AuthenticatedQuotesNewRoute,
+  AuthenticatedQuotesIndexRoute: AuthenticatedQuotesIndexRoute,
+}
+
+const AuthenticatedQuotesRouteWithChildren =
+  AuthenticatedQuotesRoute._addFileChildren(AuthenticatedQuotesRouteChildren)
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
@@ -802,7 +894,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedMyRepairsRoute: typeof AuthenticatedMyRepairsRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedProductsRoute: typeof AuthenticatedProductsRoute
-  AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRoute
+  AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRouteWithChildren
   AuthenticatedRepairsRoute: typeof AuthenticatedRepairsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
@@ -823,7 +915,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedMyRepairsRoute: AuthenticatedMyRepairsRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedProductsRoute: AuthenticatedProductsRoute,
-  AuthenticatedQuotesRoute: AuthenticatedQuotesRoute,
+  AuthenticatedQuotesRoute: AuthenticatedQuotesRouteWithChildren,
   AuthenticatedRepairsRoute: AuthenticatedRepairsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
