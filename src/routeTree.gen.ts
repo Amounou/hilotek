@@ -48,6 +48,7 @@ import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedQuotesIndexRouteImport } from './routes/_authenticated/quotes.index'
 import { Route as AuthenticatedSalesNewRouteImport } from './routes/_authenticated/sales.new'
 import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticated/sales.$id'
+import { Route as AuthenticatedQuotesNewRouteImport } from './routes/_authenticated/quotes.new'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 
 const SuiviReparationRoute = SuiviReparationRouteImport.update({
@@ -246,6 +247,11 @@ const AuthenticatedSalesIdRoute = AuthenticatedSalesIdRouteImport.update({
   path: '/sales/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedQuotesNewRoute = AuthenticatedQuotesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AuthenticatedQuotesRoute,
+} as any)
 const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   id: '/admin/blog',
   path: '/admin/blog',
@@ -288,6 +294,7 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
   '/quotes/': typeof AuthenticatedQuotesIndexRoute
@@ -328,6 +335,7 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
   '/quotes': typeof AuthenticatedQuotesIndexRoute
@@ -371,6 +379,7 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/_authenticated/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/_authenticated/sales/$id': typeof AuthenticatedSalesIdRoute
   '/_authenticated/sales/new': typeof AuthenticatedSalesNewRoute
   '/_authenticated/quotes/': typeof AuthenticatedQuotesIndexRoute
@@ -414,6 +423,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
+    | '/quotes/new'
     | '/sales/$id'
     | '/sales/new'
     | '/quotes/'
@@ -454,6 +464,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
+    | '/quotes/new'
     | '/sales/$id'
     | '/sales/new'
     | '/quotes'
@@ -496,6 +507,7 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/_authenticated/admin/blog'
+    | '/_authenticated/quotes/new'
     | '/_authenticated/sales/$id'
     | '/_authenticated/sales/new'
     | '/_authenticated/quotes/'
@@ -799,6 +811,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/quotes/new': {
+      id: '/_authenticated/quotes/new'
+      path: '/new'
+      fullPath: '/quotes/new'
+      preLoaderRoute: typeof AuthenticatedQuotesNewRouteImport
+      parentRoute: typeof AuthenticatedQuotesRoute
+    }
     '/_authenticated/admin/blog': {
       id: '/_authenticated/admin/blog'
       path: '/admin/blog'
@@ -810,10 +829,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedQuotesRouteChildren {
+  AuthenticatedQuotesNewRoute: typeof AuthenticatedQuotesNewRoute
   AuthenticatedQuotesIndexRoute: typeof AuthenticatedQuotesIndexRoute
 }
 
 const AuthenticatedQuotesRouteChildren: AuthenticatedQuotesRouteChildren = {
+  AuthenticatedQuotesNewRoute: AuthenticatedQuotesNewRoute,
   AuthenticatedQuotesIndexRoute: AuthenticatedQuotesIndexRoute,
 }
 
