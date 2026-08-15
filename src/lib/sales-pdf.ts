@@ -226,7 +226,7 @@ export async function generateSalePdf(
 
   // Footer
   doc.setFontSize(F(8)); doc.setTextColor(...MUTED);
-  doc.text(`${company.company_name || "@lkof Services & Tech"} — Facture ${sale.invoice_number}`, pageW / 2, pageH - S(8), { align: "center" });
+  doc.text(`${company.company_name || "@lkof Services & Tech"} — ${docLabel.charAt(0) + docLabel.slice(1).toLowerCase()} ${sale.invoice_number}`, pageW / 2, pageH - S(8), { align: "center" });
 
   const suffix = format === "a5" ? "-A5" : "";
   if (resolved === "print") {
