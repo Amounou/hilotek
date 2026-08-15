@@ -723,6 +723,122 @@ export type Database = {
         }
         Relationships: []
       }
+      proforma_items: {
+        Row: {
+          created_at: string
+          id: string
+          line_total: number
+          product_id: string | null
+          product_name: string
+          proforma_id: string
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          line_total?: number
+          product_id?: string | null
+          product_name: string
+          proforma_id: string
+          quantity?: number
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          line_total?: number
+          product_id?: string | null
+          product_name?: string
+          proforma_id?: string
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proforma_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proforma_items_proforma_id_fkey"
+            columns: ["proforma_id"]
+            isOneToOne: false
+            referencedRelation: "proformas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      proformas: {
+        Row: {
+          client_email: string | null
+          client_id: string | null
+          client_name: string
+          client_phone: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          proforma_date: string
+          proforma_number: string | null
+          seller_name: string | null
+          status: string
+          subtotal: number
+          tax_amount: number
+          tax_rate: number
+          total: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          client_email?: string | null
+          client_id?: string | null
+          client_name: string
+          client_phone?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          proforma_date?: string
+          proforma_number?: string | null
+          seller_name?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_rate?: number
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          client_email?: string | null
+          client_id?: string | null
+          client_name?: string
+          client_phone?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          proforma_date?: string
+          proforma_number?: string | null
+          seller_name?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_rate?: number
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "proformas_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quote_requests: {
         Row: {
           budget: string | null
