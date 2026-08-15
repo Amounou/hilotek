@@ -93,7 +93,12 @@ export async function generateSalePdf(
   doc.text(company.company_name || "@lkof Services & Tech", S(42), S(22));
 
   doc.setFont("helvetica", "bold"); doc.setFontSize(F(34)); doc.setTextColor(...ORANGE);
-  doc.text("FACTURE", pageW - S(16), S(30), { align: "right" });
+  const docLabel = sale.doc_label || "FACTURE";
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(F(docLabel.length > 10 ? 20 : 34));
+  doc.setTextColor(...ORANGE);
+  doc.text(docLabel, pageW - S(16), S(30), { align: "right" });
+
 
   // ===== Billed to / invoice meta =====
   const infoY = S(56);
