@@ -45,6 +45,7 @@ import { Route as AuthenticatedInvoicesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales.index'
+import { Route as AuthenticatedQuotesIndexRouteImport } from './routes/_authenticated/quotes.index'
 import { Route as AuthenticatedSalesNewRouteImport } from './routes/_authenticated/sales.new'
 import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticated/sales.$id'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
@@ -229,6 +230,12 @@ const AuthenticatedSalesIndexRoute = AuthenticatedSalesIndexRouteImport.update({
   path: '/sales/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedQuotesIndexRoute =
+  AuthenticatedQuotesIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedQuotesRoute,
+  } as any)
 const AuthenticatedSalesNewRoute = AuthenticatedSalesNewRouteImport.update({
   id: '/sales/new',
   path: '/sales/new',
@@ -274,7 +281,7 @@ export interface FileRoutesByFullPath {
   '/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/products': typeof AuthenticatedProductsRoute
-  '/quotes': typeof AuthenticatedQuotesRoute
+  '/quotes': typeof AuthenticatedQuotesRouteWithChildren
   '/repairs': typeof AuthenticatedRepairsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
@@ -283,6 +290,7 @@ export interface FileRoutesByFullPath {
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
+  '/quotes/': typeof AuthenticatedQuotesIndexRoute
   '/sales/': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -314,7 +322,6 @@ export interface FileRoutesByTo {
   '/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/products': typeof AuthenticatedProductsRoute
-  '/quotes': typeof AuthenticatedQuotesRoute
   '/repairs': typeof AuthenticatedRepairsRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/users': typeof AuthenticatedUsersRoute
@@ -323,6 +330,7 @@ export interface FileRoutesByTo {
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
+  '/quotes': typeof AuthenticatedQuotesIndexRoute
   '/sales': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRoutesById {
@@ -356,7 +364,7 @@ export interface FileRoutesById {
   '/_authenticated/my-repairs': typeof AuthenticatedMyRepairsRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/products': typeof AuthenticatedProductsRoute
-  '/_authenticated/quotes': typeof AuthenticatedQuotesRoute
+  '/_authenticated/quotes': typeof AuthenticatedQuotesRouteWithChildren
   '/_authenticated/repairs': typeof AuthenticatedRepairsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
@@ -365,6 +373,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/_authenticated/sales/$id': typeof AuthenticatedSalesIdRoute
   '/_authenticated/sales/new': typeof AuthenticatedSalesNewRoute
+  '/_authenticated/quotes/': typeof AuthenticatedQuotesIndexRoute
   '/_authenticated/sales/': typeof AuthenticatedSalesIndexRoute
 }
 export interface FileRouteTypes {
@@ -407,6 +416,7 @@ export interface FileRouteTypes {
     | '/admin/blog'
     | '/sales/$id'
     | '/sales/new'
+    | '/quotes/'
     | '/sales/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -438,7 +448,6 @@ export interface FileRouteTypes {
     | '/my-repairs'
     | '/orders'
     | '/products'
-    | '/quotes'
     | '/repairs'
     | '/settings'
     | '/users'
@@ -447,6 +456,7 @@ export interface FileRouteTypes {
     | '/admin/blog'
     | '/sales/$id'
     | '/sales/new'
+    | '/quotes'
     | '/sales'
   id:
     | '__root__'
@@ -488,6 +498,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/blog'
     | '/_authenticated/sales/$id'
     | '/_authenticated/sales/new'
+    | '/_authenticated/quotes/'
     | '/_authenticated/sales/'
   fileRoutesById: FileRoutesById
 }
@@ -767,6 +778,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSalesIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/quotes/': {
+      id: '/_authenticated/quotes/'
+      path: '/'
+      fullPath: '/quotes/'
+      preLoaderRoute: typeof AuthenticatedQuotesIndexRouteImport
+      parentRoute: typeof AuthenticatedQuotesRoute
+    }
     '/_authenticated/sales/new': {
       id: '/_authenticated/sales/new'
       path: '/sales/new'
@@ -791,6 +809,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedQuotesRouteChildren {
+  AuthenticatedQuotesIndexRoute: typeof AuthenticatedQuotesIndexRoute
+}
+
+const AuthenticatedQuotesRouteChildren: AuthenticatedQuotesRouteChildren = {
+  AuthenticatedQuotesIndexRoute: AuthenticatedQuotesIndexRoute,
+}
+
+const AuthenticatedQuotesRouteWithChildren =
+  AuthenticatedQuotesRoute._addFileChildren(AuthenticatedQuotesRouteChildren)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -802,7 +831,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedMyRepairsRoute: typeof AuthenticatedMyRepairsRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedProductsRoute: typeof AuthenticatedProductsRoute
-  AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRoute
+  AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRouteWithChildren
   AuthenticatedRepairsRoute: typeof AuthenticatedRepairsRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
@@ -823,7 +852,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedMyRepairsRoute: AuthenticatedMyRepairsRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedProductsRoute: AuthenticatedProductsRoute,
-  AuthenticatedQuotesRoute: AuthenticatedQuotesRoute,
+  AuthenticatedQuotesRoute: AuthenticatedQuotesRouteWithChildren,
   AuthenticatedRepairsRoute: AuthenticatedRepairsRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
