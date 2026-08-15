@@ -41,8 +41,10 @@ export type SaleForPdf = {
   tax_amount: number;
   total: number;
   notes?: string | null;
+  doc_label?: string | null;
   items: Array<{ product_name: string; quantity: number; unit_price: number; line_total: number }>;
 };
+
 
 export type CompanyForPdf = {
   company_name: string;
