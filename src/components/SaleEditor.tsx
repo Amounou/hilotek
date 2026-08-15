@@ -22,16 +22,56 @@ type LineItem = {
   unit_price: number;
 };
 
+export type EditorMode = "sale" | "proforma";
+
 type Props = {
   saleId?: string;       // edit existing
   fromSaleId?: string;   // duplicate
+  mode?: EditorMode;
 };
+
+const CFG = {
+  sale: {
+    table: "sales",
+    itemsTable: "sale_items",
+    fk: "sale_id",
+    numberCol: "invoice_number",
+    dateCol: "sale_date",
+    listPath: "/sales",
+    newTitle: "Nouvelle Vente",
+    editTitle: "Modifier la vente",
+    docLabel: "Facture N°",
+    pdfLabel: "FACTURE",
+    itemWord: "article",
+    itemWordCap: "Article",
+    nameLabel: "Nom du produit",
+    savedWord: "Vente",
+  },
+  proforma: {
+    table: "proformas",
+    itemsTable: "proforma_items",
+    fk: "proforma_id",
+    numberCol: "proforma_number",
+    dateCol: "proforma_date",
+    listPath: "/quotes/list",
+    newTitle: "Devis",
+    editTitle: "Modifier le devis",
+    docLabel: "Facture Pro-forma N°",
+    pdfLabel: "FACTURE PRO-FORMA",
+    itemWord: "élément",
+    itemWordCap: "Élément",
+    nameLabel: "Nom de l'élément",
+    savedWord: "Devis",
+  },
+} as const;
 
 const newKey = () => Math.random().toString(36).slice(2, 10);
 
-export function SaleEditor({ saleId, fromSaleId }: Props) {
+export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
   const nav = useNavigate();
   const { user } = useAuth();
+  const cfg = CFG[mode];
+  const db = supabase as any;
 
   const [clientId, setClientId] = useState<string | null>(null);
   const [clientName, setClientName] = useState("");
@@ -72,15 +112,15 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
     const id = saleId ?? fromSaleId;
     if (!id) return;
     (async () => {
-      const { data, error } = await supabase.from("sales").select("*, sale_items(*)").eq("id", id).maybeSingle();
-      if (error || !data) { toast.error("Vente introuvable"); return; }
+      const { data, error } = await db.from(cfg.table).select(`*, ${cfg.itemsTable}(*)`).eq("id", id).maybeSingle();
+      if (error || !data) { toast.error("Document introuvable"); return; }
       setClientId(data.client_id);
       setClientName(data.client_name);
       setClientEmail(data.client_email ?? "");
       setClientPhone(data.client_phone ?? "");
       setTaxRate(Number(data.tax_rate));
       setNotes(data.notes ?? "");
-      setItems((data.sale_items ?? []).map((it: any) => ({
+      setItems((data[cfg.itemsTable] ?? []).map((it: any) => ({
         key: newKey(),
         product_id: it.product_id,
         product_name: it.product_name,
@@ -88,11 +128,11 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
         unit_price: Number(it.unit_price),
       })));
       if (saleId) {
-        setSaleDate(String(data.sale_date).slice(0, 10));
-        setInvoiceNumber(data.invoice_number ?? "(auto)");
+        setSaleDate(String(data[cfg.dateCol]).slice(0, 10));
+        setInvoiceNumber(data[cfg.numberCol] ?? "(auto)");
       }
     })();
-  }, [saleId, fromSaleId]);
+  }, [saleId, fromSaleId, cfg, db]);
 
   const subtotal = useMemo(() => items.reduce((s, i) => s + i.quantity * i.unit_price, 0), [items]);
   const taxAmount = useMemo(() => (subtotal * taxRate) / 100, [subtotal, taxRate]);
@@ -113,10 +153,10 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
 
   const addLine = () => {
     const name = dName.trim();
-    if (!name) { toast.error("Nom du produit requis"); nameInputRef.current?.focus(); return; }
+    if (!name) { toast.error(`${cfg.nameLabel} requis`); nameInputRef.current?.focus(); return; }
     if (dQty <= 0) { toast.error("Quantité invalide"); return; }
     if (dPrice < 0) { toast.error("Prix invalide"); return; }
-    if (dProductId) {
+    if (mode === "sale" && dProductId) {
       const p = (products ?? []).find((x: any) => x.id === dProductId);
       const alreadyInCart = items.filter((i) => i.product_id === dProductId && i.key !== editingKey)
         .reduce((s, i) => s + i.quantity, 0);
@@ -149,71 +189,71 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
 
   const save = async (thenPrint = false) => {
     if (!clientName.trim()) { toast.error("Client requis"); return; }
-    if (items.length === 0) { toast.error("Ajoutez au moins un article"); return; }
+    if (items.length === 0) { toast.error(`Ajoutez au moins un ${cfg.itemWord}`); return; }
     setSaving(true);
     try {
       const seller = user?.user_metadata?.full_name ?? user?.email ?? null;
-      const payload = {
+      const payload: any = {
         client_id: clientId,
         client_name: clientName.trim(),
         client_email: clientEmail.trim() || null,
         client_phone: clientPhone.trim() || null,
         user_id: user?.id ?? null,
         seller_name: seller,
-        sale_date: new Date(saleDate).toISOString(),
+        [cfg.dateCol]: new Date(saleDate).toISOString(),
         tax_rate: taxRate,
         notes: notes.trim() || null,
-        status: "completed" as const,
+        status: mode === "sale" ? "completed" : "draft",
       };
 
       let sid: string;
       if (saleId) {
-        const { error } = await supabase.from("sales").update(payload as never).eq("id", saleId);
+        const { error } = await db.from(cfg.table).update(payload).eq("id", saleId);
         if (error) throw error;
-        // Wipe existing lines to reapply (stock restored by trigger)
-        const del = await supabase.from("sale_items").delete().eq("sale_id", saleId);
+        const del = await db.from(cfg.itemsTable).delete().eq(cfg.fk, saleId);
         if (del.error) throw del.error;
         sid = saleId;
       } else {
-        const { data, error } = await supabase.from("sales").insert(payload as never).select("id, invoice_number").single();
+        const { data, error } = await db.from(cfg.table).insert(payload).select(`id, ${cfg.numberCol}`).single();
         if (error) throw error;
-        sid = (data as any).id;
-        setInvoiceNumber((data as any).invoice_number);
+        sid = data.id;
+        setInvoiceNumber(data[cfg.numberCol]);
       }
 
       const rows = items.map((i) => ({
-        sale_id: sid,
+        [cfg.fk]: sid,
         product_id: i.product_id,
         product_name: i.product_name,
         quantity: i.quantity,
         unit_price: i.unit_price,
       }));
-      const { error: e2 } = await supabase.from("sale_items").insert(rows as never);
+      const { error: e2 } = await db.from(cfg.itemsTable).insert(rows);
       if (e2) throw e2;
 
-      // Fetch to obtain server-computed totals + invoice_number
-      const { data: fresh } = await supabase.from("sales")
-        .select("*, sale_items(product_name, quantity, unit_price, line_total)")
+      // Fetch to obtain server-computed totals + number
+      const { data: fresh } = await db.from(cfg.table)
+        .select(`*, ${cfg.itemsTable}(product_name, quantity, unit_price, line_total)`)
         .eq("id", sid).single();
 
-      toast.success(`Vente ${(fresh as any)?.invoice_number} enregistrée`);
+      toast.success(`${cfg.savedWord} ${fresh?.[cfg.numberCol]} enregistré`);
 
       if (thenPrint && fresh) {
         const c: any = settings ?? {};
         await generateSalePdf(
           {
-            invoice_number: (fresh as any).invoice_number,
-            sale_date: (fresh as any).sale_date,
-            client_name: (fresh as any).client_name,
-            client_email: (fresh as any).client_email,
-            client_phone: (fresh as any).client_phone,
-            seller_name: (fresh as any).seller_name,
-            subtotal: Number((fresh as any).subtotal),
-            tax_rate: Number((fresh as any).tax_rate),
-            tax_amount: Number((fresh as any).tax_amount),
-            total: Number((fresh as any).total),
-            notes: (fresh as any).notes,
-            items: ((fresh as any).sale_items ?? []).map((i: any) => ({
+            invoice_number: fresh[cfg.numberCol],
+            sale_date: fresh[cfg.dateCol],
+            client_name: fresh.client_name,
+            client_email: fresh.client_email,
+            client_phone: fresh.client_phone,
+            seller_name: fresh.seller_name,
+            subtotal: Number(fresh.subtotal),
+            tax_rate: Number(fresh.tax_rate),
+            tax_amount: Number(fresh.tax_amount),
+            total: Number(fresh.total),
+            notes: fresh.notes,
+            doc_label: cfg.pdfLabel,
+            items: (fresh[cfg.itemsTable] ?? []).map((i: any) => ({
               product_name: i.product_name,
               quantity: Number(i.quantity),
               unit_price: Number(i.unit_price),
@@ -227,7 +267,7 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
           true,
         );
       }
-      nav({ to: "/sales" });
+      nav({ to: cfg.listPath as any });
     } catch (e: any) {
       toast.error(e.message ?? "Erreur d'enregistrement");
     } finally {
@@ -239,10 +279,10 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-2 flex-wrap">
         <div>
-          <h1 className="text-2xl font-display font-bold">{saleId ? "Modifier la vente" : "Nouvelle Vente"}</h1>
-          <p className="text-sm text-muted-foreground">Facture N° {invoiceNumber}</p>
+          <h1 className="text-2xl font-display font-bold">{saleId ? cfg.editTitle : cfg.newTitle}</h1>
+          <p className="text-sm text-muted-foreground">{cfg.docLabel} {invoiceNumber}</p>
         </div>
-        <Button variant="ghost" onClick={() => nav({ to: "/sales" })}><X className="h-4 w-4 mr-1" />Annuler</Button>
+        <Button variant="ghost" onClick={() => nav({ to: cfg.listPath as any })}><X className="h-4 w-4 mr-1" />Annuler</Button>
       </div>
 
       <Card className="p-4 grid gap-3 md:grid-cols-4">
@@ -266,10 +306,10 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
       </Card>
 
       <Card className="p-4 space-y-3">
-        <h2 className="font-semibold">Ajouter un article</h2>
+        <h2 className="font-semibold">Ajouter un {cfg.itemWord}</h2>
         <div className="grid gap-2 md:grid-cols-12 items-end">
           <div className="md:col-span-5">
-            <Label>Nom du produit</Label>
+            <Label>{cfg.nameLabel}</Label>
             <Input
               ref={nameInputRef}
               list="products-list"
@@ -280,7 +320,7 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
                 if (p) onSelectProduct(p.id); else setDProductId(null);
               }}
               onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addLine(); } }}
-              placeholder="Rechercher un produit ou saisir librement"
+              placeholder={mode === "sale" ? "Rechercher un produit ou saisir librement" : "Rechercher un produit/service ou saisir librement"}
             />
             <datalist id="products-list">
               {(products ?? []).map((p: any) => (
@@ -314,7 +354,7 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Produit</TableHead>
+              <TableHead>{mode === "sale" ? "Produit" : "Élément"}</TableHead>
               <TableHead className="text-right">Quantité</TableHead>
               <TableHead className="text-right">Prix unitaire</TableHead>
               <TableHead className="text-right">Prix HT</TableHead>
@@ -322,10 +362,10 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {items.length === 0 && (<TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-6">Aucun article</TableCell></TableRow>)}
+            {items.length === 0 && (<TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-6">Aucun {cfg.itemWord}</TableCell></TableRow>)}
             {items.map((i) => (
               <TableRow key={i.key} className={editingKey === i.key ? "bg-muted/50" : ""}>
-                <TableCell>{i.product_name}{!i.product_id && <span className="ml-2 text-xs text-muted-foreground">(hors stock)</span>}</TableCell>
+                <TableCell>{i.product_name}{mode === "sale" && !i.product_id && <span className="ml-2 text-xs text-muted-foreground">(hors stock)</span>}</TableCell>
                 <TableCell className="text-right">{i.quantity}</TableCell>
                 <TableCell className="text-right">{formatXOF(i.unit_price)}</TableCell>
                 <TableCell className="text-right font-semibold">{formatXOF(i.quantity * i.unit_price)}</TableCell>
@@ -352,7 +392,7 @@ export function SaleEditor({ saleId, fromSaleId }: Props) {
       </div>
 
       <div className="flex flex-wrap gap-2 justify-end">
-        <Button variant="ghost" onClick={() => nav({ to: "/sales" })}><X className="h-4 w-4 mr-1" />Annuler</Button>
+        <Button variant="ghost" onClick={() => nav({ to: cfg.listPath as any })}><X className="h-4 w-4 mr-1" />Annuler</Button>
         <Button variant="outline" disabled={saving} onClick={() => save(false)}><Save className="h-4 w-4 mr-1" />Enregistrer</Button>
         <Button className="gradient-brand text-brand-foreground border-0" disabled={saving} onClick={() => save(true)}>
           <Printer className="h-4 w-4 mr-1" />Enregistrer et Imprimer
