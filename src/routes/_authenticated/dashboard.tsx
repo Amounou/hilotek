@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Card } from "@/components/ui/card";
 import { useAuth, STAFF_ROLES } from "@/lib/auth";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 import { ShoppingCart, Wrench, GraduationCap, DollarSign, Users, FileText } from "lucide-react";
@@ -72,7 +73,7 @@ function Dash() {
         <MiniList title="Mes dernières commandes" empty="Aucune commande">
           {(mine?.orders ?? []).map((o: any) => (
             <li key={o.id} className="flex justify-between py-2 border-b last:border-0 text-sm">
-              <div><div className="font-mono">{o.order_number}</div><div className="text-xs text-muted-foreground">{o.status}</div></div>
+              <div><div className="font-mono">{o.order_number}</div><div className="text-xs text-muted-foreground">{fr(o.status)}</div></div>
               <div className="font-semibold">{formatXOF(Number(o.total), lang)}</div>
             </li>
           ))}
@@ -80,7 +81,7 @@ function Dash() {
         <MiniList title="Mes réparations" empty="Aucune réparation">
           {(mine?.reps ?? []).map((r: any) => (
             <li key={r.id} className="flex justify-between py-2 border-b last:border-0 text-sm">
-              <span className="font-mono">{r.repair_number}</span><span className="text-xs text-muted-foreground">{r.status}</span>
+              <span className="font-mono">{r.repair_number}</span><span className="text-xs text-muted-foreground">{fr(r.status)}</span>
             </li>
           ))}
         </MiniList>

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -29,7 +30,7 @@ export const Route = createFileRoute("/_authenticated/my-memoires")({
                   <TableCell className="max-w-xs truncate text-xs">{m.theme}</TableCell>
                   <TableCell className="w-40"><Progress value={m.progress ?? 0} /><div className="text-xs mt-1">{m.progress ?? 0}%</div></TableCell>
                   <TableCell className="text-xs">{formatXOF(Number(m.balance))}</TableCell>
-                  <TableCell><Badge>{m.status}</Badge></TableCell>
+                  <TableCell><Badge>{fr(m.status)}</Badge></TableCell>
                 </TableRow>
               ))}
             </TableBody>

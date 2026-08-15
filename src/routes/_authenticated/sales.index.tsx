@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -170,7 +171,7 @@ function SalesList() {
                 <TableCell className="text-right font-semibold">{formatXOF(Number(s.total))}</TableCell>
                 <TableCell>
                   <Badge variant={s.status === "completed" ? "default" : s.status === "cancelled" ? "destructive" : "secondary"}>
-                    {s.status}
+                    {fr(s.status)}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right whitespace-nowrap">

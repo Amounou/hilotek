@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -37,13 +38,13 @@ export const Route = createFileRoute("/_authenticated/orders")({
                   <TableCell>
                     <Select value={o.payment_status} onValueChange={(v) => upd(o.id, { payment_status: v })}>
                       <SelectTrigger className="h-8 w-32"><SelectValue /></SelectTrigger>
-                      <SelectContent>{PAY.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+                      <SelectContent>{PAY.map((s) => <SelectItem key={s} value={s}>{fr(s)}</SelectItem>)}</SelectContent>
                     </Select>
                   </TableCell>
                   <TableCell>
                     <Select value={o.status} onValueChange={(v) => upd(o.id, { status: v })}>
                       <SelectTrigger className="h-8 w-36"><SelectValue /></SelectTrigger>
-                      <SelectContent>{STATUSES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+                      <SelectContent>{STATUSES.map((s) => <SelectItem key={s} value={s}>{fr(s)}</SelectItem>)}</SelectContent>
                     </Select>
                   </TableCell>
                   <TableCell className="text-xs">{new Date(o.created_at).toLocaleDateString()}</TableCell>

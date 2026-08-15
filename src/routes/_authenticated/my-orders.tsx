@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { fr } from "@/lib/labels";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -27,8 +28,8 @@ export const Route = createFileRoute("/_authenticated/my-orders")({
                   <TableCell className="font-mono text-xs">{o.order_number}</TableCell>
                   <TableCell className="text-xs">{new Date(o.created_at).toLocaleDateString()}</TableCell>
                   <TableCell className="font-semibold">{formatXOF(Number(o.total))}</TableCell>
-                  <TableCell><Badge variant="outline">{o.payment_status}</Badge></TableCell>
-                  <TableCell><Badge>{o.status}</Badge></TableCell>
+                  <TableCell><Badge variant="outline">{fr(o.payment_status)}</Badge></TableCell>
+                  <TableCell><Badge>{fr(o.status)}</Badge></TableCell>
                 </TableRow>
               ))}
             </TableBody>

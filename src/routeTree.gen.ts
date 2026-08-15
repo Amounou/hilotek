@@ -49,6 +49,7 @@ import { Route as AuthenticatedQuotesIndexRouteImport } from './routes/_authenti
 import { Route as AuthenticatedSalesNewRouteImport } from './routes/_authenticated/sales.new'
 import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticated/sales.$id'
 import { Route as AuthenticatedQuotesNewRouteImport } from './routes/_authenticated/quotes.new'
+import { Route as AuthenticatedQuotesListRouteImport } from './routes/_authenticated/quotes.list'
 import { Route as AuthenticatedQuotesIdRouteImport } from './routes/_authenticated/quotes.$id'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 
@@ -253,6 +254,11 @@ const AuthenticatedQuotesNewRoute = AuthenticatedQuotesNewRouteImport.update({
   path: '/new',
   getParentRoute: () => AuthenticatedQuotesRoute,
 } as any)
+const AuthenticatedQuotesListRoute = AuthenticatedQuotesListRouteImport.update({
+  id: '/list',
+  path: '/list',
+  getParentRoute: () => AuthenticatedQuotesRoute,
+} as any)
 const AuthenticatedQuotesIdRoute = AuthenticatedQuotesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -301,6 +307,7 @@ export interface FileRoutesByFullPath {
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/quotes/$id': typeof AuthenticatedQuotesIdRoute
+  '/quotes/list': typeof AuthenticatedQuotesListRoute
   '/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
@@ -343,6 +350,7 @@ export interface FileRoutesByTo {
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/quotes/$id': typeof AuthenticatedQuotesIdRoute
+  '/quotes/list': typeof AuthenticatedQuotesListRoute
   '/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/sales/$id': typeof AuthenticatedSalesIdRoute
   '/sales/new': typeof AuthenticatedSalesNewRoute
@@ -388,6 +396,7 @@ export interface FileRoutesById {
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
   '/_authenticated/quotes/$id': typeof AuthenticatedQuotesIdRoute
+  '/_authenticated/quotes/list': typeof AuthenticatedQuotesListRoute
   '/_authenticated/quotes/new': typeof AuthenticatedQuotesNewRoute
   '/_authenticated/sales/$id': typeof AuthenticatedSalesIdRoute
   '/_authenticated/sales/new': typeof AuthenticatedSalesNewRoute
@@ -433,6 +442,7 @@ export interface FileRouteTypes {
     | '/boutique/$slug'
     | '/admin/blog'
     | '/quotes/$id'
+    | '/quotes/list'
     | '/quotes/new'
     | '/sales/$id'
     | '/sales/new'
@@ -475,6 +485,7 @@ export interface FileRouteTypes {
     | '/boutique/$slug'
     | '/admin/blog'
     | '/quotes/$id'
+    | '/quotes/list'
     | '/quotes/new'
     | '/sales/$id'
     | '/sales/new'
@@ -519,6 +530,7 @@ export interface FileRouteTypes {
     | '/boutique/$slug'
     | '/_authenticated/admin/blog'
     | '/_authenticated/quotes/$id'
+    | '/_authenticated/quotes/list'
     | '/_authenticated/quotes/new'
     | '/_authenticated/sales/$id'
     | '/_authenticated/sales/new'
@@ -830,6 +842,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedQuotesNewRouteImport
       parentRoute: typeof AuthenticatedQuotesRoute
     }
+    '/_authenticated/quotes/list': {
+      id: '/_authenticated/quotes/list'
+      path: '/list'
+      fullPath: '/quotes/list'
+      preLoaderRoute: typeof AuthenticatedQuotesListRouteImport
+      parentRoute: typeof AuthenticatedQuotesRoute
+    }
     '/_authenticated/quotes/$id': {
       id: '/_authenticated/quotes/$id'
       path: '/$id'
@@ -849,12 +868,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedQuotesRouteChildren {
   AuthenticatedQuotesIdRoute: typeof AuthenticatedQuotesIdRoute
+  AuthenticatedQuotesListRoute: typeof AuthenticatedQuotesListRoute
   AuthenticatedQuotesNewRoute: typeof AuthenticatedQuotesNewRoute
   AuthenticatedQuotesIndexRoute: typeof AuthenticatedQuotesIndexRoute
 }
 
 const AuthenticatedQuotesRouteChildren: AuthenticatedQuotesRouteChildren = {
   AuthenticatedQuotesIdRoute: AuthenticatedQuotesIdRoute,
+  AuthenticatedQuotesListRoute: AuthenticatedQuotesListRoute,
   AuthenticatedQuotesNewRoute: AuthenticatedQuotesNewRoute,
   AuthenticatedQuotesIndexRoute: AuthenticatedQuotesIndexRoute,
 }
