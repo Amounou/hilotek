@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "34707bc3-e490-477f-a55c-5dbebb99c642",
-  "project_id": "9340752a-62a8-4bca-a589-0aa82317be50",
-  "url": "/__l5e/assets-v1/34707bc3-e490-477f-a55c-5dbebb99c642/alkof-logo.png",
-  "r2_key": "a/v1/9340752a-62a8-4bca-a589-0aa82317be50/34707bc3-e490-477f-a55c-5dbebb99c642/alkof-logo.png",
-  "original_filename": "alkof-logo.png",
-  "size": 2288919,
   "content_type": "image/png",
-  "created_at": "2026-07-09T18:41:33Z"
+  "created_at": "2026-07-09T18:41:33Z",
+  "original_filename": "alkof-logo.png",
+  "project_id": "0837f67c-e8a2-4c67-80c7-a2a37c738e10",
+  "r2_key": "a/v1/0837f67c-e8a2-4c67-80c7-a2a37c738e10/34707bc3-e490-477f-a55c-5dbebb99c642/alkof-logo.png",
+  "size": 2288919,
+  "url": "/__l5e/assets-v1/34707bc3-e490-477f-a55c-5dbebb99c642/alkof-logo.png",
+  "version": 1
 }
