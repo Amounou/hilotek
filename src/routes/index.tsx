@@ -4,6 +4,8 @@ import { PublicShell } from "@/components/PublicShell";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ProductCard } from "@/components/ProductCard";
+import { HeroBackground } from "@/components/HeroBackground";
+
 import { useI18n } from "@/lib/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -64,8 +66,8 @@ function Home() {
     <PublicShell>
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 gradient-hero" />
-        <div className="absolute inset-0 gradient-mesh opacity-70" />
+        <HeroBackground />
+
         <div className="relative mx-auto max-w-7xl px-4 py-24 md:py-32">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs font-medium text-white/90 border border-white/10">
