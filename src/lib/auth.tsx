@@ -34,6 +34,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   const loadRoles = async (uid: string) => {
+    // crée la fiche profil + rôles si absents (compte créé sans enregistrement)
+    await (supabase as any).rpc("ensure_profile");
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid);
     setRoles((data ?? []).map((r) => r.role as AppRole));
   };
