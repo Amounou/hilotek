@@ -7,8 +7,8 @@ import { formatXOF } from "@/lib/i18n";
 const money = (n: number) => formatXOF(Number(n)).replace(/[\u00A0\u202F]/g, " ");
 
 // Brand colors (matching the site tokens)
-const NAVY: [number, number, number] = [26, 122, 46]; // vert du logo
-const ORANGE: [number, number, number] = [245, 160, 26]; // orange du logo
+const NAVY: [number, number, number] = [27, 62, 146]; // bleu du logo
+const ORANGE: [number, number, number] = [242, 107, 33]; // orange du logo
 const LIGHT: [number, number, number] = [243, 244, 246];
 const DARK: [number, number, number] = [30, 41, 59];
 const MUTED: [number, number, number] = [107, 114, 128];
