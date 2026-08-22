@@ -600,12 +600,40 @@ export type Database = {
           },
         ]
       }
+      product_costs: {
+        Row: {
+          cost_price: number | null
+          low_stock_threshold: number
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          cost_price?: number | null
+          low_stock_threshold?: number
+          product_id: string
+          updated_at?: string
+        }
+        Update: {
+          cost_price?: number | null
+          low_stock_threshold?: number
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_costs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           barcode: string | null
           brand_id: string | null
           category_id: string | null
-          cost_price: number | null
           created_at: string
           description_en: string | null
           description_fr: string | null
@@ -614,7 +642,6 @@ export type Database = {
           images: string[]
           is_active: boolean
           is_featured: boolean
-          low_stock_threshold: number
           name_en: string
           name_fr: string
           price: number
@@ -629,7 +656,6 @@ export type Database = {
           barcode?: string | null
           brand_id?: string | null
           category_id?: string | null
-          cost_price?: number | null
           created_at?: string
           description_en?: string | null
           description_fr?: string | null
@@ -638,7 +664,6 @@ export type Database = {
           images?: string[]
           is_active?: boolean
           is_featured?: boolean
-          low_stock_threshold?: number
           name_en: string
           name_fr: string
           price?: number
@@ -653,7 +678,6 @@ export type Database = {
           barcode?: string | null
           brand_id?: string | null
           category_id?: string | null
-          cost_price?: number | null
           created_at?: string
           description_en?: string | null
           description_fr?: string | null
@@ -662,7 +686,6 @@ export type Database = {
           images?: string[]
           is_active?: boolean
           is_featured?: boolean
-          low_stock_threshold?: number
           name_en?: string
           name_fr?: string
           price?: number
