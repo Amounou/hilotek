@@ -1285,6 +1285,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ensure_profile: { Args: never; Returns: undefined }
       get_public_settings: { Args: never; Returns: Json }
       has_any_role: {
         Args: {
