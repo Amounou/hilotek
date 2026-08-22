@@ -263,6 +263,13 @@ export type Database = {
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "inventory_movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       invoices: {
@@ -524,6 +531,13 @@ export type Database = {
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       orders: {
@@ -760,6 +774,13 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proforma_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products_public"
             referencedColumns: ["id"]
           },
           {
@@ -1040,6 +1061,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "sale_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products_public"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "sale_items_sale_id_fkey"
             columns: ["sale_id"]
             isOneToOne: false
@@ -1282,7 +1310,90 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      products_public: {
+        Row: {
+          barcode: string | null
+          brand_id: string | null
+          category_id: string | null
+          created_at: string | null
+          description_en: string | null
+          description_fr: string | null
+          features: Json | null
+          id: string | null
+          images: string[] | null
+          is_active: boolean | null
+          is_featured: boolean | null
+          name_en: string | null
+          name_fr: string | null
+          price: number | null
+          promo_price: number | null
+          sku: string | null
+          slug: string | null
+          stock: number | null
+          updated_at: string | null
+          warranty_months: number | null
+        }
+        Insert: {
+          barcode?: string | null
+          brand_id?: string | null
+          category_id?: string | null
+          created_at?: string | null
+          description_en?: string | null
+          description_fr?: string | null
+          features?: Json | null
+          id?: string | null
+          images?: string[] | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          name_en?: string | null
+          name_fr?: string | null
+          price?: number | null
+          promo_price?: number | null
+          sku?: string | null
+          slug?: string | null
+          stock?: number | null
+          updated_at?: string | null
+          warranty_months?: number | null
+        }
+        Update: {
+          barcode?: string | null
+          brand_id?: string | null
+          category_id?: string | null
+          created_at?: string | null
+          description_en?: string | null
+          description_fr?: string | null
+          features?: Json | null
+          id?: string | null
+          images?: string[] | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          name_en?: string | null
+          name_fr?: string | null
+          price?: number | null
+          promo_price?: number | null
+          sku?: string | null
+          slug?: string | null
+          stock?: number | null
+          updated_at?: string | null
+          warranty_months?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_brand_id_fkey"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       ensure_profile: { Args: never; Returns: undefined }
