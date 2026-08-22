@@ -14,7 +14,7 @@ import { useAuth } from "@/lib/auth";
 import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/rendez-vous")({
-  head: () => ({ meta: [{ title: "Prendre rendez-vous — @lkof" }] }),
+  head: () => ({ meta: [{ title: "Prendre rendez-vous — HiloTek" }] }),
   validateSearch: (s: Record<string, unknown>) => ({ service: typeof s.service === "string" ? s.service : "" }),
   component: RDV,
 });

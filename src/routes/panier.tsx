@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Trash2, Minus, Plus } from "lucide-react";
 
 export const Route = createFileRoute("/panier")({
-  head: () => ({ meta: [{ title: "Panier — @lkof" }, { name: "description", content: "Votre panier @lkof." }] }),
+  head: () => ({ meta: [{ title: "Panier — HiloTek" }, { name: "description", content: "Votre panier HiloTek." }] }),
   component: CartPage,
 });
 

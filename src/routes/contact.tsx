@@ -13,7 +13,7 @@ import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { useSiteSettings } from "@/lib/settings";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({ meta: [{ title: "Contact — @lkof" }, { name: "description", content: "Contactez notre équipe." }] }),
+  head: () => ({ meta: [{ title: "Contact — HiloTek" }, { name: "description", content: "Contactez notre équipe." }] }),
   component: () => {
     const { t } = useI18n();
     const s = useSiteSettings();

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/checkout")({
-  head: () => ({ meta: [{ title: "Commande — @lkof" }] }),
+  head: () => ({ meta: [{ title: "Commande — HiloTek" }] }),
   component: Checkout,
 });
 

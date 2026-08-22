@@ -19,7 +19,7 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 export const Route = createFileRoute("/suivi-reparation")({
-  head: () => ({ meta: [{ title: "Suivi de réparation — @lkof" }] }),
+  head: () => ({ meta: [{ title: "Suivi de réparation — HiloTek" }] }),
   component: () => {
     const { t } = useI18n();
     const [q, setQ] = useState("");

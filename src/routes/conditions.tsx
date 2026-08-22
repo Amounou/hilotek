@@ -2,12 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PublicShell } from "@/components/PublicShell";
 
 export const Route = createFileRoute("/conditions")({
-  head: () => ({ meta: [{ title: "Conditions — @lkof" }] }),
+  head: () => ({ meta: [{ title: "Conditions — HiloTek" }] }),
   component: () => (
     <PublicShell>
       <article className="mx-auto max-w-3xl px-4 py-16 prose prose-neutral dark:prose-invert">
         <h1>Conditions d'utilisation</h1>
-        <p>Bienvenue sur @lkof Services &amp; Tech. En utilisant nos services, vous acceptez les conditions ci-dessous.</p>
+        <p>Bienvenue sur HiloTek Services &amp; Tech. En utilisant nos services, vous acceptez les conditions ci-dessous.</p>
         <h2>1. Services</h2>
         <p>Nous fournissons vente de matériel, maintenance, développement, formation et rédaction de mémoire.</p>
         <h2>2. Commandes et paiements</h2>

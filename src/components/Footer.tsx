@@ -90,7 +90,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 border-t pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
-          <div>© {new Date().getFullYear()} @lkof Services &amp; Tech. {t("footer.rights")}</div>
+          <div>© {new Date().getFullYear()} HiloTek Services &amp; Tech. {t("footer.rights")}</div>
           <div className="flex gap-4">
             <Link to="/conditions" className="hover:text-foreground">{t("footer.terms")}</Link>
             <Link to="/confidentialite" className="hover:text-foreground">{t("footer.privacy")}</Link>

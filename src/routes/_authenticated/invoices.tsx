@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/invoices")({
     const { data } = useQuery({ queryKey: ["admin-inv"], queryFn: async () => (await supabase.from("invoices").select("*").order("created_at",{ascending:false})).data ?? [] });
     const download = async (inv: any) => {
       const doc = new jsPDF();
-      doc.setFontSize(20); doc.text("@lkof Services & Tech", 14, 20);
+      doc.setFontSize(20); doc.text("HiloTek Services & Tech", 14, 20);
       doc.setFontSize(11); doc.text(`${inv.type.toUpperCase()} N° ${inv.invoice_number}`, 14, 30);
       doc.text(`Date : ${new Date(inv.created_at).toLocaleDateString()}`, 14, 36);
       doc.text(`Client : ${inv.client_name}`, 14, 46);

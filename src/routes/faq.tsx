@@ -12,7 +12,7 @@ const FAQS = [
 ];
 
 export const Route = createFileRoute("/faq")({
-  head: () => ({ meta: [{ title: "FAQ — @lkof" }] }),
+  head: () => ({ meta: [{ title: "FAQ — HiloTek" }] }),
   component: () => (
     <PublicShell>
       <div className="mx-auto max-w-3xl px-4 py-16">

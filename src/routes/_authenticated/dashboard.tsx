@@ -8,7 +8,7 @@ import { ShoppingCart, Wrench, GraduationCap, DollarSign, Users, FileText } from
 import { formatXOF, useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({ meta: [{ title: "Tableau de bord — @lkof" }] }),
+  head: () => ({ meta: [{ title: "Tableau de bord — HiloTek" }] }),
   component: Dash,
 });
 
