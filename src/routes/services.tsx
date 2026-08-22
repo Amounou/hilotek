@@ -10,9 +10,9 @@ import * as Icons from "lucide-react";
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — @lkof Services & Tech" },
+      { title: "Services — HiloTek Services & Tech" },
       { name: "description", content: "Maintenance, développement, cybersécurité, cloud, formation et rédaction de mémoire." },
-      { property: "og:title", content: "Services — @lkof" },
+      { property: "og:title", content: "Services — HiloTek" },
     ],
   }),
   component: Services,

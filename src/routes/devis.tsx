@@ -15,7 +15,7 @@ const SERVICES = ["Développement Web","Développement Mobile","Cybersécurité"
 const BUDGETS = ["< 100 000 FCFA","100 000 - 500 000","500 000 - 2M","> 2M"];
 
 export const Route = createFileRoute("/devis")({
-  head: () => ({ meta: [{ title: "Demande de devis — @lkof" }] }),
+  head: () => ({ meta: [{ title: "Demande de devis — HiloTek" }] }),
   component: () => {
     const { t } = useI18n();
     const [f, setF] = useState({ name:"",email:"",phone:"",company:"",service_type: SERVICES[0], budget: BUDGETS[0], description:""});

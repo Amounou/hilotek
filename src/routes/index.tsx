@@ -21,8 +21,8 @@ const iconMap: Record<string, any> = {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "@lkof Services & Tech — Boutique, maintenance, développement, formation" },
-      { name: "description", content: "Découvrez @lkof : boutique high-tech, maintenance, développement web/mobile, cybersécurité, cloud et rédaction de mémoire." },
+      { title: "HiloTek Services & Tech — Boutique, maintenance, développement, formation" },
+      { name: "description", content: "Découvrez HiloTek : boutique high-tech, maintenance, développement web/mobile, cybersécurité, cloud et rédaction de mémoire." },
     ],
   }),
   component: Home,

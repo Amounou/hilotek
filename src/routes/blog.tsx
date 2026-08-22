@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/blog")({
-  head: () => ({ meta: [{ title: "Blog — @lkof" }, { name: "description", content: "Guides, actualités et conseils tech." }] }),
+  head: () => ({ meta: [{ title: "Blog — HiloTek" }, { name: "description", content: "Guides, actualités et conseils tech." }] }),
   component: () => {
     const { t, lang } = useI18n();
     const { data } = useQuery({

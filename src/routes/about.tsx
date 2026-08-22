@@ -7,9 +7,9 @@ import { Award, Target, Eye, Sparkles } from "lucide-react";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "À propos — @lkof Services & Tech" },
-      { name: "description", content: "Découvrez l'histoire, la mission et les valeurs d'@lkof Services & Tech." },
-      { property: "og:title", content: "À propos — @lkof" },
+      { title: "À propos — HiloTek Services & Tech" },
+      { name: "description", content: "Découvrez l'histoire, la mission et les valeurs d'HiloTek Services & Tech." },
+      { property: "og:title", content: "À propos — HiloTek" },
     ],
   }),
   component: () => {

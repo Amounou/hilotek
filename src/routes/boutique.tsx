@@ -14,9 +14,9 @@ type Search = { category?: string; q?: string };
 export const Route = createFileRoute("/boutique")({
   head: () => ({
     meta: [
-      { title: "Boutique — @lkof" },
+      { title: "Boutique — HiloTek" },
       { name: "description", content: "Ordinateurs, téléphones, tablettes, accessoires, gaming, imprimantes, réseau et logiciels." },
-      { property: "og:title", content: "Boutique — @lkof" },
+      { property: "og:title", content: "Boutique — HiloTek" },
     ],
   }),
   validateSearch: (s: Record<string, unknown>): Search => ({

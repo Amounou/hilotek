@@ -16,25 +16,37 @@ export const Route = createFileRoute("/_authenticated/invoices")({
     const { data } = useQuery({ queryKey: ["admin-inv"], queryFn: async () => (await supabase.from("invoices").select("*").order("created_at",{ascending:false})).data ?? [] });
     const download = async (inv: any) => {
       const doc = new jsPDF();
-      doc.setFontSize(20); doc.text("@lkof Services & Tech", 14, 20);
-      doc.setFontSize(11); doc.text(`${inv.type.toUpperCase()} N° ${inv.invoice_number}`, 14, 30);
+      const NAVY: [number, number, number] = [27, 62, 146];
+      const ORANGE: [number, number, number] = [242, 107, 33];
+      doc.setFillColor(...NAVY);
+      doc.rect(0, 0, 210, 4, "F");
+      doc.setFillColor(...ORANGE);
+      doc.rect(0, 4, 210, 1.5, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20); doc.setTextColor(...NAVY); doc.text("HiloTek Services & Tech", 14, 20);
+      doc.setFont("helvetica", "normal"); doc.setTextColor(30, 41, 59);
+      doc.setFontSize(11); doc.setTextColor(...ORANGE); doc.text(`${inv.type.toUpperCase()} N° ${inv.invoice_number}`, 14, 30); doc.setTextColor(30, 41, 59);
       doc.text(`Date : ${new Date(inv.created_at).toLocaleDateString()}`, 14, 36);
       doc.text(`Client : ${inv.client_name}`, 14, 46);
       if (inv.client_email) doc.text(inv.client_email, 14, 52);
       if (inv.client_phone) doc.text(inv.client_phone, 14, 58);
       let y = 76; doc.setFontSize(10);
+      doc.setFont("helvetica", "bold"); doc.setTextColor(...NAVY);
       doc.text("Article", 14, y); doc.text("Qté", 120, y); doc.text("PU", 140, y); doc.text("Total", 170, y); y += 4;
-      doc.line(14, y, 196, y); y += 6;
+      doc.setDrawColor(...ORANGE); doc.setLineWidth(0.6); doc.line(14, y, 196, y); y += 6;
+      doc.setFont("helvetica", "normal"); doc.setTextColor(30, 41, 59);
       (inv.items ?? []).forEach((it: any) => {
         doc.text(String(it.name).slice(0, 60), 14, y);
         doc.text(String(it.quantity ?? 1), 120, y);
         doc.text(String(it.unit_price ?? 0), 140, y);
         doc.text(String(it.total ?? 0), 170, y); y += 6;
       });
-      y += 4; doc.line(14, y, 196, y); y += 8;
+      y += 4; doc.setDrawColor(...NAVY); doc.line(14, y, 196, y); y += 8;
       doc.text(`Sous-total: ${formatXOF(Number(inv.subtotal))}`, 130, y); y += 6;
       doc.text(`TVA: ${formatXOF(Number(inv.tax))}`, 130, y); y += 6;
-      doc.setFontSize(12); doc.text(`TOTAL: ${formatXOF(Number(inv.total))}`, 130, y);
+      doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.setTextColor(...NAVY);
+      doc.text(`TOTAL: ${formatXOF(Number(inv.total))}`, 130, y);
+      doc.setFont("helvetica", "normal"); doc.setTextColor(30, 41, 59);
       if (inv.qr_data) {
         const qr = await QRCode.toDataURL(inv.qr_data);
         doc.addImage(qr, "PNG", 14, y - 12, 30, 30);

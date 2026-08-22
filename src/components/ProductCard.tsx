@@ -31,7 +31,7 @@ export function ProductCard({ p }: { p: Product }) {
     <Card className="group overflow-hidden border-border/60 hover:shadow-elegant transition-all duration-300 flex flex-col">
       <Link to="/boutique/$slug" params={{ slug: p.slug }} className="relative aspect-square overflow-hidden bg-muted/30 block">
         <img
-          src={p.images[0] ?? "https://placehold.co/600x600?text=%40lkof"}
+          src={p.images[0] ?? "https://placehold.co/600x600?text=HiloTek"}
           alt={name}
           loading="lazy"
           className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"

@@ -15,7 +15,7 @@ const MUTED: [number, number, number] = [107, 114, 128];
 
 async function fetchLogoDataUrl(): Promise<string | null> {
   try {
-    const res = await fetch("/alkof-logo.png");
+    const res = await fetch("/hilotek-logo.png");
     const blob = await res.blob();
     return await new Promise((resolve) => {
       const r = new FileReader();
@@ -90,7 +90,7 @@ export async function generateSalePdf(
     try { doc.addImage(logo, "PNG", S(14), S(12), S(24), S(24)); } catch { /* ignore */ }
   }
   doc.setFont("helvetica", "bold"); doc.setFontSize(F(14)); doc.setTextColor(...NAVY);
-  doc.text(company.company_name || "@lkof Services & Tech", S(42), S(22));
+  doc.text(company.company_name || "HiloTek Services & Tech", S(42), S(22));
 
   doc.setFont("helvetica", "bold"); doc.setFontSize(F(34)); doc.setTextColor(...ORANGE);
   const docLabel = sale.doc_label || "FACTURE";
@@ -226,7 +226,7 @@ export async function generateSalePdf(
 
   // Footer
   doc.setFontSize(F(8)); doc.setTextColor(...MUTED);
-  doc.text(`${company.company_name || "@lkof Services & Tech"} — ${docLabel.charAt(0) + docLabel.slice(1).toLowerCase()} ${sale.invoice_number}`, pageW / 2, pageH - S(8), { align: "center" });
+  doc.text(`${company.company_name || "HiloTek Services & Tech"} — ${docLabel.charAt(0) + docLabel.slice(1).toLowerCase()} ${sale.invoice_number}`, pageW / 2, pageH - S(8), { align: "center" });
 
   const suffix = format === "a5" ? "-A5" : "";
   if (resolved === "print") {

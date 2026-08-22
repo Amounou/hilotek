@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PublicShell } from "@/components/PublicShell";
 
 export const Route = createFileRoute("/confidentialite")({
-  head: () => ({ meta: [{ title: "Politique de confidentialité — @lkof" }] }),
+  head: () => ({ meta: [{ title: "Politique de confidentialité — HiloTek" }] }),
   component: () => (
     <PublicShell>
       <article className="mx-auto max-w-3xl px-4 py-16 prose prose-neutral dark:prose-invert">

@@ -45,7 +45,7 @@ function ProductPage() {
   const name = lang === "fr" ? p.name_fr : p.name_en;
   const desc = lang === "fr" ? p.description_fr : p.description_en;
   const finalPrice = p.promo_price ?? p.price;
-  const images = p.images.length ? p.images : ["https://placehold.co/800x800?text=%40lkof"];
+  const images = p.images.length ? p.images : ["https://placehold.co/800x800?text=HiloTek"];
 
   return (
     <PublicShell>

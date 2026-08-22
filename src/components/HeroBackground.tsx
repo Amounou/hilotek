@@ -5,7 +5,7 @@ import dev from "@/assets/hero-dev.jpg";
 import memoire from "@/assets/hero-memoire.jpg";
 
 const SLIDES = [
-  { src: boutique, alt: "Boutique high-tech @lkof" },
+  { src: boutique, alt: "Boutique high-tech HiloTek" },
   { src: maintenance, alt: "Maintenance et réparation informatique" },
   { src: dev, alt: "Développement web et mobile" },
   { src: memoire, alt: "Rédaction et accompagnement de mémoire" },

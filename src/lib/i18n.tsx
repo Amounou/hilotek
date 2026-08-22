@@ -29,7 +29,7 @@ const fr: Dict = {
   "home.hero.eyebrow": "Solutions Tech Premium",
   "home.hero.title": "Votre partenaire technologique de confiance",
   "home.hero.subtitle":
-    "@lkof Services & Tech — Boutique, maintenance, développement web/mobile, cybersécurité, cloud, formation et rédaction de mémoire, tout au même endroit.",
+    "HiloTek Services & Tech — Boutique, maintenance, développement web/mobile, cybersécurité, cloud, formation et rédaction de mémoire, tout au même endroit.",
   "home.hero.cta_shop": "Découvrir la boutique",
   "home.hero.cta_services": "Nos services",
   "home.stats.clients": "Clients satisfaits",
@@ -139,7 +139,7 @@ const fr: Dict = {
   "contact.send": "Envoyer",
   "contact.ok": "Message envoyé !",
   // About
-  "about.title": "À propos d'@lkof",
+  "about.title": "À propos d'HiloTek",
   "about.subtitle": "L'excellence tech au service de nos clients depuis 2018",
   "about.mission.title": "Notre mission",
   "about.mission.text":
@@ -243,7 +243,7 @@ const en: Dict = {
   "home.hero.eyebrow": "Premium Tech Solutions",
   "home.hero.title": "Your trusted technology partner",
   "home.hero.subtitle":
-    "@lkof Services & Tech — Shop, maintenance, web/mobile development, cybersecurity, cloud, training and thesis writing, all in one place.",
+    "HiloTek Services & Tech — Shop, maintenance, web/mobile development, cybersecurity, cloud, training and thesis writing, all in one place.",
   "home.hero.cta_shop": "Browse the shop",
   "home.hero.cta_services": "Our services",
   "home.stats.clients": "Happy clients",
@@ -343,7 +343,7 @@ const en: Dict = {
   "contact.message": "Message",
   "contact.send": "Send",
   "contact.ok": "Message sent!",
-  "about.title": "About @lkof",
+  "about.title": "About HiloTek",
   "about.subtitle": "Tech excellence serving our clients since 2018",
   "about.mission.title": "Our mission",
   "about.mission.text":

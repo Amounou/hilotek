@@ -16,7 +16,7 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 export const Route = createFileRoute("/suivi-memoire")({
-  head: () => ({ meta: [{ title: "Suivi mémoire — @lkof" }] }),
+  head: () => ({ meta: [{ title: "Suivi mémoire — HiloTek" }] }),
   component: () => {
     const { t, lang } = useI18n();
     const [q, setQ] = useState("");
