@@ -43,6 +43,7 @@ import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedMemoiresRouteImport } from './routes/_authenticated/memoires'
 import { Route as AuthenticatedInvoicesRouteImport } from './routes/_authenticated/invoices'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCategoriesRouteImport } from './routes/_authenticated/categories'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales.index'
 import { Route as AuthenticatedQuotesIndexRouteImport } from './routes/_authenticated/quotes.index'
@@ -222,6 +223,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedCategoriesRoute = AuthenticatedCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedAppointmentsRoute =
   AuthenticatedAppointmentsRouteImport.update({
     id: '/appointments',
@@ -290,6 +296,7 @@ export interface FileRoutesByFullPath {
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
+  '/categories': typeof AuthenticatedCategoriesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/invoices': typeof AuthenticatedInvoicesRoute
   '/memoires': typeof AuthenticatedMemoiresRoute
@@ -334,6 +341,7 @@ export interface FileRoutesByTo {
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
+  '/categories': typeof AuthenticatedCategoriesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/invoices': typeof AuthenticatedInvoicesRoute
   '/memoires': typeof AuthenticatedMemoiresRoute
@@ -379,6 +387,7 @@ export interface FileRoutesById {
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
   '/_authenticated/appointments': typeof AuthenticatedAppointmentsRoute
+  '/_authenticated/categories': typeof AuthenticatedCategoriesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/invoices': typeof AuthenticatedInvoicesRoute
   '/_authenticated/memoires': typeof AuthenticatedMemoiresRoute
@@ -425,6 +434,7 @@ export interface FileRouteTypes {
     | '/suivi-memoire'
     | '/suivi-reparation'
     | '/appointments'
+    | '/categories'
     | '/dashboard'
     | '/invoices'
     | '/memoires'
@@ -469,6 +479,7 @@ export interface FileRouteTypes {
     | '/suivi-memoire'
     | '/suivi-reparation'
     | '/appointments'
+    | '/categories'
     | '/dashboard'
     | '/invoices'
     | '/memoires'
@@ -513,6 +524,7 @@ export interface FileRouteTypes {
     | '/suivi-memoire'
     | '/suivi-reparation'
     | '/_authenticated/appointments'
+    | '/_authenticated/categories'
     | '/_authenticated/dashboard'
     | '/_authenticated/invoices'
     | '/_authenticated/memoires'
@@ -800,6 +812,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/categories': {
+      id: '/_authenticated/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof AuthenticatedCategoriesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/appointments': {
       id: '/_authenticated/appointments'
       path: '/appointments'
@@ -885,6 +904,7 @@ const AuthenticatedQuotesRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
+  AuthenticatedCategoriesRoute: typeof AuthenticatedCategoriesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedInvoicesRoute: typeof AuthenticatedInvoicesRoute
   AuthenticatedMemoiresRoute: typeof AuthenticatedMemoiresRoute
@@ -906,6 +926,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAppointmentsRoute: AuthenticatedAppointmentsRoute,
+  AuthenticatedCategoriesRoute: AuthenticatedCategoriesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedInvoicesRoute: AuthenticatedInvoicesRoute,
   AuthenticatedMemoiresRoute: AuthenticatedMemoiresRoute,
