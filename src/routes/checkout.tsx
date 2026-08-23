@@ -73,6 +73,12 @@ function Checkout() {
     }));
     const { error: itemsErr } = await supabase.from("order_items").insert(itemsPayload);
     if (itemsErr) { setLoading(false); toast.error(itemsErr.message); return; }
+    // Re-read authoritative totals recomputed server-side
+    const { data: finalOrder } = await supabase
+      .from("orders")
+      .select("subtotal, tax, total, order_number")
+      .eq("id", order.id)
+      .single();
     // create invoice
     await supabase.from("invoices").insert({
       invoice_number: "",
@@ -82,10 +88,13 @@ function Checkout() {
       client_email: form.email,
       client_phone: form.phone,
       client_address: form.address,
-      subtotal, tax, total,
+      subtotal: Number(finalOrder?.subtotal ?? subtotal),
+      tax: Number(finalOrder?.tax ?? tax),
+      total: Number(finalOrder?.total ?? total),
       items: itemsPayload,
       qr_data: order.order_number,
     } as never);
+
     clear();
     setLoading(false);
     toast.success(`${t("co.success")} : ${order.order_number}`);
