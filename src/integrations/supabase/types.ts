@@ -1324,6 +1324,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      place_order: { Args: { _payload: Json }; Returns: Json }
       track_memoire: { Args: { _token: string }; Returns: Json }
       track_repair: { Args: { _token: string }; Returns: Json }
     }

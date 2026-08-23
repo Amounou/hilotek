@@ -46,59 +46,23 @@ function Checkout() {
     e.preventDefault();
     if (items.length === 0) return;
     setLoading(true);
-    const { data: order, error } = await supabase.from("orders").insert({
-      order_number: "", // filled by trigger
-      user_id: user?.id ?? null,
-      customer_name: form.name,
-      customer_email: form.email,
-      customer_phone: form.phone,
-      shipping_address: form.address,
-      subtotal, tax, shipping, discount: 0, total,
-      payment_method: form.method,
-      payment_status: "pending",
-      status: "pending",
-      notes: form.notes,
-    } as never).select().single();
-    if (error || !order) {
-      setLoading(false); toast.error(error?.message ?? t("c.error")); return;
-    }
-    const itemsPayload = items.map((i) => ({
-      order_id: order.id,
-      product_id: i.id,
-      product_name: i.name,
-      product_sku: i.sku,
-      unit_price: i.price,
-      quantity: i.quantity,
-      total: i.price * i.quantity,
-    }));
-    const { error: itemsErr } = await supabase.from("order_items").insert(itemsPayload);
-    if (itemsErr) { setLoading(false); toast.error(itemsErr.message); return; }
-    // Re-read authoritative totals recomputed server-side
-    const { data: finalOrder } = await supabase
-      .from("orders")
-      .select("subtotal, tax, total, order_number")
-      .eq("id", order.id)
-      .single();
-    // create invoice
-    await supabase.from("invoices").insert({
-      invoice_number: "",
-      type: "invoice",
-      order_id: order.id,
-      client_name: form.name,
-      client_email: form.email,
-      client_phone: form.phone,
-      client_address: form.address,
-      subtotal: Number(finalOrder?.subtotal ?? subtotal),
-      tax: Number(finalOrder?.tax ?? tax),
-      total: Number(finalOrder?.total ?? total),
-      items: itemsPayload,
-      qr_data: order.order_number,
+    const { data, error } = await supabase.rpc("place_order" as never, {
+      _payload: {
+        customer_name: form.name,
+        customer_email: form.email,
+        customer_phone: form.phone,
+        shipping_address: form.address,
+        notes: form.notes,
+        payment_method: form.method,
+        items: items.map((i) => ({ product_id: i.id, quantity: i.quantity })),
+      },
     } as never);
-
-    clear();
     setLoading(false);
-    toast.success(`${t("co.success")} : ${order.order_number}`);
-    nav({ to: "/merci", search: { order: order.order_number } as any });
+    if (error) { toast.error(error.message ?? t("c.error")); return; }
+    const res: any = data;
+    clear();
+    toast.success(`${t("co.success")} : ${res?.order_number}`);
+    nav({ to: "/merci", search: { order: res?.order_number } as any });
   };
 
   if (items.length === 0) {
@@ -108,6 +72,7 @@ function Checkout() {
       </PublicShell>
     );
   }
+
 
   return (
     <PublicShell>
