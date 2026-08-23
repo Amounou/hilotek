@@ -43,7 +43,6 @@ import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedMemoiresRouteImport } from './routes/_authenticated/memoires'
 import { Route as AuthenticatedInvoicesRouteImport } from './routes/_authenticated/invoices'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedCategoriesRouteImport } from './routes/_authenticated/categories'
 import { Route as AuthenticatedAppointmentsRouteImport } from './routes/_authenticated/appointments'
 import { Route as AuthenticatedSalesIndexRouteImport } from './routes/_authenticated/sales.index'
 import { Route as AuthenticatedQuotesIndexRouteImport } from './routes/_authenticated/quotes.index'
@@ -52,6 +51,8 @@ import { Route as AuthenticatedSalesIdRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedQuotesNewRouteImport } from './routes/_authenticated/quotes.new'
 import { Route as AuthenticatedQuotesListRouteImport } from './routes/_authenticated/quotes.list'
 import { Route as AuthenticatedQuotesIdRouteImport } from './routes/_authenticated/quotes.$id'
+import { Route as AuthenticatedAdminServicesRouteImport } from './routes/_authenticated/admin.services'
+import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 
 const SuiviReparationRoute = SuiviReparationRouteImport.update({
@@ -223,11 +224,6 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedCategoriesRoute = AuthenticatedCategoriesRouteImport.update({
-  id: '/categories',
-  path: '/categories',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedAppointmentsRoute =
   AuthenticatedAppointmentsRouteImport.update({
     id: '/appointments',
@@ -270,6 +266,18 @@ const AuthenticatedQuotesIdRoute = AuthenticatedQuotesIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AuthenticatedQuotesRoute,
 } as any)
+const AuthenticatedAdminServicesRoute =
+  AuthenticatedAdminServicesRouteImport.update({
+    id: '/admin/services',
+    path: '/admin/services',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedAdminCategoriesRoute =
+  AuthenticatedAdminCategoriesRouteImport.update({
+    id: '/admin/categories',
+    path: '/admin/categories',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   id: '/admin/blog',
   path: '/admin/blog',
@@ -296,7 +304,6 @@ export interface FileRoutesByFullPath {
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
-  '/categories': typeof AuthenticatedCategoriesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/invoices': typeof AuthenticatedInvoicesRoute
   '/memoires': typeof AuthenticatedMemoiresRoute
@@ -313,6 +320,8 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/services': typeof AuthenticatedAdminServicesRoute
   '/quotes/$id': typeof AuthenticatedQuotesIdRoute
   '/quotes/list': typeof AuthenticatedQuotesListRoute
   '/quotes/new': typeof AuthenticatedQuotesNewRoute
@@ -341,7 +350,6 @@ export interface FileRoutesByTo {
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
   '/appointments': typeof AuthenticatedAppointmentsRoute
-  '/categories': typeof AuthenticatedCategoriesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/invoices': typeof AuthenticatedInvoicesRoute
   '/memoires': typeof AuthenticatedMemoiresRoute
@@ -357,6 +365,8 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/services': typeof AuthenticatedAdminServicesRoute
   '/quotes/$id': typeof AuthenticatedQuotesIdRoute
   '/quotes/list': typeof AuthenticatedQuotesListRoute
   '/quotes/new': typeof AuthenticatedQuotesNewRoute
@@ -387,7 +397,6 @@ export interface FileRoutesById {
   '/suivi-memoire': typeof SuiviMemoireRoute
   '/suivi-reparation': typeof SuiviReparationRoute
   '/_authenticated/appointments': typeof AuthenticatedAppointmentsRoute
-  '/_authenticated/categories': typeof AuthenticatedCategoriesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/invoices': typeof AuthenticatedInvoicesRoute
   '/_authenticated/memoires': typeof AuthenticatedMemoiresRoute
@@ -404,6 +413,8 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
+  '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/_authenticated/admin/services': typeof AuthenticatedAdminServicesRoute
   '/_authenticated/quotes/$id': typeof AuthenticatedQuotesIdRoute
   '/_authenticated/quotes/list': typeof AuthenticatedQuotesListRoute
   '/_authenticated/quotes/new': typeof AuthenticatedQuotesNewRoute
@@ -434,7 +445,6 @@ export interface FileRouteTypes {
     | '/suivi-memoire'
     | '/suivi-reparation'
     | '/appointments'
-    | '/categories'
     | '/dashboard'
     | '/invoices'
     | '/memoires'
@@ -451,6 +461,8 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
+    | '/admin/categories'
+    | '/admin/services'
     | '/quotes/$id'
     | '/quotes/list'
     | '/quotes/new'
@@ -479,7 +491,6 @@ export interface FileRouteTypes {
     | '/suivi-memoire'
     | '/suivi-reparation'
     | '/appointments'
-    | '/categories'
     | '/dashboard'
     | '/invoices'
     | '/memoires'
@@ -495,6 +506,8 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/admin/blog'
+    | '/admin/categories'
+    | '/admin/services'
     | '/quotes/$id'
     | '/quotes/list'
     | '/quotes/new'
@@ -524,7 +537,6 @@ export interface FileRouteTypes {
     | '/suivi-memoire'
     | '/suivi-reparation'
     | '/_authenticated/appointments'
-    | '/_authenticated/categories'
     | '/_authenticated/dashboard'
     | '/_authenticated/invoices'
     | '/_authenticated/memoires'
@@ -541,6 +553,8 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/boutique/$slug'
     | '/_authenticated/admin/blog'
+    | '/_authenticated/admin/categories'
+    | '/_authenticated/admin/services'
     | '/_authenticated/quotes/$id'
     | '/_authenticated/quotes/list'
     | '/_authenticated/quotes/new'
@@ -812,13 +826,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/categories': {
-      id: '/_authenticated/categories'
-      path: '/categories'
-      fullPath: '/categories'
-      preLoaderRoute: typeof AuthenticatedCategoriesRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/appointments': {
       id: '/_authenticated/appointments'
       path: '/appointments'
@@ -875,6 +882,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedQuotesIdRouteImport
       parentRoute: typeof AuthenticatedQuotesRoute
     }
+    '/_authenticated/admin/services': {
+      id: '/_authenticated/admin/services'
+      path: '/admin/services'
+      fullPath: '/admin/services'
+      preLoaderRoute: typeof AuthenticatedAdminServicesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/admin/categories': {
+      id: '/_authenticated/admin/categories'
+      path: '/admin/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/admin/blog': {
       id: '/_authenticated/admin/blog'
       path: '/admin/blog'
@@ -904,7 +925,6 @@ const AuthenticatedQuotesRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAppointmentsRoute: typeof AuthenticatedAppointmentsRoute
-  AuthenticatedCategoriesRoute: typeof AuthenticatedCategoriesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedInvoicesRoute: typeof AuthenticatedInvoicesRoute
   AuthenticatedMemoiresRoute: typeof AuthenticatedMemoiresRoute
@@ -919,6 +939,8 @@ interface AuthenticatedRouteChildren {
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedUsersRoute: typeof AuthenticatedUsersRoute
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRoute
+  AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
+  AuthenticatedAdminServicesRoute: typeof AuthenticatedAdminServicesRoute
   AuthenticatedSalesIdRoute: typeof AuthenticatedSalesIdRoute
   AuthenticatedSalesNewRoute: typeof AuthenticatedSalesNewRoute
   AuthenticatedSalesIndexRoute: typeof AuthenticatedSalesIndexRoute
@@ -926,7 +948,6 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAppointmentsRoute: AuthenticatedAppointmentsRoute,
-  AuthenticatedCategoriesRoute: AuthenticatedCategoriesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedInvoicesRoute: AuthenticatedInvoicesRoute,
   AuthenticatedMemoiresRoute: AuthenticatedMemoiresRoute,
@@ -941,6 +962,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedUsersRoute: AuthenticatedUsersRoute,
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRoute,
+  AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
+  AuthenticatedAdminServicesRoute: AuthenticatedAdminServicesRoute,
   AuthenticatedSalesIdRoute: AuthenticatedSalesIdRoute,
   AuthenticatedSalesNewRoute: AuthenticatedSalesNewRoute,
   AuthenticatedSalesIndexRoute: AuthenticatedSalesIndexRoute,
