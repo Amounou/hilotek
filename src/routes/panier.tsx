@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicShell } from "@/components/PublicShell";
 import { useCart } from "@/lib/cart";
 import { formatXOF, useI18n } from "@/lib/i18n";
+import { useTaxRate } from "@/lib/settings";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -60,7 +61,7 @@ function CartPage() {
           <Card className="p-6 h-fit sticky top-20">
             <div className="space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t("cart.subtotal")}</span><span>{formatXOF(subtotal, lang)}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">{t("cart.tax")} (18%)</span><span>{formatXOF(tax, lang)}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{t("cart.tax")} ({taxRate}%)</span><span>{formatXOF(tax, lang)}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{t("cart.shipping")}</span><span>{formatXOF(shipping, lang)}</span></div>
               <div className="my-2 border-t" />
               <div className="flex justify-between text-lg font-semibold"><span>{t("cart.total")}</span><span>{formatXOF(total, lang)}</span></div>
