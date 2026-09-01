@@ -8,6 +8,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
+import { Logo } from "@/components/Logo";
 
 export const Route = createFileRoute("/reset-password")({
   component: () => {
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/reset-password")({
     return (
       <PublicShell>
         <div className="mx-auto max-w-md px-4 py-16">
+          <div className="text-center mb-8 flex justify-center"><Logo /></div>
           <Card className="p-8">
             <h1 className="text-2xl font-display font-bold mb-6">{t("auth.reset_password")}</h1>
             <form onSubmit={submit} className="space-y-3">

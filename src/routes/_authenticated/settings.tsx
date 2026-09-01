@@ -26,20 +26,26 @@ function SettingsPage() {
   const setS = (k: string, v: string) => setF({ ...f, socials: { ...(f.socials ?? {}), [k]: v } });
 
   const save = async () => {
-    const { error } = await supabase
+    const payload = {
+      company_name: f.company_name || "HiloTek Services & Tech",
+      email: f.email || null,
+      phone: f.phone || null,
+      address: f.address || null,
+      hours: f.hours || null,
+      currency: f.currency || "XOF",
+      tax_rate: Number(f.tax_rate ?? 18),
+      logo_url: f.logo_url || null,
+      socials: f.socials ?? {},
+    };
+    const { data: updated, error } = await supabase
       .from("settings")
-      .update({
-        company_name: f.company_name,
-        email: f.email,
-        phone: f.phone,
-        address: f.address,
-        hours: f.hours,
-        currency: f.currency || "XOF",
-        tax_rate: Number(f.tax_rate ?? 18),
-        logo_url: f.logo_url || null,
-        socials: f.socials ?? {},
-      } as never)
-      .eq("id", 1);
+      .update(payload as never)
+      .eq("id", 1)
+      .select("id");
+    if (!error && (!updated || updated.length === 0)) {
+      toast.error("Impossible d'enregistrer : droits insuffisants ou fiche introuvable.");
+      return;
+    }
     if (error) toast.error(error.message);
     else {
       toast.success("Paramètres enregistrés");
