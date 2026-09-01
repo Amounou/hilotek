@@ -10,7 +10,13 @@ export type PublicSettings = {
   socials: Record<string, string> | null;
   currency: string | null;
   logo_url: string | null;
+  tax_rate: number | null;
 };
+
+export function useTaxRate() {
+  const s = useSiteSettings();
+  return Number(s?.tax_rate ?? 18);
+}
 
 export function useSiteSettings() {
   const { data } = useQuery({

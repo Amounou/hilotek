@@ -12,6 +12,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
+import { useTaxRate } from "@/lib/settings";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({ meta: [{ title: "Commande — HiloTek" }] }),
@@ -38,7 +39,8 @@ function Checkout() {
     method: "orange_money" as (typeof METHODS)[number]["v"],
   });
 
-  const tax = Math.round(subtotal * 0.18);
+  const taxRate = useTaxRate();
+  const tax = Math.round((subtotal * taxRate) / 100);
   const shipping = subtotal > 0 ? 3000 : 0;
   const total = subtotal + tax + shipping;
 
@@ -120,7 +122,7 @@ function Checkout() {
             <div className="my-3 border-t" />
             <div className="space-y-1 text-sm">
               <div className="flex justify-between"><span>{t("cart.subtotal")}</span><span>{formatXOF(subtotal, lang)}</span></div>
-              <div className="flex justify-between"><span>{t("cart.tax")}</span><span>{formatXOF(tax, lang)}</span></div>
+              <div className="flex justify-between"><span>{t("cart.tax")} ({taxRate}%)</span><span>{formatXOF(tax, lang)}</span></div>
               <div className="flex justify-between"><span>{t("cart.shipping")}</span><span>{formatXOF(shipping, lang)}</span></div>
               <div className="flex justify-between font-semibold text-base pt-2 border-t"><span>{t("cart.total")}</span><span>{formatXOF(total, lang)}</span></div>
             </div>
