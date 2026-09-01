@@ -15,7 +15,8 @@ export const Route = createFileRoute("/panier")({
 function CartPage() {
   const { t, lang } = useI18n();
   const { items, remove, setQty, subtotal } = useCart();
-  const tax = Math.round(subtotal * 0.18);
+  const taxRate = useTaxRate();
+  const tax = Math.round((subtotal * taxRate) / 100);
   const shipping = subtotal > 0 ? 3000 : 0;
   const total = subtotal + tax + shipping;
 
