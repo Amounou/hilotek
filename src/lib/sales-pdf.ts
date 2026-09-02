@@ -197,7 +197,7 @@ export async function generateSalePdf(
     doc.setFont("helvetica", "normal");
     if (thumb) {
       try {
-        doc.addImage(thumb, S(8), cols.desig.x + S(2), y + (dynH - S(8)) / 2, S(8), S(8));
+        doc.addImage(thumb, cols.desig.x + S(2), y + (dynH - S(8)) / 2, S(8), S(8));
       } catch { /* image illisible : ignorée */ }
     }
     doc.text(lines, textX, y + S(5));
