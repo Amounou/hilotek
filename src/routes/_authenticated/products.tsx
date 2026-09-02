@@ -15,6 +15,7 @@ import { useState, useRef, useEffect } from "react";
 import { Plus, Pencil, Trash2, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { formatXOF } from "@/lib/i18n";
+import { ProductThumb } from "@/components/ProductThumb";
 
 export const Route = createFileRoute("/_authenticated/products")({
   component: ProdAdmin,
@@ -147,7 +148,7 @@ function ProdAdmin() {
               </TableRow>
             ))}
             {(data ?? []).length === 0 && (
-              <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">Aucun produit</TableCell></TableRow>
+              <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">Aucun produit</TableCell></TableRow>
             )}
           </TableBody>
         </Table>
