@@ -3,6 +3,8 @@ import { useAuth, STAFF_ROLES, type AppRole } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import { Logo } from "@/components/Logo";
+import { NotificationBell } from "@/components/NotificationBell";
+
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, ShoppingCart, Package, Wrench, GraduationCap,
