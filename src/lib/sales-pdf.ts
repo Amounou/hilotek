@@ -42,9 +42,26 @@ export type SaleForPdf = {
   total: number;
   notes?: string | null;
   doc_label?: string | null;
-  items: Array<{ product_name: string; quantity: number; unit_price: number; line_total: number }>;
+  items: Array<{ product_name: string; quantity: number; unit_price: number; line_total: number; image?: string | null }>;
 };
 
+
+async function toDataUrl(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url, { mode: "cors" });
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    if (!blob.type.startsWith("image/")) return null;
+    return await new Promise((resolve) => {
+      const r = new FileReader();
+      r.onloadend = () => resolve(r.result as string);
+      r.onerror = () => resolve(null);
+      r.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
 
 export type CompanyForPdf = {
   company_name: string;
@@ -65,6 +82,15 @@ export async function generateSalePdf(
   const resolved: PdfMode = typeof mode === "boolean" ? (mode ? "print" : "save") : mode;
   const doc = new jsPDF({ unit: "mm", format });
   const logo = await fetchLogoDataUrl();
+
+  // Vignettes produits (converties en data URL pour jsPDF)
+  const thumbs = new Map<string, string>();
+  await Promise.all(
+    Array.from(new Set(sale.items.map((i) => i.image).filter(Boolean) as string[])).map(async (u) => {
+      const d = await toDataUrl(u);
+      if (d) thumbs.set(u, d);
+    }),
+  );
 
   // Real page dimensions in mm (A4: 210x297, A5: 148x210).
   const pageW = doc.internal.pageSize.getWidth();
@@ -153,8 +179,13 @@ export async function generateSalePdf(
 
   doc.setFont("helvetica", "normal"); doc.setFontSize(F(9)); doc.setTextColor(...DARK);
   sale.items.forEach((it, i) => {
-    const lines: string[] = doc.splitTextToSize(String(it.product_name), cols.desig.w - S(6));
-    const dynH = Math.max(rowH, lines.length * S(5) + S(4));
+    const thumb = it.image ? thumbs.get(it.image) : undefined;
+    const textX = cols.desig.x + S(3) + (thumb ? S(10) : 0);
+    const lines: string[] = doc.splitTextToSize(
+      String(it.product_name),
+      cols.desig.w - S(6) - (thumb ? S(10) : 0),
+    );
+    const dynH = Math.max(rowH, lines.length * S(5) + S(4), thumb ? S(11) : 0);
     if (y + dynH > bottomLimit) { doc.addPage(); y = S(20); }
     if (i % 2 === 0) {
       doc.setFillColor(...LIGHT);
@@ -164,7 +195,12 @@ export async function generateSalePdf(
     doc.setFont("helvetica", "bold");
     doc.text(String(i + 1).padStart(2, "0"), cols.n.x + cols.n.w / 2, centerY, { align: "center" });
     doc.setFont("helvetica", "normal");
-    doc.text(lines, cols.desig.x + S(3), y + S(5));
+    if (thumb) {
+      try {
+        doc.addImage(thumb, S(8), cols.desig.x + S(2), y + (dynH - S(8)) / 2, S(8), S(8));
+      } catch { /* image illisible : ignorée */ }
+    }
+    doc.text(lines, textX, y + S(5));
     doc.text(money(Number(it.unit_price)), cols.pu.x + cols.pu.w - S(2), centerY, { align: "right" });
     doc.text(String(it.quantity).padStart(2, "0"), cols.qte.x + cols.qte.w / 2, centerY, { align: "center" });
     doc.setFont("helvetica", "bold");
