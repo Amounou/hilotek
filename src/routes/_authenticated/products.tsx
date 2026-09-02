@@ -15,6 +15,7 @@ import { useState, useRef, useEffect } from "react";
 import { Plus, Pencil, Trash2, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { formatXOF } from "@/lib/i18n";
+import { ProductThumb } from "@/components/ProductThumb";
 
 export const Route = createFileRoute("/_authenticated/products")({
   component: ProdAdmin,
@@ -129,14 +130,16 @@ function ProdAdmin() {
       <Card className="p-3"><Input placeholder="Rechercher…" value={q} onChange={(e) => setQ(e.target.value)} /></Card>
       <Card>
         <Table>
-          <TableHeader><TableRow><TableHead>Nom</TableHead><TableHead>Catégorie</TableHead><TableHead>Prix</TableHead><TableHead>Stock</TableHead><TableHead>Statut</TableHead><TableHead></TableHead></TableRow></TableHeader>
+          <TableHeader><TableRow><TableHead className="w-14">Image</TableHead><TableHead>Nom</TableHead><TableHead>Catégorie</TableHead><TableHead>Prix</TableHead><TableHead>Stock</TableHead><TableHead>Statut</TableHead><TableHead></TableHead></TableRow></TableHeader>
           <TableBody>
             {(data ?? []).map((p: any) => (
               <TableRow key={p.id}>
+                <TableCell><ProductThumb src={p.images?.[0]} alt={p.name_fr} size={44} /></TableCell>
                 <TableCell><div className="font-medium">{p.name_fr}</div><div className="text-xs text-muted-foreground">{p.sku}</div></TableCell>
                 <TableCell className="text-xs">{p.categories?.name_fr}</TableCell>
                 <TableCell>{formatXOF(Number(p.promo_price ?? p.price))}</TableCell>
                 <TableCell><Badge variant={p.stock > 5 ? "secondary" : "destructive"}>{p.stock}</Badge></TableCell>
+
                 <TableCell><button onClick={() => toggle(p.id, p.is_active)}><Badge variant={p.is_active ? "default" : "secondary"}>{p.is_active ? "Actif" : "Inactif"}</Badge></button></TableCell>
                 <TableCell className="flex gap-1">
                   <Button size="icon" variant="ghost" onClick={() => openEdit(p)}><Pencil className="h-4 w-4" /></Button>
@@ -145,7 +148,7 @@ function ProdAdmin() {
               </TableRow>
             ))}
             {(data ?? []).length === 0 && (
-              <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">Aucun produit</TableCell></TableRow>
+              <TableRow><TableCell colSpan={7} className="text-center text-muted-foreground py-8">Aucun produit</TableCell></TableRow>
             )}
           </TableBody>
         </Table>

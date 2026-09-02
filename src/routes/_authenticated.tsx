@@ -3,6 +3,8 @@ import { useAuth, STAFF_ROLES, type AppRole } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import { Logo } from "@/components/Logo";
+import { NotificationBell } from "@/components/NotificationBell";
+
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard, ShoppingCart, Package, Wrench, GraduationCap,
@@ -90,10 +92,17 @@ function AuthedLayout() {
       <main className="flex-1 min-w-0">
         <header className="md:hidden border-b bg-background p-3 flex items-center justify-between">
           <Logo />
-          <Button size="sm" variant="ghost" onClick={() => { signOut(); nav({ to: "/" }); }}><LogOut className="h-4 w-4" /></Button>
+          <div className="flex items-center gap-1">
+            <NotificationBell />
+            <Button size="sm" variant="ghost" onClick={() => { signOut(); nav({ to: "/" }); }}><LogOut className="h-4 w-4" /></Button>
+          </div>
+        </header>
+        <header className="hidden md:flex border-b bg-background px-6 py-2 items-center justify-end">
+          <NotificationBell />
         </header>
         <div className="p-4 md:p-8"><Outlet /></div>
       </main>
+
     </div>
   );
 }

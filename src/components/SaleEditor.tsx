@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatXOF } from "@/lib/i18n";
 import { Trash2, Plus, Save, Printer, X, Pencil } from "lucide-react";
 import { generateSalePdf } from "@/lib/sales-pdf";
+import { ProductThumb } from "@/components/ProductThumb";
 
 type LineItem = {
   key: string;
@@ -20,6 +21,7 @@ type LineItem = {
   product_name: string;
   quantity: number;
   unit_price: number;
+  image?: string | null;
 };
 
 export type EditorMode = "sale" | "proforma";
@@ -89,6 +91,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
   const [dProductId, setDProductId] = useState<string | null>(null);
   const [dQty, setDQty] = useState<number>(1);
   const [dPrice, setDPrice] = useState<number>(0);
+  const [dImage, setDImage] = useState<string | null>(null);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -98,7 +101,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
   });
   const { data: products } = useQuery({
     queryKey: ["products-min"],
-    queryFn: async () => (await supabase.from("products").select("id, name_fr, price, promo_price, stock, sku").eq("is_active", true).order("name_fr")).data ?? [],
+    queryFn: async () => (await supabase.from("products").select("id, name_fr, price, promo_price, stock, sku, images").eq("is_active", true).order("name_fr")).data ?? [],
   });
   const { data: settings } = useQuery({
     queryKey: ["public-settings"],
@@ -112,7 +115,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
     const id = saleId ?? fromSaleId;
     if (!id) return;
     (async () => {
-      const { data, error } = await db.from(cfg.table).select(`*, ${cfg.itemsTable}(*)`).eq("id", id).maybeSingle();
+      const { data, error } = await db.from(cfg.table).select(`*, ${cfg.itemsTable}(*, products(images))`).eq("id", id).maybeSingle();
       if (error || !data) { toast.error("Document introuvable"); return; }
       setClientId(data.client_id);
       setClientName(data.client_name);
@@ -126,6 +129,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         product_name: it.product_name,
         quantity: Number(it.quantity),
         unit_price: Number(it.unit_price),
+        image: it.products?.images?.[0] ?? null,
       })));
       if (saleId) {
         setSaleDate(String(data[cfg.dateCol]).slice(0, 10));
@@ -139,7 +143,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
   const total = useMemo(() => subtotal + taxAmount, [subtotal, taxAmount]);
 
   const resetDraft = () => {
-    setDName(""); setDProductId(null); setDQty(1); setDPrice(0); setEditingKey(null);
+    setDName(""); setDProductId(null); setDQty(1); setDPrice(0); setDImage(null); setEditingKey(null);
     setTimeout(() => nameInputRef.current?.focus(), 0);
   };
 
@@ -149,6 +153,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
     setDProductId(id);
     setDName(p.name_fr);
     setDPrice(Number(p.promo_price ?? p.price));
+    setDImage(p.images?.[0] ?? null);
   };
 
   const addLine = () => {
@@ -167,10 +172,10 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
     }
     if (editingKey) {
       setItems((prev) => prev.map((i) => i.key === editingKey
-        ? { ...i, product_id: dProductId, product_name: name, quantity: dQty, unit_price: dPrice }
+        ? { ...i, product_id: dProductId, product_name: name, quantity: dQty, unit_price: dPrice, image: dImage }
         : i));
     } else {
-      setItems((prev) => [...prev, { key: newKey(), product_id: dProductId, product_name: name, quantity: dQty, unit_price: dPrice }]);
+      setItems((prev) => [...prev, { key: newKey(), product_id: dProductId, product_name: name, quantity: dQty, unit_price: dPrice, image: dImage }]);
     }
     resetDraft();
   };
@@ -182,6 +187,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
     setDProductId(it.product_id);
     setDQty(it.quantity);
     setDPrice(it.unit_price);
+    setDImage(it.image ?? null);
     nameInputRef.current?.focus();
   };
 
@@ -232,7 +238,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
 
       // Fetch to obtain server-computed totals + number
       const { data: fresh } = await db.from(cfg.table)
-        .select(`*, ${cfg.itemsTable}(product_name, quantity, unit_price, line_total)`)
+        .select(`*, ${cfg.itemsTable}(product_name, quantity, unit_price, line_total, product_id, products(images))`)
         .eq("id", sid).single();
 
       toast.success(`${cfg.savedWord} ${fresh?.[cfg.numberCol]} enregistré`);
@@ -258,6 +264,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
               quantity: Number(i.quantity),
               unit_price: Number(i.unit_price),
               line_total: Number(i.line_total),
+              image: i.products?.images?.[0] ?? items.find((x) => x.product_id === i.product_id)?.image ?? null,
             })),
           },
           {
@@ -309,7 +316,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         <h2 className="font-semibold">Ajouter un {cfg.itemWord}</h2>
         <div className="grid gap-2 md:grid-cols-12 items-end">
           <div className="md:col-span-5">
-            <Label>{cfg.nameLabel}</Label>
+            <Label className="flex items-center gap-2">{cfg.nameLabel}{dImage && <ProductThumb src={dImage} size={28} />}</Label>
             <Input
               ref={nameInputRef}
               list="products-list"
@@ -317,7 +324,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
               onChange={(e) => {
                 const v = e.target.value; setDName(v);
                 const p = (products ?? []).find((x: any) => x.name_fr === v);
-                if (p) onSelectProduct(p.id); else setDProductId(null);
+                        if (p) onSelectProduct(p.id); else { setDProductId(null); setDImage(null); }
               }}
               onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addLine(); } }}
               placeholder={mode === "sale" ? "Rechercher un produit ou saisir librement" : "Rechercher un produit/service ou saisir librement"}
@@ -354,7 +361,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{mode === "sale" ? "Produit" : "Élément"}</TableHead>
+                  <TableHead>{mode === "sale" ? "Produit" : "Élément"}</TableHead>
               <TableHead className="text-right">Quantité</TableHead>
               <TableHead className="text-right">Prix unitaire</TableHead>
               <TableHead className="text-right">Prix HT</TableHead>
@@ -365,7 +372,12 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
             {items.length === 0 && (<TableRow><TableCell colSpan={5} className="text-center text-muted-foreground py-6">Aucun {cfg.itemWord}</TableCell></TableRow>)}
             {items.map((i) => (
               <TableRow key={i.key} className={editingKey === i.key ? "bg-muted/50" : ""}>
-                <TableCell>{i.product_name}{mode === "sale" && !i.product_id && <span className="ml-2 text-xs text-muted-foreground">(hors stock)</span>}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <ProductThumb src={i.image} alt={i.product_name} size={40} />
+                    <span>{i.product_name}{mode === "sale" && !i.product_id && <span className="ml-2 text-xs text-muted-foreground">(hors stock)</span>}</span>
+                  </div>
+                </TableCell>
                 <TableCell className="text-right">{i.quantity}</TableCell>
                 <TableCell className="text-right">{formatXOF(i.unit_price)}</TableCell>
                 <TableCell className="text-right font-semibold">{formatXOF(i.quantity * i.unit_price)}</TableCell>
