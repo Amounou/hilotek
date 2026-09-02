@@ -14,6 +14,28 @@ import { Download } from "lucide-react";
 export const Route = createFileRoute("/_authenticated/invoices")({
   component: () => {
     const { data } = useQuery({ queryKey: ["admin-inv"], queryFn: async () => (await supabase.from("invoices").select("*").order("created_at",{ascending:false})).data ?? [] });
+    const { data: imgBySku } = useQuery({
+      queryKey: ["products-sku-img"],
+      queryFn: async () => {
+        const { data } = await supabase.from("products").select("sku, images");
+        const map: Record<string, string> = {};
+        (data ?? []).forEach((p: any) => { if (p.sku && p.images?.[0]) map[p.sku] = p.images[0]; });
+        return map;
+      },
+    });
+    const toDataUrl = async (url: string) => {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const blob = await res.blob();
+        return await new Promise<string | null>((resolve) => {
+          const r = new FileReader();
+          r.onloadend = () => resolve(r.result as string);
+          r.onerror = () => resolve(null);
+          r.readAsDataURL(blob);
+        });
+      } catch { return null; }
+    };
     const download = async (inv: any) => {
       const doc = new jsPDF();
       const NAVY: [number, number, number] = [27, 62, 146];
@@ -30,16 +52,30 @@ export const Route = createFileRoute("/_authenticated/invoices")({
       doc.text(`Client : ${inv.client_name}`, 14, 46);
       if (inv.client_email) doc.text(inv.client_email, 14, 52);
       if (inv.client_phone) doc.text(inv.client_phone, 14, 58);
+      const thumbs: Record<string, string> = {};
+      await Promise.all((inv.items ?? []).map(async (it: any) => {
+        const url = imgBySku?.[it.product_sku ?? ""];
+        if (!url || thumbs[url]) return;
+        const d = await toDataUrl(url);
+        if (d) thumbs[url] = d;
+      }));
       let y = 76; doc.setFontSize(10);
       doc.setFont("helvetica", "bold"); doc.setTextColor(...NAVY);
       doc.text("Article", 14, y); doc.text("Qté", 120, y); doc.text("PU", 140, y); doc.text("Total", 170, y); y += 4;
       doc.setDrawColor(...ORANGE); doc.setLineWidth(0.6); doc.line(14, y, 196, y); y += 6;
       doc.setFont("helvetica", "normal"); doc.setTextColor(30, 41, 59);
       (inv.items ?? []).forEach((it: any) => {
-        doc.text(String(it.name).slice(0, 60), 14, y);
+        const url = imgBySku?.[it.product_sku ?? ""];
+        const thumb = url ? thumbs[url] : undefined;
+        if (thumb) {
+          try { doc.addImage(thumb, 14, y - 5, 7, 7); } catch { /* ignore */ }
+        }
+        const label = String(it.product_name ?? it.name ?? "").slice(0, 55);
+        doc.text(label, thumb ? 23 : 14, y);
         doc.text(String(it.quantity ?? 1), 120, y);
         doc.text(String(it.unit_price ?? 0), 140, y);
-        doc.text(String(it.total ?? 0), 170, y); y += 6;
+        doc.text(String(it.total ?? 0), 170, y);
+        y += thumb ? 9 : 6;
       });
       y += 4; doc.setDrawColor(...NAVY); doc.line(14, y, 196, y); y += 8;
       doc.text(`Sous-total: ${formatXOF(Number(inv.subtotal))}`, 130, y); y += 6;
