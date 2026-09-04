@@ -255,13 +255,14 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         product_name: i.product_name,
         quantity: i.quantity,
         unit_price: i.unit_price,
+        image_url: i.image ?? null,
       }));
       const { error: e2 } = await db.from(cfg.itemsTable).insert(rows);
       if (e2) throw e2;
 
       // Fetch to obtain server-computed totals + number
       const { data: fresh } = await db.from(cfg.table)
-        .select(`*, ${cfg.itemsTable}(product_name, quantity, unit_price, line_total, product_id, products(images))`)
+        .select(`*, ${cfg.itemsTable}(product_name, quantity, unit_price, line_total, product_id, image_url, products(images))`)
         .eq("id", sid).single();
 
       toast.success(`${cfg.savedWord} ${fresh?.[cfg.numberCol]} enregistré`);
