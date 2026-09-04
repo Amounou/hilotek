@@ -159,7 +159,8 @@ export function NotificationBell() {
 
   useEffect(() => {
     if (!user) return;
-    const channel = supabase.channel("hilotek-activity");
+    // Nom unique : évite la réutilisation d'un canal déjà abonné (double montage React)
+    const channel = supabase.channel(`hilotek-activity-${Math.random().toString(36).slice(2)}`);
 
     RULES.forEach((rule) => {
       channel.on(
