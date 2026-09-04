@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatXOF } from "@/lib/i18n";
-import { Trash2, Plus, Save, Printer, X, Pencil } from "lucide-react";
+import { Trash2, Plus, Save, Printer, X, Pencil, ImagePlus } from "lucide-react";
 import { generateSalePdf } from "@/lib/sales-pdf";
 import { ProductThumb } from "@/components/ProductThumb";
 
