@@ -340,7 +340,24 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         <h2 className="font-semibold">Ajouter un {cfg.itemWord}</h2>
         <div className="grid gap-2 md:grid-cols-12 items-end">
           <div className="md:col-span-5">
-            <Label className="flex items-center gap-2">{cfg.nameLabel}{dImage && <ProductThumb src={dImage} size={28} />}</Label>
+            <Label className="flex items-center gap-2">
+              {cfg.nameLabel}
+              {dImage && (
+                <span className="relative">
+                  <ProductThumb src={dImage} size={28} />
+                  <button type="button" onClick={() => setDImage(null)}
+                    className="absolute -top-1.5 -right-1.5 rounded-full bg-destructive text-destructive-foreground p-0.5"
+                    aria-label="Retirer l'image">
+                    <X className="h-2.5 w-2.5" />
+                  </button>
+                </span>
+              )}
+              <button type="button" onClick={() => imageInputRef.current?.click()}
+                className="ml-auto inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                <ImagePlus className="h-3.5 w-3.5" />{dImage ? "Changer l'image" : "Ajouter une image"}
+              </button>
+              <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={onPickImage} />
+            </Label>
             <Input
               ref={nameInputRef}
               list="products-list"
