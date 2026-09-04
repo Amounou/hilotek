@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatXOF } from "@/lib/i18n";
-import { Trash2, Plus, Save, Printer, X, Pencil } from "lucide-react";
+import { Trash2, Plus, Save, Printer, X, Pencil, ImagePlus } from "lucide-react";
 import { generateSalePdf } from "@/lib/sales-pdf";
 import { ProductThumb } from "@/components/ProductThumb";
 
@@ -69,6 +69,29 @@ const CFG = {
 
 const newKey = () => Math.random().toString(36).slice(2, 10);
 
+/** Lit un fichier image et le redimensionne en dataURL JPEG compacte */
+const fileToThumbDataUrl = (file: File, max = 480): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return resolve(String(reader.result));
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.82));
+      };
+      img.src = String(reader.result);
+    };
+    reader.readAsDataURL(file);
+  });
+
 export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
   const nav = useNavigate();
   const { user } = useAuth();
@@ -94,6 +117,19 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
   const [dImage, setDImage] = useState<string | null>(null);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const onPickImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { toast.error("Fichier image requis"); return; }
+    try {
+      setDImage(await fileToThumbDataUrl(file));
+    } catch {
+      toast.error("Impossible de lire l'image");
+    }
+  };
 
   const { data: clients } = useQuery({
     queryKey: ["clients-min"],
@@ -129,7 +165,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         product_name: it.product_name,
         quantity: Number(it.quantity),
         unit_price: Number(it.unit_price),
-        image: it.products?.images?.[0] ?? null,
+        image: it.image_url ?? it.products?.images?.[0] ?? null,
       })));
       if (saleId) {
         setSaleDate(String(data[cfg.dateCol]).slice(0, 10));
@@ -232,13 +268,14 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         product_name: i.product_name,
         quantity: i.quantity,
         unit_price: i.unit_price,
+        image_url: i.image ?? null,
       }));
       const { error: e2 } = await db.from(cfg.itemsTable).insert(rows);
       if (e2) throw e2;
 
       // Fetch to obtain server-computed totals + number
       const { data: fresh } = await db.from(cfg.table)
-        .select(`*, ${cfg.itemsTable}(product_name, quantity, unit_price, line_total, product_id, products(images))`)
+        .select(`*, ${cfg.itemsTable}(product_name, quantity, unit_price, line_total, product_id, image_url, products(images))`)
         .eq("id", sid).single();
 
       toast.success(`${cfg.savedWord} ${fresh?.[cfg.numberCol]} enregistré`);
@@ -264,7 +301,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
               quantity: Number(i.quantity),
               unit_price: Number(i.unit_price),
               line_total: Number(i.line_total),
-              image: i.products?.images?.[0] ?? items.find((x) => x.product_id === i.product_id)?.image ?? null,
+              image: i.image_url ?? i.products?.images?.[0] ?? items.find((x) => x.product_id === i.product_id)?.image ?? null,
             })),
           },
           {
@@ -316,7 +353,24 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         <h2 className="font-semibold">Ajouter un {cfg.itemWord}</h2>
         <div className="grid gap-2 md:grid-cols-12 items-end">
           <div className="md:col-span-5">
-            <Label className="flex items-center gap-2">{cfg.nameLabel}{dImage && <ProductThumb src={dImage} size={28} />}</Label>
+            <Label className="flex items-center gap-2">
+              {cfg.nameLabel}
+              {dImage && (
+                <span className="relative">
+                  <ProductThumb src={dImage} size={28} />
+                  <button type="button" onClick={() => setDImage(null)}
+                    className="absolute -top-1.5 -right-1.5 rounded-full bg-destructive text-destructive-foreground p-0.5"
+                    aria-label="Retirer l'image">
+                    <X className="h-2.5 w-2.5" />
+                  </button>
+                </span>
+              )}
+              <button type="button" onClick={() => imageInputRef.current?.click()}
+                className="ml-auto inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                <ImagePlus className="h-3.5 w-3.5" />{dImage ? "Changer l'image" : "Ajouter une image"}
+              </button>
+              <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={onPickImage} />
+            </Label>
             <Input
               ref={nameInputRef}
               list="products-list"
