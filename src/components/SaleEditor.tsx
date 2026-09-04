@@ -152,7 +152,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         product_name: it.product_name,
         quantity: Number(it.quantity),
         unit_price: Number(it.unit_price),
-        image: it.products?.images?.[0] ?? null,
+        image: it.image_url ?? it.products?.images?.[0] ?? null,
       })));
       if (saleId) {
         setSaleDate(String(data[cfg.dateCol]).slice(0, 10));
