@@ -353,36 +353,38 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
         <h2 className="font-semibold">Ajouter un {cfg.itemWord}</h2>
         <div className="grid gap-2 md:grid-cols-12 items-end">
           <div className="md:col-span-5">
-            <Label className="flex items-center gap-2">
-              {cfg.nameLabel}
-              {dImage && (
-                <span className="relative">
-                  <ProductThumb src={dImage} size={28} />
-                  <button type="button" onClick={() => setDImage(null)}
-                    className="absolute -top-1.5 -right-1.5 rounded-full bg-destructive text-destructive-foreground p-0.5"
-                    aria-label="Retirer l'image">
+            <Label>{cfg.nameLabel}</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                ref={nameInputRef}
+                list="products-list"
+                value={dName}
+                onChange={(e) => {
+                  const v = e.target.value; setDName(v);
+                  const p = (products ?? []).find((x: any) => x.name_fr === v);
+                  if (p) onSelectProduct(p.id); else { setDProductId(null); setDImage(null); }
+                }}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addLine(); } }}
+                placeholder={mode === "sale" ? "Rechercher un produit ou saisir librement" : "Rechercher un produit/service ou saisir librement"}
+              />
+              {dImage ? (
+                <div className="relative shrink-0">
+                  <button type="button" onClick={() => imageInputRef.current?.click()} title="Changer l'image">
+                    <ProductThumb src={dImage} size={40} className="h-10 w-10" />
+                  </button>
+                  <button type="button" onClick={() => setDImage(null)} aria-label="Retirer l'image"
+                    className="absolute -top-1.5 -right-1.5 rounded-full bg-destructive text-destructive-foreground p-0.5">
                     <X className="h-2.5 w-2.5" />
                   </button>
-                </span>
+                </div>
+              ) : (
+                <Button type="button" variant="outline" size="icon" className="h-10 w-10 shrink-0"
+                  onClick={() => imageInputRef.current?.click()} title="Ajouter une image">
+                  <ImagePlus className="h-4 w-4" />
+                </Button>
               )}
-              <button type="button" onClick={() => imageInputRef.current?.click()}
-                className="ml-auto inline-flex items-center gap-1 text-xs text-primary hover:underline">
-                <ImagePlus className="h-3.5 w-3.5" />{dImage ? "Changer l'image" : "Ajouter une image"}
-              </button>
               <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={onPickImage} />
-            </Label>
-            <Input
-              ref={nameInputRef}
-              list="products-list"
-              value={dName}
-              onChange={(e) => {
-                const v = e.target.value; setDName(v);
-                const p = (products ?? []).find((x: any) => x.name_fr === v);
-                        if (p) onSelectProduct(p.id); else { setDProductId(null); setDImage(null); }
-              }}
-              onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addLine(); } }}
-              placeholder={mode === "sale" ? "Rechercher un produit ou saisir librement" : "Rechercher un produit/service ou saisir librement"}
-            />
+            </div>
             <datalist id="products-list">
               {(products ?? []).map((p: any) => (
                 <option key={p.id} value={p.name_fr}>{`${formatXOF(Number(p.promo_price ?? p.price))} · stock ${p.stock}`}</option>

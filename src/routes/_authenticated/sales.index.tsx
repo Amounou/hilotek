@@ -32,7 +32,7 @@ function SalesList() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("sales")
-        .select("*, sale_items(id, product_name, quantity, unit_price, line_total, product_id)")
+        .select("*, sale_items(id, product_name, quantity, unit_price, line_total, product_id, image_url, products(images))")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
@@ -95,6 +95,7 @@ function SalesList() {
           quantity: Number(i.quantity),
           unit_price: Number(i.unit_price),
           line_total: Number(i.line_total),
+          image: i.image_url ?? i.products?.images?.[0] ?? null,
         })),
       },
       {
