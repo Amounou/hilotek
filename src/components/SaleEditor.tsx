@@ -117,6 +117,19 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
   const [dImage, setDImage] = useState<string | null>(null);
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const onPickImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { toast.error("Fichier image requis"); return; }
+    try {
+      setDImage(await fileToThumbDataUrl(file));
+    } catch {
+      toast.error("Impossible de lire l'image");
+    }
+  };
 
   const { data: clients } = useQuery({
     queryKey: ["clients-min"],
