@@ -288,7 +288,7 @@ export function SaleEditor({ saleId, fromSaleId, mode = "sale" }: Props) {
               quantity: Number(i.quantity),
               unit_price: Number(i.unit_price),
               line_total: Number(i.line_total),
-              image: i.products?.images?.[0] ?? items.find((x) => x.product_id === i.product_id)?.image ?? null,
+              image: i.image_url ?? i.products?.images?.[0] ?? items.find((x) => x.product_id === i.product_id)?.image ?? null,
             })),
           },
           {
